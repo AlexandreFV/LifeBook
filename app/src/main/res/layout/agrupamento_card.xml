@@ -1,0 +1,156 @@
+<!-- agrupamento_item.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <View
+        android:id="@+id/colorSquare"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/nomeAgrupamentoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Nome do Agrupamento"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/colorSquare"
+        app:layout_constraintStart_toStartOf="@+id/colorSquare"
+        app:layout_constraintTop_toTopOf="@+id/colorSquare"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <TextView
+        android:id="@+id/TextCategoriaCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Categoria"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/colorSquare"
+        app:layout_constraintEnd_toEndOf="@+id/colorSquare"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/colorSquare"
+        app:layout_constraintTop_toTopOf="@+id/colorSquare"
+        app:layout_constraintVertical_bias="0.533" />
+
+    <TextView
+        android:id="@+id/corHexTextView"
+        android:layout_width="38dp"
+        android:layout_height="12dp"
+        android:layout_marginTop="4dp"
+        android:text="Cor Hex"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="@+id/colorSquare"
+        app:layout_constraintTop_toTopOf="@+id/colorSquare" />
+
+
+    <View
+        android:id="@+id/btnDelete"
+        android:layout_width="52dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/button"
+        android:onClick="btnAcaoDelete"
+        app:layout_constraintBottom_toBottomOf="@+id/colorSquare"
+        app:layout_constraintEnd_toEndOf="@+id/colorSquare"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/colorSquare"
+        app:layout_constraintTop_toTopOf="@+id/colorSquare"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/lixeiraIcon2"
+        android:layout_width="27dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDelete"
+        app:layout_constraintEnd_toEndOf="@+id/btnDelete"
+        app:layout_constraintHorizontal_bias="0.342"
+        app:layout_constraintStart_toStartOf="@+id/btnDelete"
+        app:layout_constraintTop_toTopOf="@+id/btnDelete"
+        app:layout_constraintVertical_bias="0.375"
+        app:srcCompat="@drawable/lixeira" />
+
+
+    <View
+        android:id="@+id/btnEdit"
+        android:layout_width="52dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/button"
+        android:onClick="btnAcaoEdit"
+        app:layout_constraintBottom_toBottomOf="@+id/colorSquare"
+        app:layout_constraintEnd_toEndOf="@+id/colorSquare"
+        app:layout_constraintHorizontal_bias="0.311"
+        app:layout_constraintStart_toStartOf="@+id/colorSquare"
+        app:layout_constraintTop_toTopOf="@+id/colorSquare"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/EditaIcon"
+        android:layout_width="27dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnEdit"
+        app:layout_constraintEnd_toEndOf="@+id/btnEdit"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="@+id/btnEdit"
+        app:layout_constraintTop_toTopOf="@+id/btnEdit"
+        app:layout_constraintVertical_bias="0.23"
+        app:srcCompat="@drawable/editartexto" />
+
+
+    <View
+        android:id="@+id/btnDetails"
+        android:layout_width="52dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/button"
+        android:onClick="btnAcaoDetails"
+        app:layout_constraintBottom_toBottomOf="@+id/colorSquare"
+        app:layout_constraintEnd_toEndOf="@+id/colorSquare"
+        app:layout_constraintHorizontal_bias="0.576"
+        app:layout_constraintStart_toStartOf="@+id/colorSquare"
+        app:layout_constraintTop_toTopOf="@+id/colorSquare"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/DetalhesIcon"
+        android:layout_width="27dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDetails"
+        app:layout_constraintEnd_toEndOf="@+id/btnDetails"
+        app:layout_constraintHorizontal_bias="0.607"
+        app:layout_constraintStart_toStartOf="@+id/btnDetails"
+        app:layout_constraintTop_toTopOf="@+id/btnDetails"
+        app:layout_constraintVertical_bias="0.375"
+        app:srcCompat="@drawable/procurar" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

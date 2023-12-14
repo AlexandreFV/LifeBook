@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:topRightRadius="10dp"
+        android:topLeftRadius="10dp"/> <!-- Define o raio dos cantos -->
+    <solid android:color="#DCDCDC" /> <!-- Cor de fundo -->
+    <!-- Outros atributos, se necessário -->
+</shape>

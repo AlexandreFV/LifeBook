@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="bordasInputs">
+        <item name="android:background">@drawable/borda_input</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="RedButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/red_button_background</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+</resources>

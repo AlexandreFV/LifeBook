@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/barraInferior"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:background="#252323"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/SombraCard"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/FundoDetalhesFaixa">
+
+        <View
+            android:id="@+id/SombraFaixa"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:alpha="0.5"
+            android:background="#000000" />
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/add1"
+        android:layout_width="57dp"
+        android:layout_height="73dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/barraInferior"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barraInferior"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <ImageView
+        android:id="@+id/lifeBook1"
+        android:layout_width="151dp"
+        android:layout_height="71dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/lifebook"
+        tools:layout_editor_absoluteY="1dp" />
+
+    <ImageView
+        android:id="@+id/lembretes"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barraInferior"
+        app:srcCompat="@drawable/lembretes"
+        tools:layout_editor_absoluteX="11dp" />
+
+    <ImageView
+        android:id="@+id/desempenho"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/add1"
+        app:layout_constraintStart_toEndOf="@+id/lembretes"
+        app:layout_constraintTop_toTopOf="@+id/barraInferior"
+        app:srcCompat="@drawable/desempenho" />
+
+    <ImageView
+        android:id="@+id/notificacoes"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/configuracoes"
+        app:layout_constraintStart_toEndOf="@+id/add1"
+        app:layout_constraintTop_toTopOf="@+id/barraInferior"
+        app:layout_constraintVertical_bias="0.55"
+        app:srcCompat="@drawable/notificacoes" />
+
+    <ImageView
+        android:id="@+id/configuracoes"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/barraInferior"
+        app:layout_constraintTop_toTopOf="@+id/barraInferior"
+        app:srcCompat="@drawable/configuracao" />
+
+
+    <View
+        android:id="@+id/barraSuperior"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:background="#252323"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/lifeBook"
+        android:layout_width="151dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/lifebook"
+        tools:layout_editor_absoluteY="1dp" />
+
+    <TextView
+        android:id="@+id/TextCorHex"
+        android:layout_width="142dp"
+        android:layout_height="38dp"
+        android:textColor="#000000"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/CardDetalhes"
+        tools:layout_editor_absoluteX="23dp" />
+
+    <ImageView
+        android:id="@+id/CardDetalhes"
+        android:layout_width="match_parent"
+        android:layout_height="163dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="164dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/create_card_example"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/FundoDetalhesFaixa"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="70dp"
+        android:alpha="0.4"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/barraSuperior"
+        app:layout_constraintTop_toTopOf="@+id/barraSuperior"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/TextDetalhesFaixa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Detalhes do Card"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/FundoDetalhesFaixa"
+        app:layout_constraintEnd_toEndOf="@+id/FundoDetalhesFaixa"
+        app:layout_constraintStart_toStartOf="@+id/FundoDetalhesFaixa"
+        app:layout_constraintTop_toTopOf="@+id/FundoDetalhesFaixa" />
+
+    <ImageView
+        android:id="@+id/ImageClose"
+        android:layout_width="35dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:onClick="btnClose"
+        app:layout_constraintBottom_toBottomOf="@+id/FundoDetalhesFaixa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/FundoDetalhesFaixa"
+        app:layout_constraintTop_toTopOf="@+id/FundoDetalhesFaixa"
+        app:layout_constraintVertical_bias="0.666"
+        app:srcCompat="@drawable/close" />
+
+    <TextView
+        android:id="@+id/TextNomeCard"
+        android:layout_width="133dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/CardDetalhes"
+        app:layout_constraintEnd_toEndOf="@+id/CardDetalhes"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/CardDetalhes"
+        app:layout_constraintTop_toTopOf="@+id/CardDetalhes"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/TextCategoriaCard"
+        android:layout_width="95dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/CardDetalhes"
+        app:layout_constraintEnd_toEndOf="@+id/CardDetalhes"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/CardDetalhes"
+        app:layout_constraintTop_toTopOf="@+id/CardDetalhes"
+        app:layout_constraintVertical_bias="0.78" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

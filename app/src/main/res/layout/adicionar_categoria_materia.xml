@@ -1,0 +1,344 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fundo_adicionar_categoria"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/TextoColor"
+        android:layout_width="74dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/red_button_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/FundoColor"
+        app:layout_constraintTop_toBottomOf="@+id/TextPersonalizarCores"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textFundo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Texto"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/TextoColor"
+        app:layout_constraintEnd_toEndOf="@+id/TextoColor"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="@+id/TextoColor"
+        app:layout_constraintTop_toTopOf="@+id/TextoColor"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <View
+        android:id="@+id/FundroCriarCard"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:alpha="0.4"
+        android:background="#0BFF03"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/TextCriarCard"
+        android:layout_width="110dp"
+        android:layout_height="28dp"
+        android:text="Criar Card"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/FundroCriarCard"
+        app:layout_constraintEnd_toEndOf="@+id/FundroCriarCard"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/FundroCriarCard"
+        app:layout_constraintVertical_bias="0.333" />
+
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="35dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/FundroCriarCard"
+        app:layout_constraintEnd_toEndOf="@+id/FundroCriarCard"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/FundroCriarCard"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.571"
+        app:srcCompat="@drawable/close" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/SombraCard"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/FundroCriarCard">
+
+        <View
+            android:id="@+id/SombraFaixa"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:alpha="0.5"
+            android:background="#000000" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <View
+        android:id="@+id/colorPreview"
+        android:layout_width="match_parent"
+        android:layout_height="163dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/create_card_example"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextCriarCard" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="480dp">
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/NomeCard"
+        android:layout_width="132dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:hint="Nome do Card"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
+        app:layout_constraintStart_toStartOf="@+id/colorPreview"
+        app:layout_constraintTop_toTopOf="@+id/colorPreview"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textInputEditText"
+        android:layout_width="95dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="48dp"
+        android:hint="Categoria"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
+        app:layout_constraintEnd_toEndOf="@+id/colorPreview" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="52dp"
+        android:layout_height="57dp"
+        android:layout_marginEnd="44dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputEditText"
+        app:layout_constraintEnd_toEndOf="@+id/colorPreview"
+        app:layout_constraintTop_toTopOf="@+id/colorPreview"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/mao" />
+
+
+    <Button
+        android:id="@+id/btnSalvar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:onClick="salvarAgrupamento"
+        android:text="Salvar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colorPreview" />
+
+
+    <View
+        android:id="@+id/btnDelete1"
+        android:layout_width="52dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/button"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
+        app:layout_constraintEnd_toEndOf="@+id/colorPreview"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/colorPreview"
+        app:layout_constraintTop_toTopOf="@+id/colorPreview"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/lixeiraIcon2"
+        android:layout_width="27dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDelete1"
+        app:layout_constraintEnd_toEndOf="@+id/btnDelete1"
+        app:layout_constraintHorizontal_bias="0.342"
+        app:layout_constraintStart_toStartOf="@+id/btnDelete1"
+        app:layout_constraintTop_toTopOf="@+id/btnDelete1"
+        app:layout_constraintVertical_bias="0.375"
+        app:srcCompat="@drawable/lixeira" />
+
+
+    <View
+        android:id="@+id/btnEdit1"
+        android:layout_width="52dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/button"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
+        app:layout_constraintEnd_toEndOf="@+id/colorPreview"
+        app:layout_constraintHorizontal_bias="0.311"
+        app:layout_constraintStart_toStartOf="@+id/colorPreview"
+        app:layout_constraintTop_toTopOf="@+id/colorPreview"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/EditaIcon1"
+        android:layout_width="27dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnEdit1"
+        app:layout_constraintEnd_toEndOf="@+id/btnEdit1"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="@+id/btnEdit1"
+        app:layout_constraintTop_toTopOf="@+id/btnEdit1"
+        app:layout_constraintVertical_bias="0.23"
+        app:srcCompat="@drawable/editartexto" />
+
+
+    <View
+        android:id="@+id/btnDetails1"
+        android:layout_width="52dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/button"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
+        app:layout_constraintEnd_toEndOf="@+id/colorPreview"
+        app:layout_constraintHorizontal_bias="0.576"
+        app:layout_constraintStart_toStartOf="@+id/colorPreview"
+        app:layout_constraintTop_toTopOf="@+id/colorPreview"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/DetalhesIcon1"
+        android:layout_width="27dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDetails1"
+        app:layout_constraintEnd_toEndOf="@+id/btnDetails1"
+        app:layout_constraintHorizontal_bias="0.607"
+        app:layout_constraintStart_toStartOf="@+id/btnDetails1"
+        app:layout_constraintTop_toTopOf="@+id/btnDetails1"
+        app:layout_constraintVertical_bias="0.375"
+        app:srcCompat="@drawable/procurar" />
+
+    <TextView
+        android:id="@+id/TextPersonalizarCores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Personalizar Cores do Card"
+        android:textColor="#000000"
+        android:textColorHighlight="#000000"
+        android:textColorHint="#000000"
+        android:textColorLink="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.073"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/colorPreview"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/Botoes"
+        android:layout_width="74dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/red_button_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextPersonalizarCores"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/FundoColor"
+        android:layout_width="74dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/red_button_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/Botoes"
+        app:layout_constraintTop_toBottomOf="@+id/TextPersonalizarCores"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textBotao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Botões"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/Botoes"
+        app:layout_constraintEnd_toEndOf="@+id/Botoes"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toStartOf="@+id/Botoes"
+        app:layout_constraintTop_toTopOf="@+id/Botoes"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/TextFundo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Fundo"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/FundoColor"
+        app:layout_constraintEnd_toEndOf="@+id/FundoColor"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="@+id/FundoColor"
+        app:layout_constraintTop_toTopOf="@+id/FundoColor"
+        app:layout_constraintVertical_bias="0.1" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
