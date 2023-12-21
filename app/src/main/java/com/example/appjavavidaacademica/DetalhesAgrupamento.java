@@ -47,47 +47,50 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
 
         if (agrupamentoSelecionado != null) {
             // Aqui você pode usar as informações do agrupamentoSelecionado
-        String nomeAgrupamento = agrupamentoSelecionado.getNomeAgrupamento();
-        String categoria = agrupamentoSelecionado.getCategoria();
-        String corFundoHex = agrupamentoSelecionado.getCorFundoHex();
-        String corBotoesHex = agrupamentoSelecionado.getCorButtonHex();
-        String corTextoHex = agrupamentoSelecionado.getCorTextoHex();
+            String nomeAgrupamento = agrupamentoSelecionado.getNomeAgrupamento();
+            String categoria = agrupamentoSelecionado.getCategoria();
+            String corFundoHex = agrupamentoSelecionado.getCorFundoHex();
+            String corBotoesHex = agrupamentoSelecionado.getCorButtonHex();
+            String corTextoHex = agrupamentoSelecionado.getCorTextoHex();
 
-        int corFundoInt = Color.parseColor(corFundoHex);
-        int corTextoInt = Color.parseColor(corTextoHex);
-        int corBotoesInt = Color.parseColor(corBotoesHex);
-
-
-        View fundoDetalhesFaixa = findViewById(R.id.FundoDetalhesFaixa);
-        fundoDetalhesFaixa.setBackgroundColor(corFundoInt);
+            int corFundoInt = Color.parseColor(corFundoHex);
+            int corTextoInt = Color.parseColor(corTextoHex);
+            int corBotoesInt = Color.parseColor(corBotoesHex);
 
 
-        View cardDetails = findViewById(R.id.CardDetalhes);
-        cardDetails.setBackgroundColor(corFundoInt);
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setColor(corFundoInt);
-        drawable.setCornerRadius(70);
-        cardDetails.setBackground(drawable);
+            View fundoDetalhesFaixa = findViewById(R.id.FundoDetalhesFaixa);
+            fundoDetalhesFaixa.setBackgroundColor(corFundoInt);
+
+
+            View cardDetails = findViewById(R.id.CardDetalhes);
+            cardDetails.setBackgroundColor(corFundoInt);
+            GradientDrawable drawable = new GradientDrawable();
+            drawable.setColor(corFundoInt);
+            drawable.setCornerRadius(70);
+            cardDetails.setBackground(drawable);
 
             // Exemplo de como usar as informações (substitua pelos seus próprios requisitos)
-        TextView textViewNome = findViewById(R.id.TextNomeCard);
-        TextView textViewCategoria = findViewById(R.id.TextCategoriaCard);
-        TextView textViewCorHex = findViewById(R.id.TextCorHex);
-
+            TextView textViewNome = findViewById(R.id.TextNomeCard);
+            TextView textViewCategoria = findViewById(R.id.TextCategoriaCard);
+            TextView textViewCorHex = findViewById(R.id.TextCorHex);
 
 
             textViewNome.setText("Nome: " + nomeAgrupamento);
-        textViewCategoria.setText("Categoria: " + categoria);
-        textViewCorHex.setText("Cor Hex: " + corFundoHex);
+            textViewCategoria.setText("Categoria: " + categoria);
+            textViewCorHex.setText("Cor Hex: " + corFundoHex);
 
             textViewNome.setTextColor(corTextoInt);
             textViewCategoria.setTextColor(corTextoInt);
-        // Agora você pode usar essas informações como necessário
-    } else {
-        // O agrupamento com o ID correspondente não foi encontrado
-        Log.e("TAG", "Agrupamento não encontrado para o ID: " + agrupamentoId);
+
+            consultarRegistros();
+
+
+            // Agora você pode usar essas informações como necessário
+        } else {
+            // O agrupamento com o ID correspondente não foi encontrado
+            Log.e("TAG", "Agrupamento não encontrado para o ID: " + agrupamentoId);
+        }
     }
-}
 
     private Agrupamento obterAgrupamentoPorId(int agrupamentoId) {
         List<Agrupamento> agrupamentos = new ArrayList<>();
@@ -103,14 +106,14 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                 int corTextoHexIndex = cursor.getColumnIndex("corTextoHex");
                 int corButtonHexIndex = cursor.getColumnIndex("corBotoesHex");
 
-                if (nomeAgrupamentoIndex >= 0 && categoriaIndex >= 0 && corFundoHexIndex >= 0 && corTextoHexIndex >= 0 && corButtonHexIndex >= 0)  {
+                if (nomeAgrupamentoIndex >= 0 && categoriaIndex >= 0 && corFundoHexIndex >= 0 && corTextoHexIndex >= 0 && corButtonHexIndex >= 0) {
                     String nomeAgrupamento = cursor.getString(nomeAgrupamentoIndex);
                     String categoria = cursor.getString(categoriaIndex);
                     String corFundoHex = cursor.getString(corFundoHexIndex);
                     String corBotoesHex = cursor.getString(corButtonHexIndex);
                     String corTextoHex = cursor.getString(corTextoHexIndex);
 
-                    return new Agrupamento(nomeAgrupamento, categoria, corFundoHex,agrupamentoId, corTextoHex, corBotoesHex);
+                    return new Agrupamento(nomeAgrupamento, categoria, corFundoHex, agrupamentoId, corTextoHex, corBotoesHex);
                 } else {
                     Log.e("TAG", "Índice de coluna inválido");
                 }
@@ -127,6 +130,107 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         }
         return null;
     }
+
+
+    public List<Materia> obterMateriasPorAgrupamento(long idAgrupamento) {
+        List<Materia> materias = new ArrayList<>();
+
+        try {
+            DatabaseHelper dbHelper = new DatabaseHelper(this);
+            SQLiteDatabase bancoDados = dbHelper.getReadableDatabase();
+
+            // Colunas que você deseja recuperar
+            String[] colunas = {"id_materia", "nome_materia", "dia_semana", "id_agrupamento"};
+
+            // Condição para a cláusula WHERE
+            String selecao = "id_agrupamento = ?";
+            String[] argumentos = {String.valueOf(idAgrupamento)};
+
+            Cursor cursor = bancoDados.query("materias", colunas, selecao, argumentos, null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int idMateriaIndex = cursor.getColumnIndex("id_materia");
+                    int nomeMateriaIndex = cursor.getColumnIndex("nome_materia");
+                    int diaSemanaIndex = cursor.getColumnIndex("dia_semana");
+                    int idAgrupamentoIndex = cursor.getColumnIndex("id_agrupamento");
+
+                    if (idMateriaIndex >= 0 && nomeMateriaIndex >= 0 && diaSemanaIndex >= 0 && idAgrupamentoIndex >= 0) {
+                        int idMateria = cursor.getInt(idMateriaIndex);
+                        String nomeMateria = cursor.getString(nomeMateriaIndex);
+                        String diaSemana = cursor.getString(diaSemanaIndex);
+                        int idAgrupamentoBanco = cursor.getInt(idAgrupamentoIndex);
+
+                        Materia materia = new Materia(nomeMateria, diaSemana, idAgrupamentoBanco, idMateria);
+                        materias.add(materia);
+                    } else {
+                        Log.e("TAG", "Índice de coluna inválido");
+                    }
+                } while (cursor.moveToNext());
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+
+            bancoDados.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("TAG", "Erro ao obter matérias por agrupamento: " + e.getMessage());
+        }
+
+        return materias;
+    }
+
+
+    public void consultarRegistros() {
+        try {
+            DatabaseHelper dbHelper = new DatabaseHelper(this);
+            SQLiteDatabase bancoDados = dbHelper.getReadableDatabase();
+
+            // Colunas que você deseja recuperar
+            String[] colunas = {"id_materia", "nome_materia", "dia_semana", "id_agrupamento"};
+
+            // Condição para a cláusula WHERE (pode ser vazia para selecionar todos os registros)
+            String selecao = "";
+            String[] argumentos = {};
+
+            Cursor cursor = bancoDados.query("materias", colunas, selecao, argumentos, null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int idMateriaIndex = cursor.getColumnIndex("id_materia");
+                    int nomeMateriaIndex = cursor.getColumnIndex("nome_materia");
+                    int diaSemanaIndex = cursor.getColumnIndex("dia_semana");
+                    int idAgrupamentoIndex = cursor.getColumnIndex("id_agrupamento");
+
+                    if (idMateriaIndex >= 0 && nomeMateriaIndex >= 0 && diaSemanaIndex >= 0 && idAgrupamentoIndex >= 0) {
+                        long idMateria = cursor.getLong(idMateriaIndex);
+                        String nomeMateria = cursor.getString(nomeMateriaIndex);
+                        String diaSemana = cursor.getString(diaSemanaIndex);
+                        long idAgrupamento = cursor.getLong(idAgrupamentoIndex);
+
+                        // Exiba os valores no Log ou faça o que desejar com eles
+                        Log.d("TAG", "ID Materia: " + idMateria);
+                        Log.d("TAG", "Nome Materia: " + nomeMateria);
+                        Log.d("TAG", "ID Agrupamento: " + idAgrupamento);
+                    } else {
+                        Log.e("TAG", "Índice de coluna inválido");
+                    }
+                } while (cursor.moveToNext());
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+
+            bancoDados.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("TAG", "Erro ao consultar registros: " + e.getMessage());
+        }
+    }
+
 
 
 

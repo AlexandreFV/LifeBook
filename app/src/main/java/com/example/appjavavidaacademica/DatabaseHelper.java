@@ -37,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + " id_materia INTEGER PRIMARY KEY AUTOINCREMENT"
                     + " , nome_materia VARCHAR "
                     + " , id_agrupamento INTEGER"
+                    + " , dia_semana VARCHAR"
                     + " , CONSTRAINT pk_materias UNIQUE (id_materia)"
                     + " , CONSTRAINT fk_materia_agrupamento FOREIGN KEY (id_agrupamento) REFERENCES agrupamento (id_agrupamento));");
 
