@@ -132,6 +132,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="96dp"
+        android:layout_height="163dp"
+        android:layout_marginEnd="70dp"
+        android:src="@drawable/vector"
+        app:layout_constraintBottom_toBottomOf="@+id/CardDetalhes"
+        app:layout_constraintEnd_toEndOf="@+id/CardDetalhes"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/CardDetalhes"
+        app:layout_constraintTop_toTopOf="@+id/CardDetalhes"
+        app:layout_constraintVertical_bias="1.0"></ImageView>
+
     <View
         android:id="@+id/FundoDetalhesFaixa"
         android:layout_width="match_parent"

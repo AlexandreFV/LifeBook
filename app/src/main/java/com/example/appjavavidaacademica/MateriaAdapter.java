@@ -26,7 +26,17 @@ public class MateriaAdapter extends RecyclerView.Adapter<MateriaAdapter.MateriaV
     }
 
 
+    public void limparMaterias() {
+        listaDeMaterias.clear();
+        notifyDataSetChanged();
+        for (TextInputEditText editText : nomeMateriaEditTexts) {
+            editText.setText("");
+        }
 
+        for (TextInputEditText editText : dataSemanaEditTexts) {
+            editText.setText("");
+        }
+    }
     @NonNull
     @Override
     public MateriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -70,6 +80,7 @@ public class MateriaAdapter extends RecyclerView.Adapter<MateriaAdapter.MateriaV
 
             // Adicione mais elementos do layout conforme necessário
         }
+
 
     }
 

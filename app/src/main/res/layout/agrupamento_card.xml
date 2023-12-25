@@ -150,7 +150,18 @@
         app:layout_constraintStart_toStartOf="@+id/btnDetails"
         app:layout_constraintTop_toTopOf="@+id/btnDetails"
         app:layout_constraintVertical_bias="0.375"
-        app:srcCompat="@drawable/procurar" />
+        app:srcCompat="@drawable/procurar"
+        />
+
+    <ImageView
+        android:layout_width="96dp"
+        android:layout_height="140dp"
+        android:layout_marginEnd="50dp"
+        android:src="@drawable/vector"
+        app:layout_constraintBottom_toBottomOf="@+id/colorSquare"
+        app:layout_constraintEnd_toEndOf="@+id/colorSquare"
+        app:layout_constraintHorizontal_bias="0.963"
+        app:layout_constraintStart_toStartOf="@+id/colorSquare"></ImageView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

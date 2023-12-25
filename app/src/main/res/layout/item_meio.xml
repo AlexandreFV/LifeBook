@@ -10,26 +10,58 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textViewNomeMateria"
-        android:layout_width="153dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/black"
-        android:hint="Digite algo"
+        android:background="@drawable/borda_input"
+        android:hint="Nome"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textViewDataMateria"
-        android:layout_width="157dp"
-        android:layout_height="35dp"
+        android:layout_width="158dp"
+        android:layout_height="43dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="69dp"
-        android:backgroundTint="@color/black"
-        android:hint="Digite algo"
+        android:layout_marginTop="37dp"
+        android:background="@drawable/borda_input"
+        android:hint="Data"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textViewNomeMateria"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewNomeMateria"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textViewQuantAulas"
+        android:layout_width="158dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Quantidade"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewDataMateria"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNomeMateria"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <View
+        android:id="@+id/dividerLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewQuantAulas" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

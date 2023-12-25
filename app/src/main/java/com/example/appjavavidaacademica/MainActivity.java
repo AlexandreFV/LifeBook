@@ -1,6 +1,8 @@
         package com.example.appjavavidaacademica;
 
         import androidx.appcompat.app.AppCompatActivity;
+        import androidx.cardview.widget.CardView;
+        import androidx.constraintlayout.widget.ConstraintLayout;
         import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
 
@@ -73,6 +75,13 @@
 
             };
 
+
+
+            private View barraUm;
+
+            private View barraDois;
+
+
             @Override
             protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -86,6 +95,17 @@
                 recyclerViewMaterias.setLayoutManager(new LinearLayoutManager(this));
                 materiaAdapter = new MateriaAdapter(listaDeMaterias);
                 recyclerViewMaterias.setAdapter(materiaAdapter);
+
+                barraUm = findViewById(R.id.barraUm);
+                barraDois = findViewById(R.id.barraDois);
+
+
+
+
+
+
+
+
 
 
                 if (existemRegistrosAgrupamento())
@@ -102,6 +122,7 @@
                     @Override
                     public void onClick(View v) {
                         showAdicioneAlgoScreenWithAnimation();
+                        btnAdd.setVisibility(View.GONE);
                     }
                 });
 
@@ -110,7 +131,9 @@
                 btnSalvar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         salvarAgrupamento();
+
                     }
                 });
 
@@ -122,6 +145,8 @@
                         Intent intent = new Intent(MainActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
+                        btnAdd.setVisibility(View.VISIBLE);
+
                     }
                 });
 
@@ -159,17 +184,100 @@
                         // Criar uma nova instância de Materia
                         Materia novaMateria = new Materia("", "", 0, 0); // Valores padrão vazios
 
+                        int posicaoInserir = listaDeMaterias.size(); // posição da última existente
+
                         // Adicionar a nova matéria à lista
-                        listaDeMaterias.add(novaMateria);
+                        listaDeMaterias.add(posicaoInserir, novaMateria);
 
                         // Notificar o adaptador sobre a alteração nos dados
-                        materiaAdapter.notifyDataSetChanged();
+                        materiaAdapter.notifyItemInserted(posicaoInserir);
 
-                        // Rolar até a posição da nova matéria (opcional)
-                        int novaPosicao = listaDeMaterias.size() - 1;
-                        recyclerViewMaterias.scrollToPosition(novaPosicao);
                     }
                 });
+                Button btnAnterior = findViewById(R.id.btnAnterior);
+
+                Button btnProximo = findViewById(R.id.btnProximo);
+                btnProximo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mostrarParteDois();
+
+
+                        ConstraintLayout.LayoutParams layoutParamsSalvar = (ConstraintLayout.LayoutParams) btnSalvar.getLayoutParams();
+                        layoutParamsSalvar.topToBottom = R.id.view3;  // Defina o ID correto
+                        layoutParamsSalvar.topMargin = (int) getResources().getDimension(R.dimen.margin_top);
+                        btnSalvar.setLayoutParams(layoutParamsSalvar);
+
+                        ConstraintLayout.LayoutParams layoutParamsProximo = (ConstraintLayout.LayoutParams) btnProximo.getLayoutParams();
+                        layoutParamsProximo.topToBottom = R.id.view3;  // Defina o ID correto
+                        layoutParamsProximo.topMargin = (int) getResources().getDimension(R.dimen.margin_top);
+                        btnProximo.setLayoutParams(layoutParamsProximo);
+
+                        ConstraintLayout.LayoutParams layoutParamsAnterior = (ConstraintLayout.LayoutParams) btnAnterior.getLayoutParams();
+                        layoutParamsAnterior.topToBottom = R.id.view3;  // Defina o ID correto
+                        layoutParamsAnterior.topMargin = (int) getResources().getDimension(R.dimen.margin_top);
+                        layoutParamsAnterior.endToEnd = R.id.btnSalvar;  // Defina o ID correto
+                        layoutParamsAnterior.horizontalBias = 1.0f;
+                        btnAnterior.setLayoutParams(layoutParamsAnterior);
+
+                        barraUm.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                        barraUm.setAlpha(0.6f);
+
+                        // Configurar a cor e a opacidade para a view4
+                        barraDois.setBackgroundColor(Color.parseColor("#120272"));
+                        barraDois.setAlpha(1.0f);
+
+                    }
+                });
+
+                btnAnterior.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mostrarParteUm();
+                        ConstraintLayout.LayoutParams layoutParamsSalvar = (ConstraintLayout.LayoutParams) btnSalvar.getLayoutParams();
+                        layoutParamsSalvar.topToBottom = R.id.colorPreview;  // Defina o ID correto
+                        layoutParamsSalvar.topMargin = (int) getResources().getDimension(R.dimen.margin_top);
+                        btnSalvar.setLayoutParams(layoutParamsSalvar);
+
+                        ConstraintLayout.LayoutParams layoutParamsProximo = (ConstraintLayout.LayoutParams) btnProximo.getLayoutParams();
+                        layoutParamsProximo.topToBottom = R.id.colorPreview;  // Defina o ID correto
+                        layoutParamsProximo.topMargin = (int) getResources().getDimension(R.dimen.margin_top);
+                        btnProximo.setLayoutParams(layoutParamsProximo);
+
+                        ConstraintLayout.LayoutParams layoutParamsAnterior = (ConstraintLayout.LayoutParams) btnAnterior.getLayoutParams();
+                        layoutParamsAnterior.topToBottom = R.id.colorPreview;  // Defina o ID correto
+                        layoutParamsAnterior.topMargin = (int) getResources().getDimension(R.dimen.margin_top);
+                        layoutParamsAnterior.endToEnd = R.id.btnSalvar;  // Defina o ID correto
+                        layoutParamsAnterior.horizontalBias = 1.0f;
+                        btnAnterior.setLayoutParams(layoutParamsAnterior);
+
+                        barraDois.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                        barraDois.setAlpha(0.6f);
+
+                        // Configurar a cor e a opacidade para a view4
+                        barraUm.setBackgroundColor(Color.parseColor("#120272"));
+                        barraUm.setAlpha(1.0f);
+                        /*
+                        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) btnAnterior.getLayoutParams();
+                        params.topToBottom = colorPreview.getId();
+                        btnAnterior.setLayoutParams(params);
+
+
+                        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) btnAnterior.getLayoutParams();
+                        layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+                        layoutParams.endToEnd = R.id.btnSalvar;  // Use o ID correto se necessário
+                        layoutParams.horizontalBias = 1.0f;
+                        layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+                        layoutParams.topToBottom = R.id.colorPreview;  // Use o ID correto se necessário
+                        layoutParams.verticalBias = 0.0f;
+
+                        // Aplicar as alterações nas características de layout
+                        btnAnterior.setLayoutParams(layoutParams);
+
+                         */
+                    }
+                });
+
             }
 
             private void showAdicioneAlgoScreenWithAnimation() {
@@ -463,8 +571,6 @@
 
                 inserirMaterias(valoresNomeMateria, valoresDataSemana, idAgrupamento);
 
-
-
                 // Atualizar a lista de agrupamentos
                     listarAgrupamento();
 
@@ -502,8 +608,8 @@
                 // Limpe os campos de nome e categoria (ou faça o que for apropriado)
                 ((TextInputEditText) findViewById(R.id.NomeCard)).setText("");
                 ((TextInputEditText) findViewById(R.id.textInputEditText)).setText("");
-                ((TextInputEditText) findViewById(R.id.textViewNomeMateria)).setText("");
-                ((TextInputEditText) findViewById(R.id.textViewDataMateria)).setText("");
+                materiaAdapter.limparMaterias();
+
 
             }
 
@@ -537,18 +643,142 @@
                         valuesMateria.put("dia_semana", dataSemana);
                         valuesMateria.put("id_agrupamento", idAgrupamento);
 
-                        Log.d("TAG","NomeMateriaInsert: " + nomeMateria + "DataSemanaInsert: " + dataSemana );
+                        Log.d("TAG","NomeMateriaInsert: " + nomeMateria + " DataSemanaInsert: " + dataSemana );
 
 
                         bancoDados.insert("materias", null, valuesMateria);
                     }
 
                     bancoDados.close();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e("TAG", "Erro ao inserir dados na tabela materias: " + e.getMessage());
                 }
             }
 
+            private void mostrarParteUm() {
+
+
+
+
+                View TextoColor = findViewById(R.id.TextoColor);
+                ImageView textFundo = findViewById(R.id.TextFundo);
+                View FundroCriarCard = findViewById(R.id.FundroCriarCard);
+                TextView TextCriarCard = findViewById(R.id.TextCriarCard);
+                ImageView imageView4 = findViewById(R.id.imageView4);
+                CardView SombraCard = findViewById(R.id.SombraCard);
+                View colorPreview2 = findViewById(R.id.colorPreview);
+                TextInputEditText NomeCard = findViewById(R.id.NomeCard);
+                TextInputEditText textInputEditText = findViewById(R.id.textInputEditText);
+                ImageView imageView2 = findViewById(R.id.imageView2);
+                Button btnSalvar2 = findViewById(R.id.btnSalvar);
+                View btnDelete1 = findViewById(R.id.btnDelete1);
+                ImageView lixeiraIcon2 = findViewById(R.id.lixeiraIcon322);
+                View btnEdit1 = findViewById(R.id.btnEdit1);
+                ImageView EditaIcon1 = findViewById(R.id.EditaIcon1);
+                View btnDetails1 = findViewById(R.id.btnDetails1);
+                ImageView DetalhesIcon1 = findViewById(R.id.DetalhesIcon1);
+                TextView TextPersonalizarCores = findViewById(R.id.TextPersonalizarCores);
+                View Botoes = findViewById(R.id.Botoes);
+                View FundoColor = findViewById(R.id.FundoColor);
+                ImageView textBotao = findViewById(R.id.textBotao);
+                ImageView TextFundo = findViewById(R.id.textFundo);
+                TextView MateriasText = findViewById(R.id.MateriasText);
+                View SombraFaixa = findViewById(R.id.SombraFaixa);
+                ImageView view2 = findViewById(R.id.view2);
+                RecyclerView recyclerViewMaterias1 = findViewById(R.id.recyclerViewMaterias);
+                ImageView view3 = findViewById(R.id.view3);
+                Button btnAdicionarConteudo2 = findViewById(R.id.btnAdicionarConteudo);
+
+
+
+                TextoColor.setVisibility(View.VISIBLE);
+                textFundo.setVisibility(View.VISIBLE);
+                colorPreview2.setVisibility(View.VISIBLE);
+                NomeCard.setVisibility(View.VISIBLE);
+                textInputEditText.setVisibility(View.VISIBLE);
+                btnSalvar2.setVisibility(View.VISIBLE);
+                lixeiraIcon2.setVisibility(View.VISIBLE);
+                btnDelete1.setVisibility(View.VISIBLE);
+                btnEdit1.setVisibility(View.VISIBLE);
+                EditaIcon1.setVisibility(View.VISIBLE);
+                btnDetails1.setVisibility(View.VISIBLE);
+                DetalhesIcon1.setVisibility(View.VISIBLE);
+                TextPersonalizarCores.setVisibility(View.VISIBLE);
+                Botoes.setVisibility(View.VISIBLE);
+                FundoColor.setVisibility(View.VISIBLE);
+                textBotao.setVisibility(View.VISIBLE);
+                TextFundo.setVisibility(View.VISIBLE);
+
+
+                MateriasText.setVisibility(View.GONE);
+                SombraFaixa.setVisibility(View.GONE);
+                view2.setVisibility(View.GONE);
+                recyclerViewMaterias1.setVisibility(View.GONE);
+                view3.setVisibility(View.GONE);
+                btnAdicionarConteudo2.setVisibility(View.GONE);
+
+            }
+
+            private void mostrarParteDois() {
+                View TextoColor = findViewById(R.id.TextoColor);
+                ImageView textFundo = findViewById(R.id.TextFundo);
+                View FundroCriarCard = findViewById(R.id.FundroCriarCard);
+                TextView TextCriarCard = findViewById(R.id.TextCriarCard);
+                ImageView imageView4 = findViewById(R.id.imageView4);
+                CardView SombraCard = findViewById(R.id.SombraCard);
+                View colorPreview2 = findViewById(R.id.colorPreview);
+                TextInputEditText NomeCard = findViewById(R.id.NomeCard);
+                TextInputEditText textInputEditText = findViewById(R.id.textInputEditText);
+                ImageView imageView2 = findViewById(R.id.imageView2);
+                Button btnSalvar2 = findViewById(R.id.btnSalvar);
+                View btnDelete1 = findViewById(R.id.btnDelete1);
+                ImageView lixeiraIcon2 = findViewById(R.id.lixeiraIcon322);
+                View btnEdit1 = findViewById(R.id.btnEdit1);
+                ImageView EditaIcon1 = findViewById(R.id.EditaIcon1);
+                View btnDetails1 = findViewById(R.id.btnDetails1);
+                ImageView DetalhesIcon1 = findViewById(R.id.DetalhesIcon1);
+                TextView TextPersonalizarCores = findViewById(R.id.TextPersonalizarCores);
+                View Botoes = findViewById(R.id.Botoes);
+                View FundoColor = findViewById(R.id.FundoColor);
+                ImageView textBotao = findViewById(R.id.textBotao);
+                ImageView TextFundo = findViewById(R.id.textFundo);
+                TextView MateriasText = findViewById(R.id.MateriasText);
+                View SombraFaixa = findViewById(R.id.SombraFaixa);
+                ImageView view2 = findViewById(R.id.view2);
+                RecyclerView recyclerViewMaterias1 = findViewById(R.id.recyclerViewMaterias);
+                ImageView view3 = findViewById(R.id.view3);
+                Button btnAdicionarConteudo2 = findViewById(R.id.btnAdicionarConteudo);
+
+
+                MateriasText.setVisibility(View.VISIBLE);
+                SombraFaixa.setVisibility(View.VISIBLE);
+                view2.setVisibility(View.VISIBLE);
+                recyclerViewMaterias1.setVisibility(View.VISIBLE);
+                view3.setVisibility(View.VISIBLE);
+                btnAdicionarConteudo2.setVisibility(View.VISIBLE);
+                btnSalvar2.setVisibility(View.VISIBLE);
+
+
+                TextoColor.setVisibility(View.GONE);
+                textFundo.setVisibility(View.GONE);
+                colorPreview2.setVisibility(View.GONE);
+                NomeCard.setVisibility(View.GONE);
+                textInputEditText.setVisibility(View.GONE);
+                lixeiraIcon2.setVisibility(View.GONE);
+                btnEdit1.setVisibility(View.GONE);
+                EditaIcon1.setVisibility(View.GONE);
+                btnDetails1.setVisibility(View.GONE);
+                DetalhesIcon1.setVisibility(View.GONE);
+                TextPersonalizarCores.setVisibility(View.GONE);
+                Botoes.setVisibility(View.GONE);
+                FundoColor.setVisibility(View.GONE);
+                textBotao.setVisibility(View.GONE);
+                TextFundo.setVisibility(View.GONE);
+                btnDelete1.setVisibility(View.GONE);
+
+
+            }
 
         }
