@@ -8,11 +8,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,12 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
     private SQLiteDatabase bancoDados;
     private DatabaseHelper dbHelper;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detalhes_agrupamento);
+
 
         dbHelper = new DatabaseHelper(this);
 
@@ -33,6 +36,14 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
 
         int agrupamentoId = getIntent().getIntExtra("AGRUPO_ID", -1);
         Agrupamento agrupamentoSelecionado = obterAgrupamentoPorId(agrupamentoId);
+
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
+        MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(agrupamentoId));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter.setRecyclerView(recyclerView);
+
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +93,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
             textViewNome.setTextColor(corTextoInt);
             textViewCategoria.setTextColor(corTextoInt);
 
-            consultarRegistros();
+            List<Materia> listaDeMaterias = obterMateriasPorAgrupamento(agrupamentoId);
 
 
             // Agora você pode usar essas informações como necessário
@@ -140,7 +151,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
             SQLiteDatabase bancoDados = dbHelper.getReadableDatabase();
 
             // Colunas que você deseja recuperar
-            String[] colunas = {"id_materia", "nome_materia", "dia_semana", "id_agrupamento"};
+            String[] colunas = {"id_materia", "nome_materia", "dia_semana", "id_agrupamento","quantAulas"};
 
             // Condição para a cláusula WHERE
             String selecao = "id_agrupamento = ?";
@@ -154,15 +165,23 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                     int nomeMateriaIndex = cursor.getColumnIndex("nome_materia");
                     int diaSemanaIndex = cursor.getColumnIndex("dia_semana");
                     int idAgrupamentoIndex = cursor.getColumnIndex("id_agrupamento");
+                    int aulaPorDiaIndex = cursor.getColumnIndex("quantAulas");
 
-                    if (idMateriaIndex >= 0 && nomeMateriaIndex >= 0 && diaSemanaIndex >= 0 && idAgrupamentoIndex >= 0) {
+                    if (idMateriaIndex >= 0 && nomeMateriaIndex >= 0 && diaSemanaIndex >= 0 && idAgrupamentoIndex >= 0 && aulaPorDiaIndex >= 0) {
                         int idMateria = cursor.getInt(idMateriaIndex);
                         String nomeMateria = cursor.getString(nomeMateriaIndex);
                         String diaSemana = cursor.getString(diaSemanaIndex);
                         int idAgrupamentoBanco = cursor.getInt(idAgrupamentoIndex);
+                        String quantAulas = cursor.getString(aulaPorDiaIndex);
 
-                        Materia materia = new Materia(nomeMateria, diaSemana, idAgrupamentoBanco, idMateria);
+                        Materia materia = new Materia(nomeMateria, diaSemana, idAgrupamentoBanco, idMateria, quantAulas);
                         materias.add(materia);
+
+                        Log.d("TAG", "nomeMateria: " + nomeMateria);
+                        Log.d("TAG", "diaSemana: " + diaSemana);
+                        Log.d("TAG", "idMateria: " + idMateria);
+                        Log.d("TAG", "quantAula: " + quantAulas);
+
                     } else {
                         Log.e("TAG", "Índice de coluna inválido");
                     }
@@ -189,7 +208,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
             SQLiteDatabase bancoDados = dbHelper.getReadableDatabase();
 
             // Colunas que você deseja recuperar
-            String[] colunas = {"id_materia", "nome_materia", "dia_semana", "id_agrupamento"};
+            String[] colunas = {"id_materia", "nome_materia", "dia_semana", "id_agrupamento","quantAulas"};
 
             // Condição para a cláusula WHERE (pode ser vazia para selecionar todos os registros)
             String selecao = "";
@@ -214,6 +233,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                         Log.d("TAG", "ID Materia: " + idMateria);
                         Log.d("TAG", "Nome Materia: " + nomeMateria);
                         Log.d("TAG", "ID Agrupamento: " + idAgrupamento);
+
                     } else {
                         Log.e("TAG", "Índice de coluna inválido");
                     }

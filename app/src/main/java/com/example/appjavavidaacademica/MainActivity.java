@@ -9,6 +9,7 @@
         import android.app.AlertDialog;
         import android.content.DialogInterface;
         import android.content.Intent;
+        import android.content.pm.ActivityInfo;
         import android.database.Cursor;
         import android.database.sqlite.SQLiteDatabase;
         import android.graphics.Color;
@@ -35,12 +36,14 @@
         public class MainActivity extends AppCompatActivity {
 
             private RecyclerView recyclerViewMaterias;
-            private MateriaAdapter materiaAdapter;
+            private AdicionarMateriaAdapter adicionarMateriaAdapter;
             private List<Materia> listaDeMaterias = new ArrayList<>();
 
             private List<String> valoresNomeMateria = new ArrayList<>();
 
             private List<String> valoresDataSemana = new ArrayList<>();
+
+            private List<String> valoresQuantAulas = new ArrayList<>();
 
 
             private View adicioneAlgoScreen;
@@ -86,6 +89,7 @@
             protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.activity_main);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
                 View QuadradoAdicioneAlgo = findViewById(R.id.Fundo_Adicione_Algo);
                 TextView AdicioneAlgoText = findViewById(R.id.AdicioneAlgo);
@@ -93,17 +97,14 @@
 
                 recyclerViewMaterias = findViewById(R.id.recyclerViewMaterias);
                 recyclerViewMaterias.setLayoutManager(new LinearLayoutManager(this));
-                materiaAdapter = new MateriaAdapter(listaDeMaterias);
-                recyclerViewMaterias.setAdapter(materiaAdapter);
+                adicionarMateriaAdapter = new AdicionarMateriaAdapter(listaDeMaterias);
+                recyclerViewMaterias.setAdapter(adicionarMateriaAdapter);
+
+
+
 
                 barraUm = findViewById(R.id.barraUm);
                 barraDois = findViewById(R.id.barraDois);
-
-
-
-
-
-
 
 
 
@@ -177,12 +178,14 @@
                 });
                 updateColorPreview();
 
+
+
                 Button btnAdicionarConteudo = findViewById(R.id.btnAdicionarConteudo);
                 btnAdicionarConteudo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Criar uma nova instância de Materia
-                        Materia novaMateria = new Materia("", "", 0, 0); // Valores padrão vazios
+                        Materia novaMateria = new Materia("", "", 0, 0,""); // Valores padrão vazios
 
                         int posicaoInserir = listaDeMaterias.size(); // posição da última existente
 
@@ -190,7 +193,7 @@
                         listaDeMaterias.add(posicaoInserir, novaMateria);
 
                         // Notificar o adaptador sobre a alteração nos dados
-                        materiaAdapter.notifyItemInserted(posicaoInserir);
+                        adicionarMateriaAdapter.notifyItemInserted(posicaoInserir);
 
                     }
                 });
@@ -257,24 +260,8 @@
                         // Configurar a cor e a opacidade para a view4
                         barraUm.setBackgroundColor(Color.parseColor("#120272"));
                         barraUm.setAlpha(1.0f);
-                        /*
-                        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) btnAnterior.getLayoutParams();
-                        params.topToBottom = colorPreview.getId();
-                        btnAnterior.setLayoutParams(params);
 
 
-                        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) btnAnterior.getLayoutParams();
-                        layoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
-                        layoutParams.endToEnd = R.id.btnSalvar;  // Use o ID correto se necessário
-                        layoutParams.horizontalBias = 1.0f;
-                        layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-                        layoutParams.topToBottom = R.id.colorPreview;  // Use o ID correto se necessário
-                        layoutParams.verticalBias = 0.0f;
-
-                        // Aplicar as alterações nas características de layout
-                        btnAnterior.setLayoutParams(layoutParams);
-
-                         */
                     }
                 });
 
@@ -539,6 +526,7 @@
                 // Obter os valores dos campos
                 valoresNomeMateria.clear();
                 valoresDataSemana.clear();
+                valoresQuantAulas.clear();
 
                 String nomeAgrupamento = ((TextInputEditText) findViewById(R.id.NomeCard)).getText().toString();
                 String categoria = ((TextInputEditText) findViewById(R.id.textInputEditText)).getText().toString();
@@ -553,8 +541,9 @@
                     return;
                 }
 
-                Set<TextInputEditText> uniqueNomeMateriaEditTexts = new HashSet<>(materiaAdapter.getNomeMateriaEditTexts());
-                Set<TextInputEditText> uniqueDataSemanaEditTexts = new HashSet<>(materiaAdapter.getDataSemanaEditTexts());
+                Set<TextInputEditText> uniqueNomeMateriaEditTexts = new HashSet<>(adicionarMateriaAdapter.getNomeMateriaEditTexts());
+                Set<TextInputEditText> uniqueDataSemanaEditTexts = new HashSet<>(adicionarMateriaAdapter.getDataSemanaEditTexts());
+                Set<TextInputEditText> uniqueQuantAulasEditTexts = new HashSet<>(adicionarMateriaAdapter.getQuantAulasEditTexts());
 
 
                 int idAgrupamento = inserirAgrupamento(nomeAgrupamento, categoria, corFundoHex, corBotoesHex, corTextoHex);
@@ -569,7 +558,12 @@
                     valoresDataSemana.add(dataSemana);
                 }
 
-                inserirMaterias(valoresNomeMateria, valoresDataSemana, idAgrupamento);
+                for (TextInputEditText quantAulasEditText : uniqueQuantAulasEditTexts) {
+                    String quantAulas = quantAulasEditText.getText().toString();
+                    valoresQuantAulas.add(quantAulas);
+                }
+
+                inserirMaterias(valoresNomeMateria, valoresDataSemana, idAgrupamento,valoresQuantAulas);
 
                 // Atualizar a lista de agrupamentos
                     listarAgrupamento();
@@ -608,7 +602,7 @@
                 // Limpe os campos de nome e categoria (ou faça o que for apropriado)
                 ((TextInputEditText) findViewById(R.id.NomeCard)).setText("");
                 ((TextInputEditText) findViewById(R.id.textInputEditText)).setText("");
-                materiaAdapter.limparMaterias();
+                adicionarMateriaAdapter.limparMaterias();
 
 
             }
@@ -628,7 +622,7 @@
 
             }
 
-            private void inserirMaterias(List<String> valoresNomeMateria, List<String> valoresDataSemana, int idAgrupamento) {
+            private void inserirMaterias(List<String> valoresNomeMateria, List<String> valoresDataSemana, int idAgrupamento, List<String>valoresQuantAulas) {
                 try {
                     DatabaseHelper dbHelper = new DatabaseHelper(this);
                     SQLiteDatabase bancoDados = dbHelper.getWritableDatabase();
@@ -636,14 +630,15 @@
                     for (int i = 0; i < valoresNomeMateria.size(); i++) {
                         String nomeMateria = valoresNomeMateria.get(i);
                         String dataSemana = valoresDataSemana.get(i);
-
+                        String quantAula = valoresQuantAulas.get(i);
 
                         ContentValues valuesMateria = new ContentValues();
                         valuesMateria.put("nome_materia", nomeMateria);
                         valuesMateria.put("dia_semana", dataSemana);
                         valuesMateria.put("id_agrupamento", idAgrupamento);
+                        valuesMateria.put("quantAulas", quantAula);
 
-                        Log.d("TAG","NomeMateriaInsert: " + nomeMateria + " DataSemanaInsert: " + dataSemana );
+                        Log.d("TAG","NomeMateriaInsert: " + nomeMateria + " DataSemanaInsert: " + dataSemana + " QuantAula: " + quantAula);
 
 
                         bancoDados.insert("materias", null, valuesMateria);
@@ -658,8 +653,6 @@
             }
 
             private void mostrarParteUm() {
-
-
 
 
                 View TextoColor = findViewById(R.id.TextoColor);
