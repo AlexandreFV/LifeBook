@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.media.Image;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,6 +55,7 @@ public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
         TextView categoriaTextView = listItemView.findViewById(R.id.TextCategoriaCard);
         TextView corHexTextView = listItemView.findViewById(R.id.corHexTextView);
         View colorSquare = listItemView.findViewById(R.id.colorSquare);
+        ImageView iconEscolhido = listItemView.findViewById(R.id.IconImageAdicionada);
 
         if (agrupamento != null) {
 
@@ -62,7 +65,7 @@ public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
 
             String corTextHex = agrupamento.getCorTextoHex();
             int corTextInt = Color.parseColor(corTextHex);
-
+            int iconEscolhido1 = agrupamento.getIconEscolhido();
 
             GradientDrawable btnDrawable = new GradientDrawable();
             btnDrawable.setShape(GradientDrawable.RECTANGLE);
@@ -73,6 +76,7 @@ public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
             categoriaTextView.setText(agrupamento.getCategoria());
             corHexTextView.setText(agrupamento.getCorFundoHex());
 
+            iconEscolhido.setImageResource(iconEscolhido1);
             nomeAgrupamentoTextView.setTextColor(corTextInt);
             categoriaTextView.setTextColor(corTextInt);
 

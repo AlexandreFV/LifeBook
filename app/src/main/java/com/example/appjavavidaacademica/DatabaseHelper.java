@@ -31,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + " , corFundoHex VARCHAR"
                     + " , corTextoHex VARCHAR"
                     + " , corBotoesHex VARCHAR"
+                    + " , iconEscolhido INTEGER"
                     + " , CONSTRAINT pk_agrupamento UNIQUE (id_agrupamento));");
 
             db.execSQL("CREATE TABLE IF NOT EXISTS materias("

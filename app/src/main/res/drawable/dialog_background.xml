@@ -1,0 +1,5 @@
+<!-- res/drawable/dialog_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#E8E8E8" /> <!-- Substitua com a cor desejada -->
+    <corners android:radius="10dp" /> <!-- Raio dos cantos, ajuste conforme necessário -->
+</shape>

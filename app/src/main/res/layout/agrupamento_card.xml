@@ -21,32 +21,35 @@
 
     <TextView
         android:id="@+id/nomeAgrupamentoTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="9dp"
         android:text="Nome do Agrupamento"
         android:textColor="#000000"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/colorSquare"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/colorSquare"
         app:layout_constraintTop_toTopOf="@+id/colorSquare"
         app:layout_constraintVertical_bias="0.045" />
 
     <TextView
         android:id="@+id/TextCategoriaCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Categoria"
         android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/colorSquare"
         app:layout_constraintEnd_toEndOf="@+id/colorSquare"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/colorSquare"
-        app:layout_constraintTop_toTopOf="@+id/colorSquare"
-        app:layout_constraintVertical_bias="0.533" />
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/IconImageAdicionada"
+        app:layout_constraintVertical_bias="0.58" />
 
     <TextView
         android:id="@+id/corHexTextView"
@@ -154,14 +157,29 @@
         />
 
     <ImageView
-        android:layout_width="96dp"
-        android:layout_height="140dp"
+        android:id="@+id/imageView3"
+        android:layout_width="30dp"
+        android:layout_height="139dp"
         android:layout_marginEnd="50dp"
         android:src="@drawable/vector"
         app:layout_constraintBottom_toBottomOf="@+id/colorSquare"
         app:layout_constraintEnd_toEndOf="@+id/colorSquare"
-        app:layout_constraintHorizontal_bias="0.963"
+        app:layout_constraintHorizontal_bias="0.869"
         app:layout_constraintStart_toStartOf="@+id/colorSquare"></ImageView>
+
+    <ImageView
+        android:id="@+id/IconImageAdicionada"
+        android:layout_width="74dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/colorSquare"
+        app:layout_constraintEnd_toEndOf="@+id/colorSquare"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/colorSquare"
+        app:layout_constraintVertical_bias="0.418" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

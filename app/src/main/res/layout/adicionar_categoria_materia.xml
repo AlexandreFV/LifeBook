@@ -124,6 +124,7 @@
         android:elevation="10dp"
         android:hint="Nome do Card"
         android:textColor="#000000"
+        android:maxLength="20"
         android:textColorHint="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
         app:layout_constraintStart_toStartOf="@+id/colorPreview"
@@ -138,6 +139,7 @@
         android:layout_marginBottom="48dp"
         android:elevation="10dp"
         android:hint="Categoria"
+        android:maxLength="20"
         android:textColor="#000000"
         android:textColorHint="#000000"
         android:textSize="14sp"
@@ -145,7 +147,7 @@
         app:layout_constraintEnd_toEndOf="@+id/colorPreview" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/IconImage"
         android:layout_width="52dp"
         android:layout_height="57dp"
         android:layout_marginEnd="44dp"
@@ -194,6 +196,7 @@
         android:layout_marginEnd="8dp"
         android:onClick="mostrarParteUm"
         android:text="Anterior"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnSalvar"
         app:layout_constraintHorizontal_bias="1.0"
@@ -356,7 +359,7 @@
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="@+id/Botoes"
         app:layout_constraintTop_toTopOf="@+id/Botoes"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.4" />
 
     <ImageView
         android:id="@+id/TextFundo"
@@ -441,7 +444,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMaterias"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:visibility="gone"

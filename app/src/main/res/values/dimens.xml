@@ -5,8 +5,10 @@
     <dimen name="altura_sombra">8dp</dimen>
     <dimen name="radius">110dp</dimen>
     <dimen name="your_dialog_height">210dp</dimen>
-    <dimen name="your_dialog_width">70dp</dimen>
+    <dimen name="your_dialog_width">40dp</dimen>
     <dimen name="additional_margin">40dp</dimen>
     <dimen name="margin_start">8dp</dimen>
     <dimen name="margin_top">24dp</dimen>
+    <dimen name="recycler_view_height">355dp</dimen>
+
 </resources>

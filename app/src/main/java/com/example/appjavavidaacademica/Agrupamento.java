@@ -11,15 +11,18 @@ public class Agrupamento {
 
     private String corBotoesHex;
 
+    private int iconEscolhido;
+
 
     // Construtor
-    public Agrupamento(String nomeAgrupamento, String categoria, String corFundoHex, int id_agrupamento, String corTextoHex, String  corBotoesHex) {
+    public Agrupamento(String nomeAgrupamento, String categoria, String corFundoHex, int id_agrupamento, String corTextoHex, String  corBotoesHex, int iconEscolhido) {
         this.id_agrupamento = id_agrupamento;
         this.nomeAgrupamento = nomeAgrupamento;
         this.categoria = categoria;
         this.corFundoHex = corFundoHex;
         this.corTextoHex = corTextoHex;
         this.corBotoesHex = corBotoesHex;
+        this.iconEscolhido = iconEscolhido;
     }
 
     public int getId() {
@@ -45,6 +48,10 @@ public class Agrupamento {
 
     public String getCorButtonHex() {
         return corBotoesHex;
+    }
+
+    public int getIconEscolhido() {
+        return iconEscolhido;
     }
 
 }

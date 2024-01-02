@@ -18,6 +18,7 @@
         import android.util.Log;
         import android.view.Gravity;
         import android.view.View;
+        import android.view.ViewGroup;
         import android.view.WindowManager;
         import android.widget.Button;
         import android.widget.ImageView;
@@ -29,6 +30,7 @@
         import com.google.android.material.textfield.TextInputEditText;
 
         import java.util.ArrayList;
+        import java.util.Arrays;
         import java.util.HashSet;
         import java.util.List;
         import java.util.Set;
@@ -36,6 +38,7 @@
         public class MainActivity extends AppCompatActivity {
 
             private RecyclerView recyclerViewMaterias;
+            private View view3;
             private AdicionarMateriaAdapter adicionarMateriaAdapter;
             private List<Materia> listaDeMaterias = new ArrayList<>();
 
@@ -54,6 +57,8 @@
 
             private int selectedFundoColorIndex = 0;
 
+            private int selectIconIndex = 0;
+
             private String[] defaultHexColors = {
                     "#3FC264",   // Verde
                     "#3FD2CD",   // Azul
@@ -61,6 +66,15 @@
                     "#FF7FFF"    // Magenta
             };
 
+            private Integer[] defaultIcons = {
+                    R.drawable.livro,
+                    R.drawable.matematica,
+                    R.drawable.natureza,
+                    R.drawable.batimento_cardiaco,
+                    R.drawable.equipe,
+                    R.drawable.cofrinho,
+                    R.drawable.capacete
+            };
 
             private String[] defaultFontHexColors = {
                     "#000000",
@@ -84,12 +98,15 @@
 
             private View barraDois;
 
+            private ImageView iconImageView;
+
 
             @Override
             protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.activity_main);
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                iconImageView = findViewById(R.id.IconImage);
 
                 View QuadradoAdicioneAlgo = findViewById(R.id.Fundo_Adicione_Algo);
                 TextView AdicioneAlgoText = findViewById(R.id.AdicioneAlgo);
@@ -153,6 +170,14 @@
 
                 colorPreview = findViewById(R.id.colorPreview);
 
+                ImageView btnIcon = findViewById(R.id.IconImage);
+                btnIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showIconSelectionDialog();
+                    }
+                });
+
                 View btnChangeTextColor = findViewById(R.id.TextoColor);
                 btnChangeTextColor.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -195,6 +220,15 @@
                         // Notificar o adaptador sobre a alteração nos dados
                         adicionarMateriaAdapter.notifyItemInserted(posicaoInserir);
 
+                        recyclerViewMaterias.smoothScrollToPosition(posicaoInserir);
+
+                        if (listaDeMaterias.size() > 2) {
+                            // Ajustar a altura da RecyclerView para 150dp
+                            ViewGroup.LayoutParams layoutParams = recyclerViewMaterias.getLayoutParams();
+                            layoutParams.height = (int) getResources().getDimension(R.dimen.recycler_view_height);
+                            recyclerViewMaterias.setLayoutParams(layoutParams);
+                        }
+
                     }
                 });
                 Button btnAnterior = findViewById(R.id.btnAnterior);
@@ -205,6 +239,9 @@
                     public void onClick(View v) {
                         mostrarParteDois();
 
+                        // Tornar o botão Próximo não clicável
+                        btnProximo.setEnabled(false);
+                        btnAnterior.setEnabled(true);
 
                         ConstraintLayout.LayoutParams layoutParamsSalvar = (ConstraintLayout.LayoutParams) btnSalvar.getLayoutParams();
                         layoutParamsSalvar.topToBottom = R.id.view3;  // Defina o ID correto
@@ -237,6 +274,11 @@
                     @Override
                     public void onClick(View v) {
                         mostrarParteUm();
+
+                        // Tornar o botão Próximo não clicável
+                        btnProximo.setEnabled(true);
+                        btnAnterior.setEnabled(false);
+
                         ConstraintLayout.LayoutParams layoutParamsSalvar = (ConstraintLayout.LayoutParams) btnSalvar.getLayoutParams();
                         layoutParamsSalvar.topToBottom = R.id.colorPreview;  // Defina o ID correto
                         layoutParamsSalvar.topMargin = (int) getResources().getDimension(R.dimen.margin_top);
@@ -296,6 +338,9 @@
 
                 AlertDialog alertDialog = builder.create();
 
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+
+
                 // Define as dimensões desejadas
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
@@ -316,7 +361,6 @@
                 }
             }
 
-
             private void showColorSelectionDialogTexto() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -332,6 +376,8 @@
                 });
 
                 AlertDialog alertDialog = builder.create();
+
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
 
                 // Define as dimensões desejadas
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
@@ -369,6 +415,53 @@
 
             }
 
+            private void showIconSelectionDialog() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                IconAdapter adapter = new IconAdapter(this, defaultIcons);
+
+                builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectIconIndex = which;
+                        updateIcon();
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+
+
+                // Define as dimensões desejadas
+                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
+                layoutParams.width = getResources().getDimensionPixelSize(R.dimen.your_dialog_width); // Substitua com a largura desejada
+                layoutParams.height = getResources().getDimensionPixelSize(R.dimen.your_dialog_height); // Substitua com a altura desejada
+
+                alertDialog.show();
+                alertDialog.getWindow().setAttributes(layoutParams);
+
+                View IconButton = findViewById(R.id.IconImage); // Substitua com o ID real do botão TextoColor
+                if (IconButton != null) {
+                    int[] location = new int[2];
+                    IconButton.getLocationOnScreen(location);
+                    layoutParams.gravity = Gravity.TOP | Gravity.START;
+                    layoutParams.x = location[0] + (IconButton.getWidth() / 2) - (layoutParams.width / 2);
+                    layoutParams.y = location[1] - layoutParams.height - getResources().getDimensionPixelSize(R.dimen.additional_margin); // Ajuste aqui
+                    alertDialog.getWindow().setAttributes(layoutParams);
+                }
+
+            }
+
+            private void updateIcon() {
+                Integer iconInteger = defaultIcons[selectIconIndex];
+
+                ImageView iconImageView = findViewById(R.id.IconImage);
+                iconImageView.setImageResource(iconInteger);
+
+            }
+
 
             private void showColorSelectionDialog() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -386,6 +479,9 @@
 
 
                 AlertDialog alertDialog = builder.create();
+
+                alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+
 
                 // Define as dimensões desejadas
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
@@ -437,7 +533,7 @@
             }
 
 
-            private int inserirAgrupamento(String nomeAgrupamento, String categoria, String corFundoHex, String corBotoesHex, String corTextoHex) {
+            private int inserirAgrupamento(String nomeAgrupamento, String categoria, String corFundoHex, String corBotoesHex, String corTextoHex, int iconEscolhido) {
                 View QuadradoAdicioneAlgo = findViewById(R.id.Fundo_Adicione_Algo);
                 TextView AdicioneAlgoText = findViewById(R.id.AdicioneAlgo);
                 int idAgrupamento = -1; // Valor padrão caso a inserção falhe
@@ -452,6 +548,7 @@
                     values.put("corFundoHex", corFundoHex);
                     values.put("corBotoesHex", corBotoesHex);
                     values.put("corTextoHex", corTextoHex);
+                    values.put("iconEscolhido", iconEscolhido);
 
                     idAgrupamento = (int) bancoDados.insert("agrupamento", null, values);
 
@@ -483,17 +580,19 @@
                             int idAgrupamentoIndex = cursor.getColumnIndex("id_agrupamento");
                             int corTextoHexIndex = cursor.getColumnIndex("corTextoHex");
                             int corButtonHexIndex = cursor.getColumnIndex("corBotoesHex");
+                            int iconEscolhidoIndex = cursor.getColumnIndex("iconEscolhido");
 
-                            if (nomeAgrupamentoIndex >= 0 && categoriaIndex >= 0 && corFundoHexIndex >= 0 && idAgrupamentoIndex >= 0 && corTextoHexIndex >= 0 && corButtonHexIndex >= 0)  {
+                            if (nomeAgrupamentoIndex >= 0 && categoriaIndex >= 0 && corFundoHexIndex >= 0 && idAgrupamentoIndex >= 0 && corTextoHexIndex >= 0 && corButtonHexIndex >= 0 && iconEscolhidoIndex >=0)  {
                                 String nomeAgrupamento = cursor.getString(nomeAgrupamentoIndex);
                                 String categoria = cursor.getString(categoriaIndex);
                                 String corFundoHex = cursor.getString(corFundoHexIndex);
                                 String corBotoesHex = cursor.getString(corButtonHexIndex);
                                 String corTextoHex = cursor.getString(corTextoHexIndex);
+                                int iconEscolhido = cursor.getInt(iconEscolhidoIndex);
 
                                 int id_agrupamento = cursor.getInt(idAgrupamentoIndex);
 
-                                Agrupamento agrupamento = new Agrupamento(nomeAgrupamento, categoria, corFundoHex,id_agrupamento, corTextoHex, corBotoesHex);
+                                Agrupamento agrupamento = new Agrupamento(nomeAgrupamento, categoria, corFundoHex,id_agrupamento, corTextoHex, corBotoesHex,iconEscolhido);
                                 agrupamentoList.add(agrupamento);
                                 bancoDados.close();
                             } else {
@@ -533,7 +632,7 @@
                 String corFundoHex = defaultHexColors[selectedFundoColorIndex];
                 String corBotoesHex = defaultButtonHexColors[selectedButtonColorIndex];
                 String corTextoHex = defaultFontHexColors[selectedFontColorIndex];
-
+                int iconEscolhido = defaultIcons[selectIconIndex];
 
                 if (nomeAgrupamento.trim().isEmpty() || categoria.trim().isEmpty()) {
                     // Mostrar mensagem de erro (por exemplo, usando Toast)
@@ -546,7 +645,7 @@
                 Set<TextInputEditText> uniqueQuantAulasEditTexts = new HashSet<>(adicionarMateriaAdapter.getQuantAulasEditTexts());
 
 
-                int idAgrupamento = inserirAgrupamento(nomeAgrupamento, categoria, corFundoHex, corBotoesHex, corTextoHex);
+                int idAgrupamento = inserirAgrupamento(nomeAgrupamento, categoria, corFundoHex, corBotoesHex, corTextoHex,iconEscolhido);
 
                 for (TextInputEditText nomeMateriaEditText : uniqueNomeMateriaEditTexts) {
                     String nomeMateria = nomeMateriaEditText.getText().toString();
@@ -654,7 +753,6 @@
 
             private void mostrarParteUm() {
 
-
                 View TextoColor = findViewById(R.id.TextoColor);
                 ImageView textFundo = findViewById(R.id.TextFundo);
                 View FundroCriarCard = findViewById(R.id.FundroCriarCard);
@@ -664,7 +762,7 @@
                 View colorPreview2 = findViewById(R.id.colorPreview);
                 TextInputEditText NomeCard = findViewById(R.id.NomeCard);
                 TextInputEditText textInputEditText = findViewById(R.id.textInputEditText);
-                ImageView imageView2 = findViewById(R.id.imageView2);
+                iconImageView = findViewById(R.id.IconImage);
                 Button btnSalvar2 = findViewById(R.id.btnSalvar);
                 View btnDelete1 = findViewById(R.id.btnDelete1);
                 ImageView lixeiraIcon2 = findViewById(R.id.lixeiraIcon322);
@@ -703,14 +801,15 @@
                 FundoColor.setVisibility(View.VISIBLE);
                 textBotao.setVisibility(View.VISIBLE);
                 TextFundo.setVisibility(View.VISIBLE);
+                iconImageView.setVisibility(View.VISIBLE);
 
 
                 MateriasText.setVisibility(View.GONE);
                 SombraFaixa.setVisibility(View.GONE);
-                view2.setVisibility(View.GONE);
                 recyclerViewMaterias1.setVisibility(View.GONE);
                 view3.setVisibility(View.GONE);
                 btnAdicionarConteudo2.setVisibility(View.GONE);
+                view2.setVisibility(View.GONE);
 
             }
 
@@ -724,7 +823,7 @@
                 View colorPreview2 = findViewById(R.id.colorPreview);
                 TextInputEditText NomeCard = findViewById(R.id.NomeCard);
                 TextInputEditText textInputEditText = findViewById(R.id.textInputEditText);
-                ImageView imageView2 = findViewById(R.id.imageView2);
+                iconImageView = findViewById(R.id.IconImage);
                 Button btnSalvar2 = findViewById(R.id.btnSalvar);
                 View btnDelete1 = findViewById(R.id.btnDelete1);
                 ImageView lixeiraIcon2 = findViewById(R.id.lixeiraIcon322);
@@ -770,7 +869,6 @@
                 textBotao.setVisibility(View.GONE);
                 TextFundo.setVisibility(View.GONE);
                 btnDelete1.setVisibility(View.GONE);
-
 
             }
 

@@ -63,11 +63,11 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
             String corFundoHex = agrupamentoSelecionado.getCorFundoHex();
             String corBotoesHex = agrupamentoSelecionado.getCorButtonHex();
             String corTextoHex = agrupamentoSelecionado.getCorTextoHex();
+            int iconEscolhido = agrupamentoSelecionado.getIconEscolhido();
 
             int corFundoInt = Color.parseColor(corFundoHex);
             int corTextoInt = Color.parseColor(corTextoHex);
             int corBotoesInt = Color.parseColor(corBotoesHex);
-
 
             View fundoDetalhesFaixa = findViewById(R.id.FundoDetalhesFaixa);
             fundoDetalhesFaixa.setBackgroundColor(corFundoInt);
@@ -84,11 +84,12 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
             TextView textViewNome = findViewById(R.id.TextNomeCard);
             TextView textViewCategoria = findViewById(R.id.TextCategoriaCard);
             TextView textViewCorHex = findViewById(R.id.TextCorHex);
-
+            ImageView IconView = findViewById(R.id.IconImageAdicionada);
 
             textViewNome.setText("Nome: " + nomeAgrupamento);
             textViewCategoria.setText("Categoria: " + categoria);
             textViewCorHex.setText("Cor Hex: " + corFundoHex);
+            IconView.setImageResource(iconEscolhido);
 
             textViewNome.setTextColor(corTextoInt);
             textViewCategoria.setTextColor(corTextoInt);
@@ -116,15 +117,17 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                 int corFundoHexIndex = cursor.getColumnIndex("corFundoHex");
                 int corTextoHexIndex = cursor.getColumnIndex("corTextoHex");
                 int corButtonHexIndex = cursor.getColumnIndex("corBotoesHex");
+                int iconEscolhidoIndex = cursor.getColumnIndex("iconEscolhido");
 
-                if (nomeAgrupamentoIndex >= 0 && categoriaIndex >= 0 && corFundoHexIndex >= 0 && corTextoHexIndex >= 0 && corButtonHexIndex >= 0) {
+                if (nomeAgrupamentoIndex >= 0 && categoriaIndex >= 0 && corFundoHexIndex >= 0 && corTextoHexIndex >= 0 && corButtonHexIndex >= 0 && iconEscolhidoIndex >= 0) {
                     String nomeAgrupamento = cursor.getString(nomeAgrupamentoIndex);
                     String categoria = cursor.getString(categoriaIndex);
                     String corFundoHex = cursor.getString(corFundoHexIndex);
                     String corBotoesHex = cursor.getString(corButtonHexIndex);
                     String corTextoHex = cursor.getString(corTextoHexIndex);
+                    int iconEscolhido = cursor.getInt(iconEscolhidoIndex);
 
-                    return new Agrupamento(nomeAgrupamento, categoria, corFundoHex, agrupamentoId, corTextoHex, corBotoesHex);
+                    return new Agrupamento(nomeAgrupamento, categoria, corFundoHex, agrupamentoId, corTextoHex, corBotoesHex, iconEscolhido);
                 } else {
                     Log.e("TAG", "Índice de coluna inválido");
                 }
