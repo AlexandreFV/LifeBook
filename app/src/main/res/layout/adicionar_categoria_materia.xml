@@ -1,14 +1,10 @@
-
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/fundo_adicionar_categoria"
     android:orientation="vertical">
-
 
 
     <View
@@ -26,20 +22,32 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
+        android:id="@+id/Vector"
+        android:layout_width="29dp"
+        android:layout_height="158dp"
+        android:elevation="12dp"
+        android:src="@drawable/vector"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
+        app:layout_constraintEnd_toEndOf="@+id/colorPreview"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="@+id/colorPreview"
+        app:layout_constraintTop_toTopOf="@+id/colorPreview"></ImageView>
+
+    <ImageView
         android:id="@+id/textFundo"
         android:layout_width="48dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/texto"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/TextoColor"
         app:layout_constraintEnd_toEndOf="@+id/TextoColor"
         app:layout_constraintStart_toStartOf="@+id/TextoColor"
-        app:layout_constraintTop_toTopOf="@+id/TextoColor"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/TextoColor" />
 
     <View
         android:id="@+id/FundroCriarCard"
@@ -115,57 +123,71 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextFundo" />
 
+
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/NomeCard"
-        android:layout_width="132dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="215dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:elevation="10dp"
         android:hint="Nome do Card"
-        android:textColor="#000000"
         android:maxLength="20"
+        android:textColor="#000000"
         android:textColorHint="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
+        app:layout_constraintEnd_toStartOf="@+id/Vector"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/colorPreview"
         app:layout_constraintTop_toTopOf="@+id/colorPreview"
         app:layout_constraintVertical_bias="0.0" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText"
-        android:layout_width="95dp"
-        android:layout_height="37dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="48dp"
+    <Spinner
+        style="@style/FundoSpinner"
+        android:id="@+id/spinnerCategoria"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
         android:elevation="10dp"
+        android:gravity="center"
         android:hint="Categoria"
-        android:maxLength="20"
-        android:textColor="#000000"
-        android:textColorHint="#000000"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
-        app:layout_constraintEnd_toEndOf="@+id/colorPreview" />
+        app:layout_constraintEnd_toEndOf="@+id/colorPreview"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/Vector"
+        app:layout_constraintTop_toTopOf="@+id/colorPreview"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/IconImage"
         android:layout_width="52dp"
         android:layout_height="57dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
         android:elevation="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputEditText"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerCategoria"
         app:layout_constraintEnd_toEndOf="@+id/colorPreview"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toEndOf="@+id/Vector"
         app:layout_constraintTop_toTopOf="@+id/colorPreview"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/mao" />
-
 
     <Button
         android:id="@+id/btnSalvar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:backgroundTint="#35C956"
         android:onClick="salvarAgrupamento"
         android:text="Salvar"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.486"
@@ -179,8 +201,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
+        android:backgroundTint="#FFFFFF"
         android:onClick="mostrarParteDois"
         android:text="Proximo"
+        android:alpha="1.0"
+        android:textColor="#378C4F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -194,9 +219,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="#FFFFFF"
         android:onClick="mostrarParteUm"
         android:text="Anterior"
         android:enabled="false"
+        android:alpha="0.5"
+        android:textColor="#378C4F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnSalvar"
         app:layout_constraintHorizontal_bias="1.0"
@@ -302,6 +330,7 @@
         android:id="@+id/TextPersonalizarCores"
         android:layout_width="251dp"
         android:layout_height="33dp"
+        android:layout_marginTop="8dp"
         android:text="Personalizar Cores do Card"
         android:textColor="#000000"
         android:textColorHighlight="#000000"
@@ -311,8 +340,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FundroCriarCard"
-        app:layout_constraintVertical_bias="0.026" />
+        app:layout_constraintTop_toBottomOf="@+id/barraDois"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/Botoes"
@@ -356,10 +385,8 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/Botoes"
         app:layout_constraintEnd_toEndOf="@+id/Botoes"
-        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="@+id/Botoes"
-        app:layout_constraintTop_toTopOf="@+id/Botoes"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintTop_toTopOf="@+id/Botoes" />
 
     <ImageView
         android:id="@+id/TextFundo"
@@ -368,17 +395,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/baldedetinta"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/FundoColor"
         app:layout_constraintEnd_toEndOf="@+id/FundoColor"
         app:layout_constraintStart_toStartOf="@+id/FundoColor"
-        app:layout_constraintTop_toTopOf="@+id/FundoColor"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/FundoColor" />
 
     <!--android:visibility="gone" -->
-
 
 
     <TextView
@@ -398,7 +424,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view2"
         app:layout_constraintVertical_bias="0.0" />
-
 
 
     <View
@@ -424,48 +449,73 @@
     <ImageView
         android:id="@+id/view2"
         android:layout_width="match_parent"
-        android:layout_height="43dp"
+        android:layout_height="50dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="24dp"
-        android:visibility="gone"
         android:src="@drawable/fundomateria"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FundroCriarCard" />
+        app:layout_constraintTop_toBottomOf="@+id/barraDois" />
 
     <!--android:visibility="gone" -->
 
     <!--android:visibility="gone" -->
 
     <!--android:visibility="gone" -->
+
+    <View
+        android:id="@+id/BarraSuperiorMaterias"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#000000"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMaterias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:visibility="gone"
+        android:layout_marginEnd="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MateriasText" />
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <ImageView
         android:id="@+id/view3"
         android:layout_width="match_parent"
-        android:layout_height="41dp"
+        android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:visibility="gone"
         android:src="@drawable/fundo_button_adicionar_materia"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewMaterias" />
+
+    <View
+        android:id="@+id/BarraInferiorMaterias"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#000000"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view3" />
 
     <Button
         android:id="@+id/btnAdicionarConteudo"
@@ -473,18 +523,20 @@
         android:layout_height="35dp"
         android:text="Adicionar Conteúdo"
         android:visibility="gone"
+        android:backgroundTint="#FFA07A"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toTopOf="@+id/view3"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <View
         android:id="@+id/barraDois"
         android:layout_width="106dp"
         android:layout_height="10dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
         android:alpha="0.6"
         android:background="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
@@ -496,10 +548,10 @@
         android:id="@+id/barraUm"
         android:layout_width="106dp"
         android:layout_height="10dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
         android:background="#120272"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.317"
+        app:layout_constraintHorizontal_bias="0.318"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SombraCard" />
 

@@ -3,6 +3,8 @@ package com.example.appjavavidaacademica;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,20 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
 public class AdicionarMateriaAdapter extends RecyclerView.Adapter<AdicionarMateriaAdapter.MateriaViewHolder> {
     private List<Materia> listaDeMaterias;
     private List<TextInputEditText> nomeMateriaEditTexts;
-    private List<TextInputEditText> dataSemanaEditTexts;
+    private List<Spinner> spinnerDataMateriaList;
     private List<TextInputEditText> quantAulasEditTexts;
 
 
     public AdicionarMateriaAdapter(List<Materia> listaDeMaterias) {
         this.listaDeMaterias = listaDeMaterias;
         nomeMateriaEditTexts = new ArrayList<>();
-        dataSemanaEditTexts = new ArrayList<>();
+        spinnerDataMateriaList = new ArrayList<>();
         quantAulasEditTexts = new ArrayList<>();
     }
 
@@ -39,10 +42,6 @@ public class AdicionarMateriaAdapter extends RecyclerView.Adapter<AdicionarMater
         listaDeMaterias.clear();
         notifyDataSetChanged();
         for (TextInputEditText editText : nomeMateriaEditTexts) {
-            editText.setText("");
-        }
-
-        for (TextInputEditText editText : dataSemanaEditTexts) {
             editText.setText("");
         }
 
@@ -63,12 +62,17 @@ public class AdicionarMateriaAdapter extends RecyclerView.Adapter<AdicionarMater
         Materia materia = listaDeMaterias.get(position);
 
         nomeMateriaEditTexts.add((TextInputEditText) holder.nomeMateriaTextView);
-        dataSemanaEditTexts.add((TextInputEditText) holder.diaSemanaTextView);
+        spinnerDataMateriaList.add(holder.spinnerDataMateria);
         quantAulasEditTexts.add((TextInputEditText) holder.quantAulaTextView);
 
         nomeMateriaEditTexts = new ArrayList<>(new HashSet<>(nomeMateriaEditTexts));
-        dataSemanaEditTexts = new ArrayList<>(new HashSet<>(dataSemanaEditTexts));
+        spinnerDataMateriaList = new ArrayList<>(new HashSet<>(spinnerDataMateriaList));
         quantAulasEditTexts = new ArrayList<>(new HashSet<>(quantAulasEditTexts));
+
+        List<String> listaDeDatas = Arrays.asList("Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo");
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(holder.itemView.getContext(), R.layout.spinner_item, listaDeDatas);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        holder.spinnerDataMateria.setAdapter(spinnerAdapter);
 
     }
 
@@ -77,9 +81,10 @@ public class AdicionarMateriaAdapter extends RecyclerView.Adapter<AdicionarMater
         return nomeMateriaEditTexts;
     }
 
-    public List<TextInputEditText> getDataSemanaEditTexts() {
-        return dataSemanaEditTexts;
+    public List<Spinner> getSpinnerDataMateriaList() {  // Alteração aqui
+        return spinnerDataMateriaList;
     }
+
     public List<TextInputEditText> getQuantAulasEditTexts() {
         return quantAulasEditTexts;
     }
@@ -92,17 +97,17 @@ public class AdicionarMateriaAdapter extends RecyclerView.Adapter<AdicionarMater
 
     public class MateriaViewHolder extends RecyclerView.ViewHolder {
         public TextView nomeMateriaTextView;
-        public TextView diaSemanaTextView;
 
         public TextView quantAulaTextView;
+
+        public Spinner spinnerDataMateria;
+
 
         public MateriaViewHolder(@NonNull View itemView) {
             super(itemView);
             nomeMateriaTextView = itemView.findViewById(R.id.textViewNomeMateria);
-            diaSemanaTextView = itemView.findViewById(R.id.textViewDataMateria);
+            spinnerDataMateria = itemView.findViewById(R.id.spinnerDataMateria);
             quantAulaTextView = itemView.findViewById(R.id.textViewQuantAulas);
-
-            // Adicione mais elementos do layout conforme necessário
         }
 
 

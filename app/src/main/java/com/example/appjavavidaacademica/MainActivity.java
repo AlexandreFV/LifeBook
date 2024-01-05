@@ -13,6 +13,7 @@
         import android.database.Cursor;
         import android.database.sqlite.SQLiteDatabase;
         import android.graphics.Color;
+        import android.media.Image;
         import android.os.Bundle;
         import android.content.ContentValues;
         import android.util.Log;
@@ -20,13 +21,16 @@
         import android.view.View;
         import android.view.ViewGroup;
         import android.view.WindowManager;
+        import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.ImageView;
         import android.graphics.drawable.GradientDrawable;
         import android.widget.ListView;
+        import android.widget.Spinner;
         import android.widget.TextView;
         import android.widget.Toast;
-
+        import android.os.Handler;
+        import android.view.animation.TranslateAnimation;
         import com.google.android.material.textfield.TextInputEditText;
 
         import java.util.ArrayList;
@@ -94,6 +98,15 @@
 
 
 
+            private List<String> listaDeCategorias = Arrays.asList(
+                    "Ensino Fundamental",
+                    "Ensino Médio",
+                    "Ensino Médio + Técnico",
+                    "Ensino Técnico",
+                    "Ensino Superior",
+                    "Pós-Graduação"
+            );
+
             private View barraUm;
 
             private View barraDois;
@@ -117,13 +130,13 @@
                 adicionarMateriaAdapter = new AdicionarMateriaAdapter(listaDeMaterias);
                 recyclerViewMaterias.setAdapter(adicionarMateriaAdapter);
 
-
-
-
                 barraUm = findViewById(R.id.barraUm);
                 barraDois = findViewById(R.id.barraDois);
 
-
+                Spinner spinnerCategoria = findViewById(R.id.spinnerCategoria);
+                MultiLineArrayAdapter adapter = new MultiLineArrayAdapter(this, android.R.layout.simple_spinner_item, listaDeCategorias);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerCategoria.setAdapter(adapter);
 
 
                 if (existemRegistrosAgrupamento())
@@ -240,6 +253,8 @@
                         mostrarParteDois();
 
                         // Tornar o botão Próximo não clicável
+                        btnProximo.setAlpha(0.5f);
+                        btnAnterior.setAlpha(1.0f);
                         btnProximo.setEnabled(false);
                         btnAnterior.setEnabled(true);
 
@@ -276,9 +291,10 @@
                         mostrarParteUm();
 
                         // Tornar o botão Próximo não clicável
+                        btnProximo.setAlpha(1.0f);
+                        btnAnterior.setAlpha(0.5f);
                         btnProximo.setEnabled(true);
                         btnAnterior.setEnabled(false);
-
                         ConstraintLayout.LayoutParams layoutParamsSalvar = (ConstraintLayout.LayoutParams) btnSalvar.getLayoutParams();
                         layoutParamsSalvar.topToBottom = R.id.colorPreview;  // Defina o ID correto
                         layoutParamsSalvar.topMargin = (int) getResources().getDimension(R.dimen.margin_top);
@@ -345,7 +361,7 @@
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
                 layoutParams.width = getResources().getDimensionPixelSize(R.dimen.your_dialog_width); // Substitua com a largura desejada
-                layoutParams.height = getResources().getDimensionPixelSize(R.dimen.your_dialog_height); // Substitua com a altura desejada
+                layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT; // Define a altura automaticamente, com base no tamanho necessario do elemento
 
                 alertDialog.show();
                 alertDialog.getWindow().setAttributes(layoutParams);
@@ -383,7 +399,7 @@
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
                 layoutParams.width = getResources().getDimensionPixelSize(R.dimen.your_dialog_width); // Substitua com a largura desejada
-                layoutParams.height = getResources().getDimensionPixelSize(R.dimen.your_dialog_height); // Substitua com a altura desejada
+                layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT; // Define a altura automaticamente, com base no tamanho necessario do elemento
 
                 alertDialog.show();
                 alertDialog.getWindow().setAttributes(layoutParams);
@@ -408,10 +424,12 @@
                 nomeCardEditText.setHintTextColor(Color.parseColor(corFontHex));
 
                 // Atualizar a cor do texto em textInputEditText
-                TextInputEditText textInputEditText = findViewById(R.id.textInputEditText);
-                textInputEditText.setTextColor(Color.parseColor(corFontHex));
-                textInputEditText.setTextColor(Color.parseColor(corFontHex));
-                textInputEditText.setHintTextColor(Color.parseColor(corFontHex));
+                Spinner spinnerCategoria = findViewById(R.id.spinnerCategoria);
+                ((TextView) spinnerCategoria.getChildAt(0)).setTextColor(Color.parseColor(corFontHex));
+                ((TextView) spinnerCategoria.getChildAt(0)).setHintTextColor(Color.parseColor(corFontHex));
+                /*
+                spinnerCategoria.setPopupBackgroundResource(R.drawable.seu_drawable_de_fundo_para_dropdown);
+                */
 
             }
 
@@ -487,7 +505,7 @@
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
                 layoutParams.width = getResources().getDimensionPixelSize(R.dimen.your_dialog_width); // Substitua com a largura desejada
-                layoutParams.height = getResources().getDimensionPixelSize(R.dimen.your_dialog_height); // Substitua com a altura desejada
+                layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT; // Define a altura automaticamente, com base no tamanho necessario do elemento
 
                 alertDialog.show();
                 alertDialog.getWindow().setAttributes(layoutParams);
@@ -627,8 +645,11 @@
                 valoresDataSemana.clear();
                 valoresQuantAulas.clear();
 
+                Spinner spinnerCategoria = findViewById(R.id.spinnerCategoria);
+                String categoria = spinnerCategoria.getSelectedItem().toString();
+
+
                 String nomeAgrupamento = ((TextInputEditText) findViewById(R.id.NomeCard)).getText().toString();
-                String categoria = ((TextInputEditText) findViewById(R.id.textInputEditText)).getText().toString();
                 String corFundoHex = defaultHexColors[selectedFundoColorIndex];
                 String corBotoesHex = defaultButtonHexColors[selectedButtonColorIndex];
                 String corTextoHex = defaultFontHexColors[selectedFontColorIndex];
@@ -641,7 +662,7 @@
                 }
 
                 Set<TextInputEditText> uniqueNomeMateriaEditTexts = new HashSet<>(adicionarMateriaAdapter.getNomeMateriaEditTexts());
-                Set<TextInputEditText> uniqueDataSemanaEditTexts = new HashSet<>(adicionarMateriaAdapter.getDataSemanaEditTexts());
+                Set<Spinner> uniqueDataSemanaSpinners = new HashSet<>(adicionarMateriaAdapter.getSpinnerDataMateriaList());
                 Set<TextInputEditText> uniqueQuantAulasEditTexts = new HashSet<>(adicionarMateriaAdapter.getQuantAulasEditTexts());
 
 
@@ -652,9 +673,9 @@
                     valoresNomeMateria.add(nomeMateria);
                 }
 
-                for (TextInputEditText dataSemanaEditText : uniqueDataSemanaEditTexts) {
-                    String dataSemana = dataSemanaEditText.getText().toString();
-                    valoresDataSemana.add(dataSemana);
+                for (Spinner dataSemanaSpinner : uniqueDataSemanaSpinners) {
+                    String selectedDate = dataSemanaSpinner.getSelectedItem().toString();
+                    valoresDataSemana.add(selectedDate);
                 }
 
                 for (TextInputEditText quantAulasEditText : uniqueQuantAulasEditTexts) {
@@ -671,6 +692,8 @@
 
                     // Fechar a tela de adicionar algo
                     adicioneAlgoScreen.setVisibility(View.GONE);
+
+                exibirMensagemComAnimacao();
 
                 }
 
@@ -699,8 +722,10 @@
 
             private void limparCampos() {
                 // Limpe os campos de nome e categoria (ou faça o que for apropriado)
+                Spinner spinnerCategoria = findViewById(R.id.spinnerCategoria);
+
                 ((TextInputEditText) findViewById(R.id.NomeCard)).setText("");
-                ((TextInputEditText) findViewById(R.id.textInputEditText)).setText("");
+                spinnerCategoria.setSelection(0);  // Pode ajustar para o índice do item desejado
                 adicionarMateriaAdapter.limparMaterias();
 
 
@@ -761,7 +786,7 @@
                 CardView SombraCard = findViewById(R.id.SombraCard);
                 View colorPreview2 = findViewById(R.id.colorPreview);
                 TextInputEditText NomeCard = findViewById(R.id.NomeCard);
-                TextInputEditText textInputEditText = findViewById(R.id.textInputEditText);
+                Spinner textInputEditText = findViewById(R.id.spinnerCategoria);
                 iconImageView = findViewById(R.id.IconImage);
                 Button btnSalvar2 = findViewById(R.id.btnSalvar);
                 View btnDelete1 = findViewById(R.id.btnDelete1);
@@ -781,9 +806,12 @@
                 RecyclerView recyclerViewMaterias1 = findViewById(R.id.recyclerViewMaterias);
                 ImageView view3 = findViewById(R.id.view3);
                 Button btnAdicionarConteudo2 = findViewById(R.id.btnAdicionarConteudo);
+                ImageView Vector = findViewById(R.id.Vector);
+                View BarraSuperiorMaterias = findViewById(R.id.BarraSuperiorMaterias);
+                View BarraInferiorMaterias = findViewById(R.id.BarraInferiorMaterias);
 
 
-
+                Vector.setVisibility(View.VISIBLE);
                 TextoColor.setVisibility(View.VISIBLE);
                 textFundo.setVisibility(View.VISIBLE);
                 colorPreview2.setVisibility(View.VISIBLE);
@@ -803,7 +831,8 @@
                 TextFundo.setVisibility(View.VISIBLE);
                 iconImageView.setVisibility(View.VISIBLE);
 
-
+                BarraInferiorMaterias.setVisibility(View.GONE);
+                BarraSuperiorMaterias.setVisibility(View.GONE);
                 MateriasText.setVisibility(View.GONE);
                 SombraFaixa.setVisibility(View.GONE);
                 recyclerViewMaterias1.setVisibility(View.GONE);
@@ -822,7 +851,7 @@
                 CardView SombraCard = findViewById(R.id.SombraCard);
                 View colorPreview2 = findViewById(R.id.colorPreview);
                 TextInputEditText NomeCard = findViewById(R.id.NomeCard);
-                TextInputEditText textInputEditText = findViewById(R.id.textInputEditText);
+                Spinner textInputEditText = findViewById(R.id.spinnerCategoria);
                 iconImageView = findViewById(R.id.IconImage);
                 Button btnSalvar2 = findViewById(R.id.btnSalvar);
                 View btnDelete1 = findViewById(R.id.btnDelete1);
@@ -842,8 +871,12 @@
                 RecyclerView recyclerViewMaterias1 = findViewById(R.id.recyclerViewMaterias);
                 ImageView view3 = findViewById(R.id.view3);
                 Button btnAdicionarConteudo2 = findViewById(R.id.btnAdicionarConteudo);
+                ImageView Vector = findViewById(R.id.Vector);
+                View BarraSuperiorMaterias = findViewById(R.id.BarraSuperiorMaterias);
+                View BarraInferiorMaterias = findViewById(R.id.BarraInferiorMaterias);
 
-
+                BarraInferiorMaterias.setVisibility(View.VISIBLE);
+                BarraSuperiorMaterias.setVisibility(View.VISIBLE);
                 MateriasText.setVisibility(View.VISIBLE);
                 SombraFaixa.setVisibility(View.VISIBLE);
                 view2.setVisibility(View.VISIBLE);
@@ -852,7 +885,8 @@
                 btnAdicionarConteudo2.setVisibility(View.VISIBLE);
                 btnSalvar2.setVisibility(View.VISIBLE);
 
-
+                iconImageView.setVisibility(View.GONE);
+                Vector.setVisibility(View.GONE);
                 TextoColor.setVisibility(View.GONE);
                 textFundo.setVisibility(View.GONE);
                 colorPreview2.setVisibility(View.GONE);
@@ -870,6 +904,62 @@
                 TextFundo.setVisibility(View.GONE);
                 btnDelete1.setVisibility(View.GONE);
 
+            }
+
+
+            private void exibirMensagemComAnimacao() {
+                ImageView btnAdd = findViewById(R.id.Add);
+                btnAdd.setVisibility(View.VISIBLE);
+
+                final View fundoSuccess = findViewById(R.id.FundoSuccess);
+                final TextView textAdicionadoSuccess = findViewById(R.id.TextAdicionadoSuccess);
+                final View successIcon = findViewById(R.id.SuccessIcon);
+
+                // Configurar a animação de entrada
+                TranslateAnimation entradaAnimation = new TranslateAnimation(
+                        1000,  // Da posição x 1000dp para fora da tela (à direita)
+                        0,     // Para a posição x 0dp (posição inicial)
+                        0,
+                        0);
+                entradaAnimation.setDuration(500);
+
+                fundoSuccess.startAnimation(entradaAnimation);
+                textAdicionadoSuccess.startAnimation(entradaAnimation);
+                successIcon.startAnimation(entradaAnimation);
+
+                // Tornar as Views visíveis após a animação de entrada
+                fundoSuccess.setVisibility(View.VISIBLE);
+                textAdicionadoSuccess.setVisibility(View.VISIBLE);
+                successIcon.setVisibility(View.VISIBLE);
+
+                // Agendar a animação de saída após alguns segundos
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Configurar a animação de saída
+                        TranslateAnimation saidaAnimation = new TranslateAnimation(
+                                0,   // Da posição x 0dp (posição atual)
+                                1000, // Para a posição x 1000dp para fora da tela (à direita)
+                                0,
+                                0);
+                        saidaAnimation.setDuration(500);
+
+                        // Iniciar a animação de saída
+                        fundoSuccess.startAnimation(saidaAnimation);
+                        textAdicionadoSuccess.startAnimation(saidaAnimation);
+                        successIcon.startAnimation(saidaAnimation);
+
+                        // Definir a visibilidade das Views como GONE após a animação de saída
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                fundoSuccess.setVisibility(View.GONE);
+                                textAdicionadoSuccess.setVisibility(View.GONE);
+                                successIcon.setVisibility(View.GONE);
+                            }
+                        }, 500);  // Aguarde 500 milissegundos antes de tornar as Views invisíveis
+                    }
+                }, 2000);  // Aguarde 2000 milissegundos (2 segundos) antes de iniciar a animação de saída
             }
 
         }
