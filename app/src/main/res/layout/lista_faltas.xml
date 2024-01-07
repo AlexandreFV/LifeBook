@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DCDCDC">
+
+    <include
+        android:id="@+id/includeDesempenhoSup"
+        layout="@layout/layout_superior"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <include
+        android:id="@+id/includeDesempenhoInf"
+        layout="@layout/layout_inferior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <View
+        android:id="@+id/fundoListaFaltasFaixa"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:alpha="0.8"
+        android:background="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/includeDesempenhoSup"
+        app:layout_constraintTop_toBottomOf="@+id/includeDesempenhoSup" />
+
+    <ImageView
+        android:id="@+id/imageCloseListaDeFaltas"
+        android:layout_width="35dp"
+        android:layout_height="33dp"
+        android:alpha="1.0"
+        android:onClick="btnClose"
+
+        app:layout_constraintBottom_toBottomOf="@+id/fundoDetalhesFaixa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/fundoListaFaltasFaixa"
+        app:layout_constraintTop_toBottomOf="@+id/includeDesempenhoSup"
+        app:srcCompat="@drawable/close" />
+
+    <TextView
+        android:id="@+id/TextListaDeFaltas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="1.0"
+        android:text="Lista de Faltas"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/fundoListaFaltasFaixa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fundoListaFaltasFaixa" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

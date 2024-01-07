@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+
+    <View
+        android:id="@+id/barraInferior"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:background="#252323"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/lembretes"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barraInferior"
+        app:srcCompat="@drawable/lembretes" />
+
+    <ImageView
+        android:id="@+id/desempenho"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/add"
+        app:layout_constraintStart_toEndOf="@+id/lembretes"
+        app:layout_constraintTop_toTopOf="@+id/barraInferior"
+        app:srcCompat="@drawable/desempenho" />
+
+    <ImageView
+        android:id="@+id/notificacoes"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/configuracoes"
+        app:layout_constraintStart_toEndOf="@+id/add"
+        app:layout_constraintTop_toTopOf="@+id/barraInferior"
+        app:layout_constraintVertical_bias="0.55"
+        app:srcCompat="@drawable/notificacoes" />
+
+    <ImageView
+        android:id="@+id/configuracoes"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/barraInferior"
+        app:layout_constraintTop_toTopOf="@+id/barraInferior"
+        app:srcCompat="@drawable/configuracao" />
+
+
+    <ImageView
+        android:id="@+id/add"
+        android:layout_width="57dp"
+        android:layout_height="73dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/barraInferior"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barraInferior"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

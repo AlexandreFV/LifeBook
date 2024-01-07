@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/LayoutMain"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,95 +9,40 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <View
-        android:id="@+id/BarraSuperior"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:background="#252323"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+
+    <include
+        android:id="@+id/includeMainSup"
+        layout="@layout/layout_superior" />
+
+
+    <include
+        android:id="@+id/includeMainInf"
+        layout="@layout/layout_inferior"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/AdicioneAlgoScreen"
+        layout="@layout/adicionar_categoria_materia"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:visibility="invisible"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/BarraInferior"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:background="#252323"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+            android:id="@+id/Fundo_Adicione_Algo"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/fundo_adicione_algo"
+            app:circularflow_radiusInDP="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/includeMainSup"
+            app:layout_constraintTop_toBottomOf="@+id/includeMainSup" />
 
-    <ImageView
-        android:id="@+id/Add"
-        android:layout_width="57dp"
-        android:layout_height="73dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/BarraInferior"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/BarraInferior"
-        app:srcCompat="@android:drawable/ic_menu_add" />
-
-    <ImageView
-        android:id="@+id/LifeBook"
-        android:layout_width="151dp"
-        android:layout_height="71dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/lifebook"
-        tools:layout_editor_absoluteY="1dp" />
-
-    <ImageView
-        android:id="@+id/Lembretes"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/BarraInferior"
-        app:srcCompat="@drawable/lembretes"
-        tools:layout_editor_absoluteX="11dp" />
-
-    <ImageView
-        android:id="@+id/Desempenho"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Add"
-        app:layout_constraintStart_toEndOf="@+id/Lembretes"
-        app:layout_constraintTop_toTopOf="@+id/BarraInferior"
-        app:srcCompat="@drawable/desempenho" />
-
-    <ImageView
-        android:id="@+id/Notificacoes"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView15"
-        app:layout_constraintStart_toEndOf="@+id/Add"
-        app:layout_constraintTop_toTopOf="@+id/BarraInferior"
-        app:layout_constraintVertical_bias="0.55"
-        app:srcCompat="@drawable/notificacoes" />
-
-    <ImageView
-        android:id="@+id/imageView15"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/BarraInferior"
-        app:layout_constraintTop_toTopOf="@+id/BarraInferior"
-        app:srcCompat="@drawable/configuracao" />
-
-    <View
-        android:id="@+id/Fundo_Adicione_Algo"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/fundo_adicione_algo"
-        app:circularflow_radiusInDP="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BarraSuperior" />
-
-    <TextView
+        <TextView
         android:id="@+id/AdicioneAlgo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,28 +55,20 @@
         app:layout_constraintTop_toTopOf="@+id/Fundo_Adicione_Algo" />
 
     <ListView
-            android:id="@+id/listViewAgrupamento"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="70dp"
-            android:layout_marginBottom="70dp"
-            android:divider="@android:color/transparent"
-            android:listSelector="@android:color/transparent"
-            app:layout_constraintBottom_toTopOf="@+id/Add"
-            app:layout_constraintTop_toBottomOf="@+id/BarraSuperior"
-            app:layout_constraintVertical_bias="1.0"
-            tools:layout_editor_absoluteX="16dp" />
+        android:id="@+id/listViewAgrupamento"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="70dp"
+        android:divider="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/includeMainInf"
+        app:layout_constraintTop_toBottomOf="@+id/includeMainSup"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="16dp" />
 
 
 
-        <include
-            android:id="@+id/AdicioneAlgoScreen"
-            layout="@layout/adicionar_categoria_materia"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="70dp"
-            android:visibility="invisible"
-            app:layout_constraintTop_toTopOf="parent"/>
 
     <View
         android:id="@+id/FundoSuccess"
@@ -141,7 +79,7 @@
         android:visibility="gone"
         android:background="@drawable/modal_fundo_success"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BarraSuperior">
+        app:layout_constraintTop_toBottomOf="@+id/includeMainSup">
 
     </View>
 

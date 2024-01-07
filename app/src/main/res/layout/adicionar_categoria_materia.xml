@@ -1,53 +1,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/testeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fundo_adicionar_categoria"
     android:orientation="vertical">
 
 
-    <View
-        android:id="@+id/TextoColor"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/red_button_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.523"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextPersonalizarCores"
-        app:layout_constraintVertical_bias="0.0" />
+    <include
+        android:id="@+id/includeDesempenhoSup"
+        layout="@layout/layout_superior" />
 
-    <ImageView
-        android:id="@+id/Vector"
-        android:layout_width="29dp"
-        android:layout_height="158dp"
-        android:elevation="12dp"
-        android:src="@drawable/vector"
-        app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
-        app:layout_constraintEnd_toEndOf="@+id/colorPreview"
-        app:layout_constraintHorizontal_bias="0.68"
-        app:layout_constraintStart_toStartOf="@+id/colorPreview"
-        app:layout_constraintTop_toTopOf="@+id/colorPreview"></ImageView>
 
-    <ImageView
-        android:id="@+id/textFundo"
-        android:layout_width="48dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/texto"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/TextoColor"
-        app:layout_constraintEnd_toEndOf="@+id/TextoColor"
-        app:layout_constraintStart_toStartOf="@+id/TextoColor"
-        app:layout_constraintTop_toTopOf="@+id/TextoColor" />
+    <include
+        android:id="@+id/includeDetalhesInf"
+        layout="@layout/layout_inferior" />
 
     <View
         android:id="@+id/FundroCriarCard"
@@ -58,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/includeDesempenhoSup" />
 
 
     <TextView
@@ -80,14 +48,63 @@
         android:id="@+id/imageView4"
         android:layout_width="35dp"
         android:layout_height="33dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/FundroCriarCard"
         app:layout_constraintEnd_toEndOf="@+id/FundroCriarCard"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/FundroCriarCard"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/FundroCriarCard"
         app:layout_constraintVertical_bias="0.571"
         app:srcCompat="@drawable/close" />
+
+
+    <ScrollView
+        android:id="@+id/Teste2321"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="70dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/includeDetalhesInf"
+        app:layout_constraintTop_toBottomOf="@+id/includeDesempenhoSup"
+        tools:layout_editor_absoluteX="0dp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutTeste"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#DCDCDC"
+            android:visibility="visible">
+
+            <View
+                android:id="@+id/TextoColor"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/red_button_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.523"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TextPersonalizarCores"
+                app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/Vector"
+        android:layout_width="29dp"
+        android:layout_height="158dp"
+        android:elevation="12dp"
+        android:src="@drawable/vector"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPreview"
+        app:layout_constraintEnd_toEndOf="@+id/colorPreview"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintStart_toStartOf="@+id/colorPreview"
+        app:layout_constraintTop_toTopOf="@+id/colorPreview"></ImageView>
+
 
 
     <androidx.cardview.widget.CardView
@@ -124,7 +141,19 @@
         app:layout_constraintTop_toBottomOf="@+id/TextFundo" />
 
 
-    <com.google.android.material.textfield.TextInputEditText
+            <ImageView
+                android:id="@+id/textFundo"
+                android:layout_width="48dp"
+                android:layout_height="30dp"
+                android:src="@drawable/texto"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/TextoColor"
+                app:layout_constraintEnd_toEndOf="@+id/TextoColor"
+                app:layout_constraintStart_toStartOf="@+id/TextoColor"
+                app:layout_constraintTop_toTopOf="@+id/TextoColor" />
+
+            <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/NomeCard"
         android:layout_width="215dp"
         android:layout_height="39dp"
@@ -248,7 +277,7 @@
         app:layout_constraintTop_toTopOf="@+id/colorPreview"
         app:layout_constraintVertical_bias="1.0" />
 
-    <ImageView
+            <ImageView
         android:id="@+id/lixeiraIcon322"
         android:layout_width="27dp"
         android:layout_height="31dp"
@@ -311,7 +340,7 @@
         app:layout_constraintTop_toTopOf="@+id/colorPreview"
         app:layout_constraintVertical_bias="1.0" />
 
-    <ImageView
+            <ImageView
         android:id="@+id/DetalhesIcon1"
         android:layout_width="27dp"
         android:layout_height="31dp"
@@ -357,7 +386,7 @@
         app:layout_constraintTop_toBottomOf="@+id/TextPersonalizarCores"
         app:layout_constraintVertical_bias="0.001" />
 
-    <View
+            <View
         android:id="@+id/FundoColor"
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -388,77 +417,65 @@
         app:layout_constraintStart_toStartOf="@+id/Botoes"
         app:layout_constraintTop_toTopOf="@+id/Botoes" />
 
-    <ImageView
-        android:id="@+id/TextFundo"
-        android:layout_width="48dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/baldedetinta"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/FundoColor"
-        app:layout_constraintEnd_toEndOf="@+id/FundoColor"
-        app:layout_constraintStart_toStartOf="@+id/FundoColor"
-        app:layout_constraintTop_toTopOf="@+id/FundoColor" />
+            <ImageView
+                android:id="@+id/TextFundo"
+                android:layout_width="48dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/baldedetinta"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/FundoColor"
+                app:layout_constraintEnd_toEndOf="@+id/FundoColor"
+                app:layout_constraintStart_toStartOf="@+id/FundoColor"
+                app:layout_constraintTop_toTopOf="@+id/FundoColor" />
 
     <!--android:visibility="gone" -->
 
 
-    <TextView
-        android:id="@+id/MateriasText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:elevation="10dp"
-        android:text="Materias"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/view2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.474"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view2"
-        app:layout_constraintVertical_bias="0.0" />
+            <TextView
+                android:id="@+id/MateriasText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:elevation="20dp"
+                android:text="Materias"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/view2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.474"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/view2sda"
+                app:layout_constraintVertical_bias="0.0" />
 
-
-    <View
-        android:id="@+id/SombraFaixa"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="16dp"
-        android:alpha="1"
-        android:background="#000000"
-        android:elevation="1dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MateriasText"
-        app:layout_constraintVertical_bias="0.0" />
+            <View
+                android:id="@+id/SombraFaixa"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="16dp"
+                android:alpha="1"
+                android:background="#000000"
+                android:elevation="20dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/MateriasText"
+                app:layout_constraintVertical_bias="0.0" />
 
     <!-- Parte do Meio (RecyclerView) -->
     <!--android:visibility="gone" -->
-    <ImageView
-        android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/fundomateria"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barraDois" />
+
 
     <!--android:visibility="gone" -->
 
@@ -466,71 +483,59 @@
 
     <!--android:visibility="gone" -->
 
-    <View
-        android:id="@+id/BarraSuperiorMaterias"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="#000000"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/view2"
-        app:layout_constraintEnd_toEndOf="@+id/view2"
-        app:layout_constraintStart_toStartOf="@+id/view2" />
+            <View
+                android:id="@+id/BarraSuperiorMaterias"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="#000000"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/view2"
+                app:layout_constraintEnd_toEndOf="@+id/view2"
+                app:layout_constraintStart_toStartOf="@+id/view2" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMaterias"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:visibility="gone"
-        android:layout_marginEnd="16dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewMaterias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2sda" />
 
-    <ImageView
-        android:id="@+id/view3"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/fundo_button_adicionar_materia"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewMaterias" />
+            <ImageView
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/fundo_button_adicionar_materia"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewMaterias" />
 
-    <View
-        android:id="@+id/BarraInferiorMaterias"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="#000000"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.562"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@+id/view3" />
-
-    <Button
-        android:id="@+id/btnAdicionarConteudo"
-        android:layout_width="142dp"
-        android:layout_height="35dp"
-        android:text="Adicionar Conteúdo"
-        android:visibility="gone"
-        android:backgroundTint="#FFA07A"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/view3"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@+id/view3"
-        app:layout_constraintVertical_bias="0.5" />
+            <Button
+                android:id="@+id/btnAdicionarConteudo"
+                android:layout_width="142dp"
+                android:layout_height="35dp"
+                android:backgroundTint="#FFA07A"
+                android:text="Adicionar Conteúdo"
+                android:textColor="#FFFFFF"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/view3"
+                app:layout_constraintEnd_toEndOf="@+id/view3"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="@+id/view3"
+                app:layout_constraintTop_toTopOf="@+id/view3"
+                app:layout_constraintVertical_bias="0.5" />
 
     <View
         android:id="@+id/barraDois"
@@ -556,6 +561,135 @@
         app:layout_constraintTop_toBottomOf="@+id/SombraCard" />
 
 
+    <TextView
+        android:id="@+id/TextSeg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="11dp"
+        android:text="seg"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/view2sda"
+        app:layout_constraintEnd_toStartOf="@+id/TextTer"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/view2sda"
+        app:layout_constraintTop_toBottomOf="@+id/SombraFaixa" />
+
+    <TextView
+        android:id="@+id/TextTer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:elevation="11dp"
+        android:text="ter"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/view2sda"
+        app:layout_constraintEnd_toStartOf="@+id/TextQua"
+        app:layout_constraintTop_toBottomOf="@+id/SombraFaixa" />
+
+    <TextView
+        android:id="@+id/TextQua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:elevation="11dp"
+        android:text="qua"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/view2sda"
+        app:layout_constraintEnd_toStartOf="@+id/TextQui"
+        app:layout_constraintTop_toBottomOf="@+id/SombraFaixa" />
+
+    <TextView
+        android:id="@+id/TextQui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="11dp"
+        android:text="qui"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/view2sda"
+        app:layout_constraintEnd_toEndOf="@+id/view2sda"
+        app:layout_constraintStart_toStartOf="@+id/view2sda"
+        app:layout_constraintTop_toBottomOf="@+id/SombraFaixa" />
+
+    <TextView
+        android:id="@+id/TextSex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="11dp"
+        android:text="sex"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/view2sda"
+        app:layout_constraintStart_toEndOf="@+id/TextQui"
+        app:layout_constraintTop_toBottomOf="@+id/SombraFaixa" />
+
+    <TextView
+        android:id="@+id/TextSab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:elevation="11dp"
+        android:text="sab"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/view2sda"
+        app:layout_constraintStart_toEndOf="@+id/TextSex"
+        app:layout_constraintTop_toBottomOf="@+id/SombraFaixa" />
+
+            <TextView
+                android:id="@+id/TextDom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:elevation="11dp"
+                android:text="dom"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/view2sda"
+                app:layout_constraintEnd_toEndOf="@+id/view2sda"
+                app:layout_constraintStart_toEndOf="@+id/TextSab"
+                app:layout_constraintTop_toBottomOf="@+id/SombraFaixa" />
+
+            <View
+                android:id="@+id/view2sda"
+                android:layout_width="0dp"
+                android:layout_height="99dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/fundo_materias_add"
+                android:elevation="10dp"
+                android:src="@drawable/fundomateria"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barraDois" />
+
+            <View
+                android:id="@+id/FundoAddMaterias"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/fundo_materias_add"
+                android:elevation="10dp"
+                android:src="@drawable/fundomateria"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"></View>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-

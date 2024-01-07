@@ -114,4 +114,3 @@ public class AdicionarMateriaAdapter extends RecyclerView.Adapter<AdicionarMater
     }
 
 }
-

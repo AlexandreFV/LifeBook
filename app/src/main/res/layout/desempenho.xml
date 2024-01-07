@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DCDCDC"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/includeDesempenhoSup"
+        layout="@layout/layout_superior"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <include
+        android:id="@+id/includeDesempenhoInf"
+        layout="@layout/layout_inferior"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <View
+        android:id="@+id/fundoDetalhesFaixa"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:alpha="0.8"
+        android:background="#FFFFFF"
+        android:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/includeDesempenhoSup" />
+
+    <TextView
+        android:id="@+id/TextDesempenho"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="1.0"
+        android:text="Desempenho"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/fundoDetalhesFaixa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fundoDetalhesFaixa"
+        app:layout_constraintVertical_bias="0.579" />
+
+    <ImageView
+        android:id="@+id/imageCloseDesempenho"
+        android:layout_width="35dp"
+        android:layout_height="33dp"
+        android:alpha="1.0"
+        android:background="@drawable/close"
+        android:elevation="10dp"
+        android:onClick="btnClose"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/fundoDetalhesFaixa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/fundoDetalhesFaixa"
+        app:layout_constraintTop_toTopOf="@+id/fundoDetalhesFaixa" />
+
+
+    <ScrollView
+        android:id="@+id/Teste"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/includeDesempenhoInf"
+        app:layout_constraintTop_toBottomOf="@+id/fundoDetalhesFaixa"
+        tools:layout_editor_absoluteX="3dp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#DCDCDC">
+
+
+            <View
+                android:id="@+id/fundoOpcoesCardGraficoMaterias"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/fundo_desempenho_opcoes"
+                android:elevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/CardIconDesempenho"
+                android:layout_width="80dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/cardicondesempenho"
+                android:elevation="100dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintEnd_toStartOf="@+id/GraficoIconDesempenho"
+                app:layout_constraintTop_toTopOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Spinner
+                android:id="@+id/spinnerAgrupamentos"
+                android:layout_width="92dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:backgroundTint="#000000"
+                android:elevation="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintStart_toStartOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintTop_toBottomOf="@+id/CardIconDesempenho" />
+
+
+            <ImageView
+                android:id="@+id/GraficoIconDesempenho"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/graficonicondesempenho"
+                android:elevation="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintEnd_toEndOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintStart_toStartOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintTop_toTopOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+            <Spinner
+                android:id="@+id/GraficoSpinnerDesempenho"
+                android:layout_width="92dp"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintEnd_toEndOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintTop_toBottomOf="@+id/GraficoIconDesempenho"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <ImageView
+                android:id="@+id/IconMateriasDesempenho"
+                android:layout_width="80dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/group"
+                android:elevation="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintStart_toEndOf="@+id/GraficoIconDesempenho"
+                app:layout_constraintTop_toTopOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <View
+                android:id="@+id/ButtonListaFaltas"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/button_lista_faltas"
+                android:elevation="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fundoGrafico"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:text="Lista de Faltas"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ButtonListaFaltas"
+                app:layout_constraintEnd_toEndOf="@+id/ButtonListaFaltas"
+                app:layout_constraintStart_toStartOf="@+id/ButtonListaFaltas"
+                app:layout_constraintTop_toTopOf="@+id/ButtonListaFaltas" />
+
+            <View
+                android:id="@+id/fundoGrafico"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:background="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias" />
+
+            <TextView
+                android:id="@+id/TextQuantFaltasGrafico"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Quantidade de Faltas"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/fundoGrafico"
+                app:layout_constraintStart_toStartOf="@+id/fundoGrafico"
+                app:layout_constraintTop_toTopOf="@+id/fundoGrafico" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoGrafico"
+                app:layout_constraintEnd_toEndOf="@+id/fundoGrafico"
+                app:layout_constraintStart_toStartOf="@+id/fundoGrafico"
+                app:layout_constraintTop_toBottomOf="@+id/TextQuantFaltasGrafico" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChart"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoGrafico"
+                app:layout_constraintEnd_toEndOf="@+id/fundoGrafico"
+                app:layout_constraintStart_toStartOf="@+id/fundoGrafico"
+                app:layout_constraintTop_toBottomOf="@+id/TextQuantFaltasGrafico"></com.github.mikephil.charting.charts.BarChart>
+
+
+            <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:id="@+id/horizontalBarChart"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoGrafico"
+                app:layout_constraintEnd_toEndOf="@+id/fundoGrafico"
+                app:layout_constraintStart_toStartOf="@+id/fundoGrafico"
+                app:layout_constraintTop_toBottomOf="@+id/TextQuantFaltasGrafico"></com.github.mikephil.charting.charts.HorizontalBarChart>
+
+            <TextView
+                android:id="@+id/TextParabens"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoGrafico"
+                app:layout_constraintEnd_toEndOf="@+id/fundoGrafico"
+                app:layout_constraintStart_toStartOf="@+id/fundoGrafico"
+                app:layout_constraintTop_toTopOf="@+id/fundoGrafico" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

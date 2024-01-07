@@ -1,9 +1,13 @@
 package com.example.appjavavidaacademica;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -39,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + " , nome_materia VARCHAR "
                     + " , id_agrupamento INTEGER"
                     + " , dia_semana VARCHAR"
-                    + " , quantAulas INTEGER"
+                    + " , quantAulas VARCHAR"
                     + " , CONSTRAINT pk_materias UNIQUE (id_materia)"
                     + " , CONSTRAINT fk_materia_agrupamento FOREIGN KEY (id_agrupamento) REFERENCES agrupamento (id_agrupamento));");
 
@@ -56,9 +60,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE IF NOT EXISTS faltas("
                     + " id_faltas INTEGER PRIMARY KEY AUTOINCREMENT"
                     + " , data DATE "
-                    + " , pontos FLOAT "
                     + " , id_materia INTEGER "
                     + " , quantidade INTEGER "
+                    + " , motivo VARCHAR "
                     + " , CONSTRAINT pk_faltas UNIQUE (id_faltas)"
                     + " , CONSTRAINT fk_faltas_materia FOREIGN KEY (id_materia) REFERENCES materias (id_materia));");
 
@@ -71,7 +75,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
     // Chamado quando a versão do banco de dados é atualizada
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -82,4 +85,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public SQLiteDatabase getDatabase() {
         return this.getWritableDatabase();
     }
+
+
+    public List<Faltas> obterFaltasPorAgrupamentoEMateria(String agrupamentoSelecionado) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT m.id_materia,m.nome_materia, SUM(f.quantidade) AS total_faltas_materia " +
+                "FROM materias m " +
+                "INNER JOIN agrupamento a ON m.id_agrupamento = a.id_agrupamento " +
+                "INNER JOIN faltas f ON m.id_materia = f.id_materia " +
+                "WHERE a.nome_agrupamento = ? " +
+                "GROUP BY m.id_materia";
+
+        Cursor cursor = db.rawQuery(query, new String[]{agrupamentoSelecionado});
+
+        List<Faltas> faltasList = new ArrayList<>();
+        int quantidadeTotalFaltas = 0; // Inicializa a quantidade total de faltas
+
+        while (cursor.moveToNext()) {
+            int idMateria = cursor.getInt(cursor.getColumnIndexOrThrow("id_materia"));
+            String nomeMateria = cursor.getString(cursor.getColumnIndexOrThrow("nome_materia"));
+            int totalFaltasMateria = cursor.getInt(cursor.getColumnIndexOrThrow("total_faltas_materia"));
+
+            // Adicionar um log para cada matéria
+            Log.d("TAG", "Matéria " + idMateria + ": " + totalFaltasMateria + " faltas");
+
+            // Adicionar a quantidade de faltas da matéria à quantidade total
+            quantidadeTotalFaltas += totalFaltasMateria;
+
+            // Adicionar um log para a soma individual da matéria
+            Log.d("TAG", "Soma parcial para a matéria " + idMateria + ": " + quantidadeTotalFaltas);
+            faltasList.add(new Faltas(nomeMateria,idMateria, totalFaltasMateria));
+        }
+
+        // Adicionar um log para o total de faltas do agrupamento
+        Log.d("TAG", "Total de faltas para o agrupamento: " + quantidadeTotalFaltas);
+
+        for (Faltas faltas : faltasList) {
+            Log.d("TAG", "Faltas: ID Materia: " + faltas.getIdMateriaFaltas() + ", Total Faltas Materia: " + faltas.getTotalFaltasMateria());
+        }
+
+        cursor.close();
+
+        return faltasList;
+    }
+
+
+
+    public int calcularQuantidadeTotalFaltas(List<Faltas> faltasList) {
+        int quantidadeTotalFaltas = 0;
+        for (Faltas faltas : faltasList) {
+            quantidadeTotalFaltas += faltas.getTotalFaltasMateria();
+        }
+        return quantidadeTotalFaltas;
+    }
+
+
+
 }

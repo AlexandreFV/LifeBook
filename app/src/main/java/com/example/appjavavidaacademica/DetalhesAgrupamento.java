@@ -6,8 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,10 +41,12 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
 
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
-        MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(agrupamentoId));
+        MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(agrupamentoId), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter.setRecyclerView(recyclerView);
+        layoutInferiorBotoes barraInferior = new layoutInferiorBotoes(this, findViewById(R.id.includeDetalhesInf), findViewById(R.id.AdicioneAlgoScreen));
+
 
 
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -254,7 +258,58 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         }
     }
 
+    public void exibirMensagemComAnimacaoDetalhesCard() {
 
+        final View fundoSuccessDetalhesCard = findViewById(R.id.fundoSuccessDetalhesCard);
+        final TextView textAdicionadoSuccessDetalhesCard = findViewById(R.id.textAdicionadoSuccessDetalhesCard);
+        final View successIconDetalhesCard = findViewById(R.id.successIconDetalhesCard);
+
+        // Configurar a animação de entrada
+        TranslateAnimation entradaAnimation = new TranslateAnimation(
+                1000,  // Da posição x 1000dp para fora da tela (à direita)
+                0,     // Para a posição x 0dp (posição inicial)
+                0,
+                0);
+        entradaAnimation.setDuration(500);
+
+        fundoSuccessDetalhesCard.startAnimation(entradaAnimation);
+        textAdicionadoSuccessDetalhesCard.startAnimation(entradaAnimation);
+        successIconDetalhesCard.startAnimation(entradaAnimation);
+
+        // Tornar as Views visíveis após a animação de entrada
+        fundoSuccessDetalhesCard.setVisibility(View.VISIBLE);
+        textAdicionadoSuccessDetalhesCard.setVisibility(View.VISIBLE);
+        successIconDetalhesCard.setVisibility(View.VISIBLE);
+
+        // Agendar a animação de saída após alguns segundos
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Configurar a animação de saída
+                TranslateAnimation saidaAnimation = new TranslateAnimation(
+                        0,   // Da posição x 0dp (posição atual)
+                        1000, // Para a posição x 1000dp para fora da tela (à direita)
+                        0,
+                        0);
+                saidaAnimation.setDuration(500);
+
+                // Iniciar a animação de saída
+                fundoSuccessDetalhesCard.startAnimation(saidaAnimation);
+                textAdicionadoSuccessDetalhesCard.startAnimation(saidaAnimation);
+                successIconDetalhesCard.startAnimation(saidaAnimation);
+
+                // Definir a visibilidade das Views como GONE após a animação de saída
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fundoSuccessDetalhesCard.setVisibility(View.GONE);
+                        textAdicionadoSuccessDetalhesCard.setVisibility(View.GONE);
+                        successIconDetalhesCard.setVisibility(View.GONE);
+                    }
+                }, 500);  // Aguarde 500 milissegundos antes de tornar as Views invisíveis
+            }
+        }, 2000);  // Aguarde 2000 milissegundos (2 segundos) antes de iniciar a animação de saída
+    }
 
 
 }
