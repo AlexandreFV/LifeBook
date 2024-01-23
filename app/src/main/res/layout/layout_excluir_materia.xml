@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+
+            <View
+                android:id="@+id/fundoDialog"
+                android:layout_width="372dp"
+                android:layout_height="210dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="#FFFFFF"
+                android:elevation="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.498" />
+
+            <TextView
+                android:id="@+id/TextExcluirMateria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:elevation="11dp"
+                android:text="Excluir Materia"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/fundoDialog"
+                app:layout_constraintStart_toStartOf="@+id/fundoDialog"
+                app:layout_constraintTop_toTopOf="@+id/fundoDialog" />
+
+            <View
+                android:id="@+id/linhaMateria"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:background="#000000"
+                android:elevation="11dp"
+                app:layout_constraintEnd_toEndOf="@+id/fundoDialog"
+                app:layout_constraintStart_toStartOf="@+id/fundoDialog"
+                app:layout_constraintTop_toBottomOf="@+id/TextExcluirMateria" />
+
+            <View
+                android:id="@+id/linhaMateria2"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="#000000"
+                android:elevation="11dp"
+                app:layout_constraintBottom_toTopOf="@+id/buttonRemover"
+                app:layout_constraintEnd_toEndOf="@+id/fundoDialog"
+                app:layout_constraintStart_toStartOf="@+id/fundoDialog"
+                app:layout_constraintTop_toBottomOf="@+id/TextExcluirMateria"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <View
+                android:id="@+id/buttonRemover"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button"
+                android:backgroundTint="#E42020"
+                android:elevation="11dp"
+                android:text="Button"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoDialog"
+                app:layout_constraintEnd_toEndOf="@+id/fundoDialog"
+                app:layout_constraintStart_toEndOf="@+id/fundoDialog"
+                app:layout_constraintStart_toStartOf="@+id/fundoDialog" />
+
+            <ImageView
+                android:id="@+id/buttonCancelar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="28dp"
+                android:elevation="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/linhaMateria"
+                app:layout_constraintStart_toStartOf="@+id/fundoDialog"
+                app:layout_constraintTop_toTopOf="@+id/fundoDialog"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/close" />
+
+            <TextView
+                android:id="@+id/TextRemoverButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="11dp"
+                android:text="Apagar"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonRemover"
+                app:layout_constraintEnd_toEndOf="@+id/buttonRemover"
+                app:layout_constraintStart_toStartOf="@+id/buttonRemover"
+                app:layout_constraintTop_toTopOf="@+id/buttonRemover" />
+
+            <TextView
+                android:id="@+id/TextDeseja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:elevation="11dp"
+                android:text="Deseja realmente excluir a materia a seguir?"
+                android:textColor="#000000"
+                app:layout_constraintStart_toStartOf="@+id/fundoDialog"
+                app:layout_constraintTop_toBottomOf="@+id/linhaMateria" />
+
+            <TextView
+                android:id="@+id/TextNomeMateriaRemover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:elevation="11dp"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="@+id/fundoDialog"
+                app:layout_constraintTop_toBottomOf="@+id/TextDeseja" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

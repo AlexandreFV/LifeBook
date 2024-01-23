@@ -53,6 +53,7 @@
                     QuadradoAdicioneAlgo.setVisibility(View.INVISIBLE);
                     AdicioneAlgoText.setVisibility(View.INVISIBLE);
                 }
+
             }
 
 

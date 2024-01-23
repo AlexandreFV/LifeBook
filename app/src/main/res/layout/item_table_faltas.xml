@@ -1,0 +1,88 @@
+<!-- item_table.xml -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/linhaItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fundo_table_itens"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/textViewNomeItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewDataItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewQuantidadeItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/textViewMotivoItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#000000" />
+
+    </LinearLayout>
+
+    <!-- Layout para sobreposição -->
+    <LinearLayout
+        android:id="@+id/layoutSobreposicao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <!-- Adicione as ImageView para sobreposição -->
+        <ImageView
+            android:id="@+id/imageViewDelete"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:clickable="true"
+            android:onClick="onDeleteClick"
+            android:src="@drawable/lixeira"
+            android:layout_marginRight="10dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/imageViewEdit"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:clickable="true"
+            android:onClick="onEditClick"
+            android:src="@drawable/editartexto"
+            android:layout_marginRight="10dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/imageViewDetails"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:clickable="true"
+            android:onClick="onDetailsClick"
+            android:src="@drawable/procurar"
+            android:layout_marginRight="20dp"
+            android:visibility="visible" />
+    </LinearLayout>
+</FrameLayout>

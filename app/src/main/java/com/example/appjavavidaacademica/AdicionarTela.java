@@ -1,6 +1,7 @@
 package com.example.appjavavidaacademica;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,12 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -94,7 +97,6 @@ public class AdicionarTela extends AppCompatActivity {
     };
 
 
-
     private List<String> listaDeCategorias = Arrays.asList(
             "Ensino Fundamental",
             "Ensino Médio",
@@ -126,6 +128,8 @@ public class AdicionarTela extends AppCompatActivity {
 
     private boolean FundoDom;
 
+    private AlertDialog alertDialog;
+
 
 
     @Override
@@ -148,7 +152,7 @@ public class AdicionarTela extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategoria.setAdapter(adapter);
 
-
+        layoutInferiorBotoes barraInferior = new layoutInferiorBotoes(this, findViewById(R.id.includeDetalhesInf), findViewById(R.id.AdicioneAlgoScreen));
 
 
         Button btnSalvar = findViewById(R.id.btnSalvar);
@@ -208,86 +212,29 @@ public class AdicionarTela extends AppCompatActivity {
         updateColorPreview();
 
 
-
         Button btnAdicionarConteudo = findViewById(R.id.btnAdicionarConteudo);
         btnAdicionarConteudo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+
                 if (FundoSeg == true || FundoTer == true || FundoQua == true || FundoQui == true || FundoSex == true || FundoSab == true || FundoDom == true) {
                     // Criar uma nova instância de Materia com valores padrão vazios
+                    final Dialog dialog = new Dialog(AdicionarTela.this, android.R.style.Theme_Translucent_NoTitleBar);
+                    dialog.setContentView(R.layout.dialog_add_materia);
 
-                    if (FundoSeg) {
-                        Materia novaMateria = new Materia("", "", 0, 0, "");
-                        int posicaoInserir = listaDeMaterias.size(); // posição da última existente
-                        // Adicionar a nova matéria à lista
-                        listaDeMaterias.add(posicaoInserir, novaMateria);
-                        // Notificar o adaptador sobre a alteração nos dados
-                        adicionarMateriaAdapter.notifyItemInserted(posicaoInserir);
-                        recyclerViewMaterias.smoothScrollToPosition(posicaoInserir);
+                    ImageView buttonCancelar = dialog.findViewById(R.id.buttonCancelar);
 
-                    } else if (FundoTer) {
-                        Materia novaMateria = new Materia("", "", 0, 0, "");
-                        int posicaoInserir = listaDeMaterias.size(); // posição da última existente
-                        // Adicionar a nova matéria à lista
-                        listaDeMaterias.add(posicaoInserir, novaMateria);
-                        // Notificar o adaptador sobre a alteração nos dados
-                        adicionarMateriaAdapter.notifyItemInserted(posicaoInserir);
-                        recyclerViewMaterias.smoothScrollToPosition(posicaoInserir);
+                    buttonCancelar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Fecha o Dialog
+                            dialog.dismiss();
+                        }
+                    });
 
-                    } else if (FundoQua) {
-                        Materia novaMateria = new Materia("", "", 0, 0, "");
-                        int posicaoInserir = listaDeMaterias.size(); // posição da última existente
-                        // Adicionar a nova matéria à lista
-                        listaDeMaterias.add(posicaoInserir, novaMateria);
-                        // Notificar o adaptador sobre a alteração nos dados
-                        adicionarMateriaAdapter.notifyItemInserted(posicaoInserir);
-                        recyclerViewMaterias.smoothScrollToPosition(posicaoInserir);
-
-                    } else if (FundoQui) {
-                        Materia novaMateria = new Materia("", "", 0, 0, "");
-                        int posicaoInserir = listaDeMaterias.size(); // posição da última existente
-                        // Adicionar a nova matéria à lista
-                        listaDeMaterias.add(posicaoInserir, novaMateria);
-                        // Notificar o adaptador sobre a alteração nos dados
-                        adicionarMateriaAdapter.notifyItemInserted(posicaoInserir);
-                        recyclerViewMaterias.smoothScrollToPosition(posicaoInserir);
-
-                    } else if (FundoSex) {
-                        Materia novaMateria = new Materia("", "", 0, 0, "");
-                        int posicaoInserir = listaDeMaterias.size(); // posição da última existente
-                        // Adicionar a nova matéria à lista
-                        listaDeMaterias.add(posicaoInserir, novaMateria);
-                        // Notificar o adaptador sobre a alteração nos dados
-                        adicionarMateriaAdapter.notifyItemInserted(posicaoInserir);
-                        recyclerViewMaterias.smoothScrollToPosition(posicaoInserir);
-
-                    } else if (FundoSab) {
-                        Materia novaMateria = new Materia("", "", 0, 0, "");
-                        int posicaoInserir = listaDeMaterias.size(); // posição da última existente
-                        // Adicionar a nova matéria à lista
-                        listaDeMaterias.add(posicaoInserir, novaMateria);
-                        // Notificar o adaptador sobre a alteração nos dados
-                        adicionarMateriaAdapter.notifyItemInserted(posicaoInserir);
-                        recyclerViewMaterias.smoothScrollToPosition(posicaoInserir);
-
-                    } else if (FundoDom) {
-                        Materia novaMateria = new Materia("", "", 0, 0, "");
-                        int posicaoInserir = listaDeMaterias.size(); // posição da última existente
-                        // Adicionar a nova matéria à lista
-                        listaDeMaterias.add(posicaoInserir, novaMateria);
-                        // Notificar o adaptador sobre a alteração nos dados
-                        adicionarMateriaAdapter.notifyItemInserted(posicaoInserir);
-                        recyclerViewMaterias.smoothScrollToPosition(posicaoInserir);
-
-                    }
-
-                    if (listaDeMaterias.size() > 2) {
-                        // Ajustar a altura da RecyclerView para 150dp
-                        ViewGroup.LayoutParams layoutParams = recyclerViewMaterias.getLayoutParams();
-                        layoutParams.height = (int) getResources().getDimension(R.dimen.recycler_view_height);
-                        recyclerViewMaterias.setLayoutParams(layoutParams);
-                    }
-
+                    // Mostra o Dialog
+                    dialog.show();
+                    exibirDialogoAdicaoMateria(dialog);
                 } else {
                     Toast.makeText(getApplicationContext(), "Selecione um dia da semana", Toast.LENGTH_SHORT).show();
 
@@ -407,7 +354,6 @@ public class AdicionarTela extends AppCompatActivity {
                         }
                     }
                 }
-
 
 
                 FundoSeg = true;
@@ -676,8 +622,7 @@ public class AdicionarTela extends AppCompatActivity {
             }
         });
 
-}
-
+    }
 
 
     private void showColorSelectionDialogButton() {
@@ -885,7 +830,6 @@ public class AdicionarTela extends AppCompatActivity {
     }
 
 
-
     private void updateColorPreview() {
         String corFundoHex = defaultHexColors[selectedFundoColorIndex];
         GradientDrawable gradientDrawable = (GradientDrawable) colorPreview.getBackground();
@@ -925,7 +869,6 @@ public class AdicionarTela extends AppCompatActivity {
     }
 
 
-
     public void salvarAgrupamento() {
         // Obter os valores dos campos
         valoresNomeMateria.clear();
@@ -948,29 +891,39 @@ public class AdicionarTela extends AppCompatActivity {
             return;
         }
 
-        Set<TextInputEditText> uniqueNomeMateriaEditTexts = new HashSet<>(adicionarMateriaAdapter.getNomeMateriaEditTexts());
-        Set<Spinner> uniqueDataSemanaSpinners = new HashSet<>(adicionarMateriaAdapter.getSpinnerDataMateriaList());
-        Set<TextInputEditText> uniqueQuantAulasEditTexts = new HashSet<>(adicionarMateriaAdapter.getQuantAulasEditTexts());
+        Set<TextView> uniqueNomeMateriaEditTexts = new HashSet<>(adicionarMateriaAdapter.getNomeMateriaEditTexts());
+        Set<TextView> uniqueDataSemanaSpinners = new HashSet<>(adicionarMateriaAdapter.getSpinnerDataMateriaList());
+        Set<TextView> uniqueQuantAulasEditTexts = new HashSet<>(adicionarMateriaAdapter.getQuantAulasEditTexts());
+
+        List<Materia> listaDeMaterias = adicionarMateriaAdapter.getListaDeMaterias();
 
 
-        int idAgrupamento = inserirAgrupamento(nomeAgrupamento, categoria, corFundoHex, corBotoesHex, corTextoHex,iconEscolhido);
+        int idAgrupamento = inserirAgrupamento(nomeAgrupamento, categoria, corFundoHex, corBotoesHex, corTextoHex, iconEscolhido);
 
-        for (TextInputEditText nomeMateriaEditText : uniqueNomeMateriaEditTexts) {
+        for (Materia materia : listaDeMaterias) {
+            String nomeMateria = materia.getNomeMateria();
+            String dataSemana = materia.getDataMateria();
+            String quantAulas = materia.getQuantAulas();
+
+            // Salve esses valores no banco de dados (substitua esta linha pelo seu método de salvar no banco)
+            inserirMaterias(nomeMateria, dataSemana, idAgrupamento, quantAulas);
+        }
+
+        for (TextView nomeMateriaEditText : uniqueNomeMateriaEditTexts) {
             String nomeMateria = nomeMateriaEditText.getText().toString();
             valoresNomeMateria.add(nomeMateria);
         }
 
-        for (Spinner dataSemanaSpinner : uniqueDataSemanaSpinners) {
-            String selectedDate = dataSemanaSpinner.getSelectedItem().toString();
+        for (TextView dataSemanaSpinner : uniqueDataSemanaSpinners) {
+            String selectedDate = dataSemanaSpinner.getText().toString();
             valoresDataSemana.add(selectedDate);
         }
 
-        for (TextInputEditText quantAulasEditText : uniqueQuantAulasEditTexts) {
+        for (TextView quantAulasEditText : uniqueQuantAulasEditTexts) {
             String quantAulas = quantAulasEditText.getText().toString();
             valoresQuantAulas.add(quantAulas);
         }
 
-        inserirMaterias(valoresNomeMateria, valoresDataSemana, idAgrupamento,valoresQuantAulas);
 
         // Atualizar a lista de agrupamentos
 
@@ -987,9 +940,6 @@ public class AdicionarTela extends AppCompatActivity {
     }
 
 
-
-
-
     private void limparCampos() {
         // Limpe os campos de nome e categoria (ou faça o que for apropriado)
         Spinner spinnerCategoria = findViewById(R.id.spinnerCategoria);
@@ -1001,15 +951,12 @@ public class AdicionarTela extends AppCompatActivity {
 
     }
 
-    private void inserirMaterias(List<String> valoresNomeMateria, List<String> valoresDataSemana, int idAgrupamento, List<String>valoresQuantAulas) {
+    private void inserirMaterias(String nomeMateria, String dataSemana, int idAgrupamento, String quantAula) {
         try {
             DatabaseHelper dbHelper = new DatabaseHelper(this);
             SQLiteDatabase bancoDados = dbHelper.getWritableDatabase();
 
-            for (int i = 0; i < valoresNomeMateria.size(); i++) {
-                String nomeMateria = valoresNomeMateria.get(i);
-                String dataSemana = valoresDataSemana.get(i);
-                String quantAula = valoresQuantAulas.get(i);
+
 
                 ContentValues valuesMateria = new ContentValues();
                 valuesMateria.put("nome_materia", nomeMateria);
@@ -1017,11 +964,10 @@ public class AdicionarTela extends AppCompatActivity {
                 valuesMateria.put("id_agrupamento", idAgrupamento);
                 valuesMateria.put("quantAulas", quantAula);
 
-                Log.d("TAG","NomeMateriaInsert: " + nomeMateria + " DataSemanaInsert: " + dataSemana + " QuantAula: " + quantAula);
+                Log.d("TAG", "NomeMateriaInsert: " + nomeMateria + " DataSemanaInsert: " + dataSemana + " QuantAula: " + quantAula);
 
+            bancoDados.insert("materias", null, valuesMateria);
 
-                bancoDados.insert("materias", null, valuesMateria);
-            }
 
             bancoDados.close();
 
@@ -1030,6 +976,7 @@ public class AdicionarTela extends AppCompatActivity {
             Log.e("TAG", "Erro ao inserir dados na tabela materias: " + e.getMessage());
         }
     }
+
 
     private void mostrarParteUm() {
 
@@ -1066,17 +1013,18 @@ public class AdicionarTela extends AppCompatActivity {
         Button btnAdicionarConteudo2 = findViewById(R.id.btnAdicionarConteudo);
         ImageView Vector = findViewById(R.id.Vector);
         View BarraSuperiorMaterias = findViewById(R.id.BarraSuperiorMaterias);
-
+        View fundoMateriasAdicionadas = findViewById(R.id.fundoMateriasAdicionadas);
 
         TextView TextSeg = findViewById(R.id.TextSeg);
-        TextView   TextTer = findViewById(R.id.TextTer);
+        TextView TextTer = findViewById(R.id.TextTer);
         TextView TextQua = findViewById(R.id.TextQua);
-        TextView     TextQui = findViewById(R.id.TextQui);
+        TextView TextQui = findViewById(R.id.TextQui);
         TextView TextSex = findViewById(R.id.TextSex);
-        TextView       TextSab = findViewById(R.id.TextSab);
-        TextView  TextDom = findViewById(R.id.TextDom);
-           View     view2sda = findViewById(R.id.view2sda);
+        TextView TextSab = findViewById(R.id.TextSab);
+        TextView TextDom = findViewById(R.id.TextDom);
+        View view2sda = findViewById(R.id.view2sda);
         View FundoAddMaterias = findViewById(R.id.FundoAddMaterias);
+        TextView TextTituloMateriasAdicionadas = findViewById(R.id.TextTituloMateriasAdicionadas);
 
 
         Vector.setVisibility(View.VISIBLE);
@@ -1099,6 +1047,8 @@ public class AdicionarTela extends AppCompatActivity {
         TextFundo.setVisibility(View.VISIBLE);
         iconImageView.setVisibility(View.VISIBLE);
 
+        TextTituloMateriasAdicionadas.setVisibility(View.GONE);
+        fundoMateriasAdicionadas.setVisibility(View.GONE);
         MateriasText.setVisibility(View.GONE);
         TextSeg.setVisibility(View.GONE);
         TextTer.setVisibility(View.GONE);
@@ -1156,19 +1106,19 @@ public class AdicionarTela extends AppCompatActivity {
         Button btnAdicionarConteudo2 = findViewById(R.id.btnAdicionarConteudo);
         ImageView Vector = findViewById(R.id.Vector);
         View BarraSuperiorMaterias = findViewById(R.id.BarraSuperiorMaterias);
-
+        TextView TextTituloMateriasAdicionadas = findViewById(R.id.TextTituloMateriasAdicionadas);
         TextView TextSeg = findViewById(R.id.TextSeg);
-        TextView   TextTer = findViewById(R.id.TextTer);
+        TextView TextTer = findViewById(R.id.TextTer);
         TextView TextQua = findViewById(R.id.TextQua);
-        TextView     TextQui = findViewById(R.id.TextQui);
+        TextView TextQui = findViewById(R.id.TextQui);
         TextView TextSex = findViewById(R.id.TextSex);
-        TextView       TextSab = findViewById(R.id.TextSab);
-        TextView  TextDom = findViewById(R.id.TextDom);
-        View     view2sda = findViewById(R.id.view2sda);
+        TextView TextSab = findViewById(R.id.TextSab);
+        TextView TextDom = findViewById(R.id.TextDom);
+        View view2sda = findViewById(R.id.view2sda);
         View FundoAddMaterias = findViewById(R.id.FundoAddMaterias);
+        View fundoMateriasAdicionadas = findViewById(R.id.fundoMateriasAdicionadas);
 
-
-
+        fundoMateriasAdicionadas.setVisibility(View.VISIBLE);
         TextSeg.setVisibility(View.VISIBLE);
         TextTer.setVisibility(View.VISIBLE);
         TextQua.setVisibility(View.VISIBLE);
@@ -1181,6 +1131,7 @@ public class AdicionarTela extends AppCompatActivity {
         BarraSuperiorMaterias.setVisibility(View.VISIBLE);
         MateriasText.setVisibility(View.VISIBLE);
         SombraFaixa.setVisibility(View.VISIBLE);
+        TextTituloMateriasAdicionadas.setVisibility(View.VISIBLE);
 
         /*
         view2.setVisibility(View.VISIBLE);
@@ -1213,5 +1164,85 @@ public class AdicionarTela extends AppCompatActivity {
     }
 
 
+    private void exibirDialogoAdicaoMateria(final Dialog dialog) {
+
+
+        // Obter referências para os EditTexts e Spinner no layout do diálogo
+        EditText editTextNomeMateria = dialog.findViewById(R.id.textViewNomeMateria);
+        EditText editTextQuantAula = dialog.findViewById(R.id.textViewQuantAulas);
+        Spinner spinnerDiaSemana = dialog.findViewById(R.id.spinnerDataMateria);
+
+        // Configurar o adaptador para o Spinner com a lista de dias da semana
+        List<String> listaDeDiasSemana = Arrays.asList("Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo");
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.spinner_preto, listaDeDiasSemana);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDiaSemana.setAdapter(spinnerAdapter);
+
+        if (FundoSeg) {
+            spinnerDiaSemana.setSelection(0);
+        } else if (FundoTer) {
+            spinnerDiaSemana.setSelection(1);
+        } else if (FundoQua) {
+            spinnerDiaSemana.setSelection(2);
+        } else if (FundoQui) {
+            spinnerDiaSemana.setSelection(3);
+        } else if (FundoSex) {
+            spinnerDiaSemana.setSelection(4);
+        } else if (FundoSab) {
+            spinnerDiaSemana.setSelection(5);
+        } else if (FundoDom) {
+            spinnerDiaSemana.setSelection(6);
+        }
+
+
+        View buttonSalvarMateria = dialog.findViewById(R.id.buttonRemover);
+
+        buttonSalvarMateria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String nomeMateria = editTextNomeMateria.getText().toString();
+                String quantAula = editTextQuantAula.getText().toString();
+                String diaSemana = spinnerDiaSemana.getSelectedItem().toString();
+
+                salvarMateria(dialog, nomeMateria, quantAula,  diaSemana);
+
+
+
+                if (listaDeMaterias.size() > 2) {
+                    // Ajustar a altura da RecyclerView para 150dp
+                    ViewGroup.LayoutParams layoutParams = recyclerViewMaterias.getLayoutParams();
+                    layoutParams.height = (int) getResources().getDimension(R.dimen.recycler_view_height);
+                    recyclerViewMaterias.setLayoutParams(layoutParams);
+                }
+            }
+        });
+    }
+
+
+    private void salvarMateria(Dialog dialog,String nomeMateria,String quantAula, String diaSemana) {
+        // Lógica para salvar a matéria
+        EditText editTextNomeMateria = dialog.findViewById(R.id.textViewNomeMateria);
+        EditText editTextQuantAula = dialog.findViewById(R.id.textViewQuantAulas);
+        Spinner spinnerDiaSemana = dialog.findViewById(R.id.spinnerDataMateria);
+
+
+        if (!TextUtils.isEmpty(nomeMateria) && !TextUtils.isEmpty(quantAula)) {
+            // Criar uma nova instância de Materia com os valores inseridos
+            Materia novaMateria = new Materia(nomeMateria, diaSemana, 0, 0, quantAula);
+
+            // Adicionar a nova matéria ao adaptador
+            adicionarMateriaAdapter.adicionarMateria(novaMateria);
+
+            // Notificar o adaptador sobre a alteração nos dados
+            adicionarMateriaAdapter.notifyItemInserted(listaDeMaterias.size() - 1);
+            recyclerViewMaterias.smoothScrollToPosition(listaDeMaterias.size() - 1);
+
+            dialog.dismiss();
+        } else {
+            Toast.makeText(getApplicationContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+
+        }
+    }
 
 }

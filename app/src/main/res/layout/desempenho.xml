@@ -90,9 +90,9 @@
                 android:id="@+id/fundoOpcoesCardGraficoMaterias"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="50dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="50dp"
                 android:background="@drawable/fundo_desempenho_opcoes"
                 android:elevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -102,22 +102,22 @@
 
             <ImageView
                 android:id="@+id/CardIconDesempenho"
-                android:layout_width="80dp"
-                android:layout_height="70dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="32dp"
+                android:layout_width="60dp"
+                android:layout_height="57dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/cardicondesempenho"
                 android:elevation="100dp"
                 app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
-                app:layout_constraintEnd_toStartOf="@+id/GraficoIconDesempenho"
+                app:layout_constraintStart_toStartOf="@+id/fundoOpcoesCardGraficoMaterias"
                 app:layout_constraintTop_toTopOf="@+id/fundoOpcoesCardGraficoMaterias"
                 app:layout_constraintVertical_bias="0.0" />
 
             <Spinner
                 android:id="@+id/spinnerAgrupamentos"
-                android:layout_width="92dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
                 android:backgroundTint="#000000"
                 android:elevation="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
@@ -127,42 +127,27 @@
 
             <ImageView
                 android:id="@+id/GraficoIconDesempenho"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginTop="4dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
                 android:background="@drawable/graficonicondesempenho"
                 android:elevation="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
                 app:layout_constraintEnd_toEndOf="@+id/fundoOpcoesCardGraficoMaterias"
-                app:layout_constraintStart_toStartOf="@+id/fundoOpcoesCardGraficoMaterias"
                 app:layout_constraintTop_toTopOf="@+id/fundoOpcoesCardGraficoMaterias"
                 app:layout_constraintVertical_bias="0.0" />
 
 
             <Spinner
                 android:id="@+id/GraficoSpinnerDesempenho"
-                android:layout_width="92dp"
-                android:layout_height="wrap_content"
-                android:elevation="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:elevation="0dp"
                 app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
                 app:layout_constraintEnd_toEndOf="@+id/fundoOpcoesCardGraficoMaterias"
-                app:layout_constraintHorizontal_bias="0.501"
-                app:layout_constraintStart_toStartOf="@+id/fundoOpcoesCardGraficoMaterias"
                 app:layout_constraintTop_toBottomOf="@+id/GraficoIconDesempenho"
                 app:layout_constraintVertical_bias="1.0" />
-
-            <ImageView
-                android:id="@+id/IconMateriasDesempenho"
-                android:layout_width="80dp"
-                android:layout_height="70dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/group"
-                android:elevation="10dp"
-                app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
-                app:layout_constraintStart_toEndOf="@+id/GraficoIconDesempenho"
-                app:layout_constraintTop_toTopOf="@+id/fundoOpcoesCardGraficoMaterias"
-                app:layout_constraintVertical_bias="0.0" />
 
             <View
                 android:id="@+id/ButtonListaFaltas"
@@ -264,10 +249,111 @@
                 android:layout_marginEnd="8dp"
                 android:textColor="#000000"
                 android:textSize="20sp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/fundoGrafico"
                 app:layout_constraintEnd_toEndOf="@+id/fundoGrafico"
                 app:layout_constraintStart_toStartOf="@+id/fundoGrafico"
                 app:layout_constraintTop_toTopOf="@+id/fundoGrafico" />
+
+            <View
+                android:id="@+id/FundoOpcaoSelecionadaGrafico"
+                android:layout_width="110dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_fundo_opcao_selecionada"
+                android:elevation="11dp"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintEnd_toEndOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintTop_toBottomOf="@+id/GraficoIconDesempenho" />
+
+            <View
+                android:id="@+id/fundoOpcaoSelecionadaCard"
+                android:layout_width="110dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/background_fundo_opcao_selecionada"
+                android:elevation="11dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintStart_toStartOf="@+id/fundoOpcoesCardGraficoMaterias"
+                app:layout_constraintTop_toBottomOf="@+id/GraficoIconDesempenho" />
+
+            <TextView
+                android:id="@+id/TextBarrasVerticais"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="11dp"
+                android:text="Barras Verticais"
+                android:textColor="#000000"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintEnd_toEndOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintStart_toStartOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintTop_toTopOf="@+id/FundoOpcaoSelecionadaGrafico" />
+
+            <TextView
+                android:id="@+id/TextBarraHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="11dp"
+                android:text="Barra Horizontal"
+                android:textColor="#000000"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintEnd_toEndOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintStart_toStartOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintTop_toTopOf="@+id/FundoOpcaoSelecionadaGrafico" />
+
+            <TextView
+                android:id="@+id/TextPizza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="11dp"
+                android:text="Pizza"
+                android:textColor="#000000"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintEnd_toEndOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintStart_toStartOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintTop_toTopOf="@+id/FundoOpcaoSelecionadaGrafico" />
+
+            <TextView
+                android:id="@+id/TextSelecione"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="11dp"
+                android:text="Selecione"
+                android:textColor="#000000"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintEnd_toEndOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintStart_toStartOf="@+id/FundoOpcaoSelecionadaGrafico"
+                app:layout_constraintTop_toTopOf="@+id/FundoOpcaoSelecionadaGrafico" />
+
+            <TextView
+                android:id="@+id/TextSelecioneCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="11dp"
+                android:text="Selecione"
+                android:textColor="#000000"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoOpcaoSelecionadaCard"
+                app:layout_constraintEnd_toEndOf="@+id/fundoOpcaoSelecionadaCard"
+                app:layout_constraintStart_toStartOf="@+id/fundoOpcaoSelecionadaCard"
+                app:layout_constraintTop_toTopOf="@+id/fundoOpcaoSelecionadaCard" />
+
+            <TextView
+                android:id="@+id/TextNomeCardSpinnerSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="11dp"
+                android:text="TextView"
+                android:textColor="#000000"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/fundoOpcaoSelecionadaCard"
+                app:layout_constraintEnd_toEndOf="@+id/fundoOpcaoSelecionadaCard"
+                app:layout_constraintStart_toStartOf="@+id/fundoOpcaoSelecionadaCard"
+                app:layout_constraintTop_toTopOf="@+id/fundoOpcaoSelecionadaCard" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

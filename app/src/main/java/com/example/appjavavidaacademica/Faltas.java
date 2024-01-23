@@ -1,10 +1,8 @@
 package com.example.appjavavidaacademica;
 
-import java.util.Date;
-
 public class Faltas {
 
-    private Date data;
+    private String data;
 
     private int id_materia;
     private int quantidade;
@@ -16,7 +14,7 @@ public class Faltas {
 
 
     // Construtor
-    public Faltas(Date data, int id_materia, int quantidade, String motivo) {
+    public Faltas(String data, int id_materia, int quantidade, String motivo) {
         this.data = data;
         this.id_materia = id_materia;
         this.quantidade = quantidade;
@@ -29,13 +27,20 @@ public class Faltas {
         this.totalFaltasMateria = totalFaltasMateria;
     }
 
+    public Faltas(String data, int id_materia, int quantidade, String motivo,String nome_materia) {
+        this.data = data;
+        this.id_materia = id_materia;
+        this.quantidade = quantidade;
+        this.motivo = motivo;
+        this.nome_materia = nome_materia;
+    }
 
     public int getIdMateriaFaltas() {
         return id_materia;
     }
 
     // Getters
-    public Date getData() {
+    public String getData() {
         return data;
     }
 

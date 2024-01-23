@@ -9,40 +9,36 @@
         android:paddingBottom="0dp">
 
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textViewNomeMateria"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/borda_input"
-            android:hint="Nome"
-            android:textColor="#000000"
-            android:textColorHint="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.062"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.13" />
+    <TextView
+        android:id="@+id/textViewNomeMateria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13" />
 
 
-    <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textViewQuantAulas"
-            android:layout_width="130dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/borda_input"
-            android:hint="Aula p/ Dia"
-            android:textColor="#000000"
-            android:textColorHint="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/spinnerDataMateria"
-            app:layout_constraintTop_toBottomOf="@+id/textViewNomeMateria"
-            app:layout_constraintVertical_bias="0.058" />
+    <TextView
+        android:id="@+id/textViewQuantAulas"
+        android:layout_width="130dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/spinnerDataMateria"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNomeMateria"
+        app:layout_constraintVertical_bias="0.058" />
 
 
         <View
@@ -58,29 +54,16 @@
             app:layout_constraintVertical_bias="0.0" />
 
 
-        <View
-            android:id="@+id/dividerLine2"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="#000000"
-            app:layout_constraintBottom_toTopOf="@+id/textViewNomeMateria"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Spinner
-            android:id="@+id/spinnerDataMateria"
-            style="@style/FundoSpinner"
-            android:layout_width="130dp"
-            android:layout_height="43dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/borda_input"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="@+id/dividerLine"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewNomeMateria"
-            app:layout_constraintVertical_bias="0.050000012" />
+    <TextView
+        android:id="@+id/spinnerDataMateria"
+        android:layout_width="130dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/dividerLine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNomeMateria"
+        app:layout_constraintVertical_bias="0.050000012" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

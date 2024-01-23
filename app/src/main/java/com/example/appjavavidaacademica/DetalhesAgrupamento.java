@@ -1,5 +1,7 @@
 package com.example.appjavavidaacademica;
 
+import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,23 +9,37 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DetalhesAgrupamento  extends AppCompatActivity {
 
     private SQLiteDatabase bancoDados;
     private DatabaseHelper dbHelper;
+
+    private MateriaAdapterAdicionado adicionarMateriaAdapter;
+
+    private List<Materia> listaDeMaterias = new ArrayList<>();
+
+    private RecyclerView recyclerView;
+
+
 
 
     @Override
@@ -40,13 +56,38 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         Agrupamento agrupamentoSelecionado = obterAgrupamentoPorId(agrupamentoId);
 
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
+        recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
         MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(agrupamentoId), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter.setRecyclerView(recyclerView);
+
         layoutInferiorBotoes barraInferior = new layoutInferiorBotoes(this, findViewById(R.id.includeDetalhesInf), findViewById(R.id.AdicioneAlgoScreen));
 
+        ImageView btnMaisMateria = findViewById(R.id.btnMaisMateria);
+        btnMaisMateria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listaDeMaterias.clear();
+
+                final Dialog dialog = new Dialog(DetalhesAgrupamento.this, android.R.style.Theme_Translucent_NoTitleBar);
+                dialog.setContentView(R.layout.dialog_add_materia);
+
+                ImageView buttonCancelar = dialog.findViewById(R.id.buttonCancelar);
+
+                buttonCancelar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // Fecha o Dialog
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+                exibirDialogoAdicaoMateriaDetalhes(dialog,agrupamentoId);
+
+            }
+        });
 
 
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -311,5 +352,90 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         }, 2000);  // Aguarde 2000 milissegundos (2 segundos) antes de iniciar a animação de saída
     }
 
+
+    private void exibirDialogoAdicaoMateriaDetalhes(final Dialog dialog, int idAgrupamento) {
+
+
+        // Obter referências para os EditTexts e Spinner no layout do diálogo
+        EditText editTextNomeMateria = dialog.findViewById(R.id.textViewNomeMateria);
+        EditText editTextQuantAula = dialog.findViewById(R.id.textViewQuantAulas);
+        Spinner spinnerDiaSemana = dialog.findViewById(R.id.spinnerDataMateria);
+
+        // Configurar o adaptador para o Spinner com a lista de dias da semana
+        List<String> listaDeDiasSemana = Arrays.asList("Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo");
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.spinner_preto, listaDeDiasSemana);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDiaSemana.setAdapter(spinnerAdapter);
+
+
+        View buttonSalvarMateria = dialog.findViewById(R.id.buttonRemover);
+
+        buttonSalvarMateria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String nomeMateria = editTextNomeMateria.getText().toString();
+                String quantAula = editTextQuantAula.getText().toString();
+                String diaSemana = spinnerDiaSemana.getSelectedItem().toString();
+
+                salvarMateriaDetalhes(dialog, nomeMateria, quantAula,  diaSemana, idAgrupamento);
+
+
+            }
+        });
+    }
+
+
+    private void salvarMateriaDetalhes(Dialog dialog,String nomeMateria,String quantAula, String diaSemana, int idAgrupamento) {
+
+        // Lógica para salvar a matéria
+        EditText editTextNomeMateria = dialog.findViewById(R.id.textViewNomeMateria);
+        EditText editTextQuantAula = dialog.findViewById(R.id.textViewQuantAulas);
+        Spinner spinnerDiaSemana = dialog.findViewById(R.id.spinnerDataMateria);
+
+
+
+        if (!TextUtils.isEmpty(nomeMateria) && !TextUtils.isEmpty(quantAula)) {
+            // Criar uma nova instância de Materia com os valores inseridos
+            try {
+                DatabaseHelper dbHelper = new DatabaseHelper(this);
+                SQLiteDatabase bancoDados = dbHelper.getWritableDatabase();
+
+                ContentValues valuesMateria = new ContentValues();
+                valuesMateria.put("nome_materia", nomeMateria);
+                valuesMateria.put("dia_semana", diaSemana);
+                valuesMateria.put("id_agrupamento", idAgrupamento);
+                valuesMateria.put("quantAulas", quantAula);
+
+                Log.d("TAG", "NomeMateriaInsert: " + nomeMateria + " DataSemanaInsert: " + diaSemana + " QuantAula: " + quantAula);
+
+                bancoDados.insert("materias", null, valuesMateria);
+
+                bancoDados.close();
+
+                Materia novaMateria = new Materia(nomeMateria, diaSemana, idAgrupamento, 0, quantAula);
+
+                recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
+                MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(idAgrupamento), this);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                adapter.setRecyclerView(recyclerView);
+
+                adapter.notifyDataSetChanged();
+
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("TAG", "Erro ao inserir dados na tabela materias: " + e.getMessage());
+            }
+            dialog.dismiss();
+
+        } else {
+            Toast.makeText(getApplicationContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
 
 }

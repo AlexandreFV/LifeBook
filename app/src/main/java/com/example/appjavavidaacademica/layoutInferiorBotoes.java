@@ -56,9 +56,12 @@ public class layoutInferiorBotoes {
         desempenho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Iniciar a atividade DesempenhoActivity quando o botão desempenho for clicado
-                Intent intent = new Intent(context, DesempenhoActivity.class);
-                context.startActivity(intent);
+                // Verificar se já estamos na atividade DesempenhoActivity
+                if (!(context instanceof DesempenhoActivity)) {
+                    // Se não estiver na DesempenhoActivity, inicie a intent
+                    Intent intent = new Intent(context, DesempenhoActivity.class);
+                    context.startActivity(intent);
+                }
             }
         });
 
@@ -73,19 +76,19 @@ public class layoutInferiorBotoes {
             @Override
             public void onClick(View v) {
                 // Lógica para o botão configurações
+
             }
         });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Lógica para o botão add
-                /*
-                showAdicioneAlgoScreenWithAnimation();
-                */
-
-                Intent intent = new Intent(context, AdicionarTela.class);
-                context.startActivity(intent);
+                // Verificar se já estamos na atividade AdicionarTela
+                if (!(context instanceof AdicionarTela)) {
+                    // Se não estiver na AdicionarTela, inicie a intent
+                    Intent intent = new Intent(context, AdicionarTela.class);
+                    context.startActivity(intent);
+                }
             }
         });
     }

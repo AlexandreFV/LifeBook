@@ -1,0 +1,52 @@
+<!-- header_table.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/table_fundo_titulo"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <!-- Nome -->
+    <TextView
+        android:id="@+id/textViewNomeHeader"
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Nome"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <!-- Data -->
+    <TextView
+        android:id="@+id/textViewDataHeader"
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Data"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <!-- Quantidade -->
+    <TextView
+        android:id="@+id/textViewQuantidadeHeader"
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Quantidade"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <!-- Motivo -->
+    <TextView
+        android:id="@+id/textViewMotivoHeader"
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Motivo"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+</LinearLayout>

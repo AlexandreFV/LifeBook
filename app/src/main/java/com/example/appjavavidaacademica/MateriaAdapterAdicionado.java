@@ -3,15 +3,12 @@ package com.example.appjavavidaacademica;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,14 +16,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.database.sqlite.SQLiteDatabase;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -154,58 +151,138 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
                         Materia materia = listaDeMaterias.get(position);
 
                         // Chamar a função showFullscreenDialog e passar o nome da matéria
-                        showFullscreenDialog(materia.getNomeMateria(), convertStringToInt(materia.getQuantAulas()));
+                            showFullscreenDialog(materia.getNomeMateria(), convertStringToInt(materia.getQuantAulas()));
                     }
                 }
             });
 
+            fundoBtnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    // Obter a posição do item no RecyclerView
+                    int position = getAdapterPosition();
+
+                    // Certificar-se de que a posição é válida
+                    if (position != RecyclerView.NO_POSITION) {
+                        // Obter o objeto Materia correspondente à posição
+                        Materia materia = listaDeMaterias.get(position);
+
+                        // Chamar a função showFullscreenDialog e passar o nome da matéria
+                        showDialogExcluirMateria(position,materia.getId(),materia.getNomeMateria());
+                    }
+                }
+            });
+
+            fundoEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+
+                    // Certificar-se de que a posição é válida
+                    if (position != RecyclerView.NO_POSITION) {
+                        // Obter o objeto Materia correspondente à posição
+                        Materia materia = listaDeMaterias.get(position);
+
+                        // Criar o diálogo de edição
+                        final Dialog dialog = new Dialog(fundoEdit.getContext(), android.R.style.Theme_Translucent_NoTitleBar);
+                        dialog.setContentView(R.layout.dialog_edit_materia);
+
+                        ImageView buttonCancelar = dialog.findViewById(R.id.buttonCancelar);
+
+                        buttonCancelar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // Fecha o Dialog
+                                dialog.dismiss();
+                            }
+                        });
+
+                        dialog.show();
+                        // Exibir o diálogo de edição
+                        showEditarMateria(dialog, materia);
+                    }
+                }
+            });
+        }
+
+        public void showDialogExcluirMateria(final int position,int idAgrupamento, String nomeMateria) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+
+            // Configurar o título e a mensagem
+            builder.setTitle("Excluir Matéria");
+            builder.setMessage("Tem certeza que deseja excluir esta matéria? " + nomeMateria);
+
+            // Configurar botão positivo
+            builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Chame a função para remover a matéria do banco de dados e do RecyclerView
+                    excluirFaltasPorIdMateria(idAgrupamento);
+                    excluirMateriaDoBanco(idAgrupamento,position);
+
+                }
+            });
+
+            // Configurar botão negativo
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Fechar o AlertDialog
+                    dialog.dismiss();
+                }
+            });
+
+            // Exibir o AlertDialog
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
 
 
         public void showFullscreenDialog(String nomeMateria,int quantidadeAulas) {
             // Inflar o layout do modal
-            View dialogView = LayoutInflater.from(itemView.getContext()).inflate(R.layout.modal_adicionar_falta, null);
+            View dialogView1 = LayoutInflater.from(itemView.getContext()).inflate(R.layout.modal_adicionar_falta, null);
 
             // Criar o Dialog
-            final Dialog fullscreenDialog = new Dialog(itemView.getContext(), android.R.style.Theme_Translucent_NoTitleBar);
-            fullscreenDialog.setContentView(dialogView);
+            final Dialog fullscreenDialog1 = new Dialog(itemView.getContext(), android.R.style.Theme_Translucent_NoTitleBar);
+            fullscreenDialog1.setContentView(dialogView1);
 
             // Configurar para cobrir toda a tela
             WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-            layoutParams.copyFrom(fullscreenDialog.getWindow().getAttributes());
+            layoutParams.copyFrom(fullscreenDialog1.getWindow().getAttributes());
             layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
             layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
 
-            fullscreenDialog.getWindow().setAttributes(layoutParams);
-            TextView nomeMateriaFalta = dialogView.findViewById(R.id.NomeDaMateriaFalta);
+            fullscreenDialog1.getWindow().setAttributes(layoutParams);
+            TextView nomeMateriaFalta = dialogView1.findViewById(R.id.NomeDaMateriaFalta);
             nomeMateriaFalta.setText(nomeMateria);
 
             // Encontrar e configurar o botão de fechar
-            ImageView btnCloseAdicionarFalta = dialogView.findViewById(R.id.btnCloseAdicionarFalta);
+            ImageView btnCloseAdicionarFalta = dialogView1.findViewById(R.id.btnCloseAdicionarFalta);
             btnCloseAdicionarFalta.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Fechar o Dialog ao clicar no botão de fechar
-                    fullscreenDialog.dismiss();
+                    fullscreenDialog1.dismiss();
                 }
             });
 
-            Spinner spinnerFaltas = dialogView.findViewById(R.id.ButtonFaltas);
+            Spinner spinnerFaltas = dialogView1.findViewById(R.id.ButtonFaltas);
             configureSpinner(spinnerFaltas, quantidadeAulas);
 
-            inputDataFalta = dialogView.findViewById(R.id.InputDataFalta);
+            inputDataFalta = dialogView1.findViewById(R.id.InputDataFalta);
             configureDefaultDate(inputDataFalta);
 
             // Exibir o Dialog
-            fullscreenDialog.show();
+            fullscreenDialog1.show();
 
-            Button AdicionarFaltaInsert = dialogView.findViewById(R.id.AdicionarFaltaInsert);
+            Button AdicionarFaltaInsert = dialogView1.findViewById(R.id.AdicionarFaltaInsert);
             AdicionarFaltaInsert.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TextInputEditText inputDataFalta = dialogView.findViewById(R.id.InputDataFalta); // Substitua com seu ID real
-                    Spinner spinnerFaltas = dialogView.findViewById(R.id.ButtonFaltas); // Substitua com seu ID real
-                    EditText editTextDescricao = dialogView.findViewById(R.id.editTextDescricao); // Substitua com seu ID real
+                    TextInputEditText inputDataFalta = dialogView1.findViewById(R.id.InputDataFalta); // Substitua com seu ID real
+                    Spinner spinnerFaltas = dialogView1.findViewById(R.id.ButtonFaltas); // Substitua com seu ID real
+                    EditText editTextDescricao = dialogView1.findViewById(R.id.editTextDescricao); // Substitua com seu ID real
 
                     String dataFalta = inputDataFalta.getText().toString(); // Obtendo a data do TextInputEditText
                     int quantidadeFaltas = Integer.parseInt(spinnerFaltas.getSelectedItem().toString()); // Obtendo a quantidade do Spinner
@@ -219,11 +296,50 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
                         // Chame a função para inserir falta, passando os valores
                         inserirFalta(dataFalta, materia.getId(), quantidadeFaltas, motivoFalta);
                     }
-                    fullscreenDialog.dismiss();
+                    fullscreenDialog1.dismiss();
 
                 }
             });
         }
+
+        private void showEditarMateria(final Dialog dialog3,final Materia materia) {
+
+
+            // Obter referências para os EditTexts e Spinner no layout do diálogo
+            EditText editTextNomeMateria = dialog3.findViewById(R.id.textViewNomeMateria);
+            EditText editTextQuantAula = dialog3.findViewById(R.id.textViewQuantAulas);
+            Spinner spinnerDiaSemana = dialog3.findViewById(R.id.spinnerDataMateria);
+
+            // Configurar o adaptador para o Spinner com a lista de dias da semana
+            List<String> listaDeDiasSemana = Arrays.asList("Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo");
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(detalhesAgrupamento.getApplicationContext(), R.layout.spinner_preto, listaDeDiasSemana);
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerDiaSemana.setAdapter(spinnerAdapter);
+
+            editTextNomeMateria.setText(materia.getNomeMateria());
+            editTextQuantAula.setText(String.valueOf(materia.getQuantAulas()));
+            spinnerDiaSemana.setSelection(listaDeDiasSemana.indexOf(materia.getDataMateria()));
+
+
+            View buttonSalvarMateria = dialog3.findViewById(R.id.buttonRemover);
+            buttonSalvarMateria.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String novoNomeMateria = editTextNomeMateria.getText().toString();
+                    String novaQuantAula = editTextQuantAula.getText().toString();
+                    String novoDiaSemana = spinnerDiaSemana.getSelectedItem().toString();
+
+
+                    atualizarDadosMateria(materia.getId(), novoNomeMateria, novoDiaSemana, Integer.parseInt(novaQuantAula));
+                    dialog3.dismiss();
+
+
+
+                }
+            });
+        }
+
 
 
         private int convertStringToInt(String value) {
@@ -339,8 +455,69 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
 
         }
 
+    private void excluirMateriaDoBanco(int idMateria, int position) {
+        try {
+            DatabaseHelper dbHelper = new DatabaseHelper(detalhesAgrupamento.getApplicationContext()); // Substitua mContext pelo contexto adequado
+            SQLiteDatabase bancoDados = dbHelper.getWritableDatabase();
+
+            // Excluir o registro com base no ID
+            bancoDados.delete("materias", "id_materia=?", new String[]{String.valueOf(idMateria)});
+
+            bancoDados.close();
+
+            // Remover o item da lista
+            listaDeMaterias.remove(position);
+
+            // Notificar o adaptador sobre a alteração nos dados
+            notifyItemRemoved(position);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("TAG", "Erro ao excluir dados na tabela materias: " + e.getMessage());
+        }
+    }
+
+    private void excluirFaltasPorIdMateria(int idMateria) {
+        try {
+            DatabaseHelper dbHelper = new DatabaseHelper(detalhesAgrupamento.getApplicationContext()); // Substitua mContext pelo contexto adequado
+            SQLiteDatabase bancoDados = dbHelper.getWritableDatabase();
+
+            // Excluir registros da tabela 'faltas' onde id_tal = id_materia
+            bancoDados.delete("faltas", "id_materia=?", new String[]{String.valueOf(idMateria)});
+
+            bancoDados.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("TAG", "Erro ao excluir dados na tabela faltas: " + e.getMessage());
+        }
+    }
+
+            private void atualizarDadosMateria(int idMateria, String novoNomeMateria, String novoDiaSemana, int novaQuantAula) {
+            try {
+                DatabaseHelper dbHelper = new DatabaseHelper(detalhesAgrupamento.getApplicationContext()); // Substitua mContext pelo contexto adequado
+                SQLiteDatabase bancoDados = dbHelper.getWritableDatabase();
+
+                // Atualizar o registro na tabela 'materias'
+                ContentValues values = new ContentValues();
+                values.put("nome_materia", novoNomeMateria);
+                values.put("dia_semana", novoDiaSemana);
+                values.put("quantAulas", novaQuantAula);
+
+                bancoDados.update("materias", values, "id_materia=?", new String[]{String.valueOf(idMateria)});
+
+                bancoDados.close();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("TAG", "Erro ao atualizar dados na tabela materias: " + e.getMessage());
+            }
+        }
+
+
 
     }
+
 
 
 

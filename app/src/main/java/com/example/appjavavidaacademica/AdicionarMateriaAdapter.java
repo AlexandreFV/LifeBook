@@ -3,25 +3,19 @@ package com.example.appjavavidaacademica;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.textfield.TextInputEditText;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 public class AdicionarMateriaAdapter extends RecyclerView.Adapter<AdicionarMateriaAdapter.MateriaViewHolder> {
     private List<Materia> listaDeMaterias;
-    private List<TextInputEditText> nomeMateriaEditTexts;
-    private List<Spinner> spinnerDataMateriaList;
-    private List<TextInputEditText> quantAulasEditTexts;
+    private List<TextView> nomeMateriaEditTexts;
+    private List<TextView> spinnerDataMateriaList;
+    private List<TextView> quantAulasEditTexts;
 
 
     public AdicionarMateriaAdapter(List<Materia> listaDeMaterias) {
@@ -41,14 +35,24 @@ public class AdicionarMateriaAdapter extends RecyclerView.Adapter<AdicionarMater
     public void limparMaterias() {
         listaDeMaterias.clear();
         notifyDataSetChanged();
-        for (TextInputEditText editText : nomeMateriaEditTexts) {
+        for (TextView editText : nomeMateriaEditTexts) {
             editText.setText("");
         }
 
-        for (TextInputEditText editText : quantAulasEditTexts) {
+        for (TextView editText : quantAulasEditTexts) {
             editText.setText("");
         }
     }
+
+    public void adicionarMateria(Materia materia) {
+        listaDeMaterias.add(materia);
+        notifyItemInserted(listaDeMaterias.size() - 1);
+    }
+
+    public List<Materia> getListaDeMaterias() {
+        return listaDeMaterias;
+    }
+
     @NonNull
     @Override
     public MateriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,31 +65,23 @@ public class AdicionarMateriaAdapter extends RecyclerView.Adapter<AdicionarMater
     public void onBindViewHolder(@NonNull MateriaViewHolder holder, int position) {
         Materia materia = listaDeMaterias.get(position);
 
-        nomeMateriaEditTexts.add((TextInputEditText) holder.nomeMateriaTextView);
-        spinnerDataMateriaList.add(holder.spinnerDataMateria);
-        quantAulasEditTexts.add((TextInputEditText) holder.quantAulaTextView);
+        holder.nomeMateriaTextView.setText(materia.getNomeMateria());  // Substitua getNome() pelo método correto para obter o nome da matéria
+        holder.quantAulaTextView.setText(String.valueOf(materia.getQuantAulas()));  // Substitua getQuantAula() pelo método correto para obter a quantidade de aulas
+        holder.spinnerDataMateria.setText(materia.getDataMateria());
 
-        nomeMateriaEditTexts = new ArrayList<>(new HashSet<>(nomeMateriaEditTexts));
-        spinnerDataMateriaList = new ArrayList<>(new HashSet<>(spinnerDataMateriaList));
-        quantAulasEditTexts = new ArrayList<>(new HashSet<>(quantAulasEditTexts));
-
-        List<String> listaDeDatas = Arrays.asList("Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo");
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(holder.itemView.getContext(), R.layout.spinner_item, listaDeDatas);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.spinnerDataMateria.setAdapter(spinnerAdapter);
 
     }
 
 
-    public List<TextInputEditText> getNomeMateriaEditTexts() {
+    public List<TextView> getNomeMateriaEditTexts() {
         return nomeMateriaEditTexts;
     }
 
-    public List<Spinner> getSpinnerDataMateriaList() {  // Alteração aqui
+    public List<TextView> getSpinnerDataMateriaList() {  // Alteração aqui
         return spinnerDataMateriaList;
     }
 
-    public List<TextInputEditText> getQuantAulasEditTexts() {
+    public List<TextView> getQuantAulasEditTexts() {
         return quantAulasEditTexts;
     }
 
@@ -100,7 +96,7 @@ public class AdicionarMateriaAdapter extends RecyclerView.Adapter<AdicionarMater
 
         public TextView quantAulaTextView;
 
-        public Spinner spinnerDataMateria;
+        public TextView spinnerDataMateria;
 
 
         public MateriaViewHolder(@NonNull View itemView) {

@@ -27,7 +27,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class DesempenhoActivity extends AppCompatActivity {
@@ -38,6 +37,21 @@ public class DesempenhoActivity extends AppCompatActivity {
 
     private ImageView imageCloseDesempenho;
 
+    private View fundoOpcaoSelecionadaGrafico;
+    private TextView TextSelecione;
+
+    private TextView TextBarrasVerticais;
+
+    private TextView TextBarraHorizontal;
+
+    private TextView TextPizza;
+
+    private TextView TextSelecioneCard;
+
+    private TextView TextNomeCardSpinnerSelected;
+
+    private View listaFaltasButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +60,16 @@ public class DesempenhoActivity extends AppCompatActivity {
         final ImageView imageView = findViewById(R.id.CardIconDesempenho);
         final Spinner spinner = findViewById(R.id.spinnerAgrupamentos);
         final Spinner spinnerGrafico = findViewById(R.id.GraficoSpinnerDesempenho);
+        final ImageView graficoImageView = findViewById(R.id.GraficoIconDesempenho);
+        fundoOpcaoSelecionadaGrafico = findViewById(R.id.FundoOpcaoSelecionadaGrafico);
+        TextSelecione = findViewById(R.id.TextSelecione);
+        TextBarrasVerticais = findViewById(R.id.TextBarrasVerticais);
+        TextBarraHorizontal = findViewById(R.id.TextBarraHorizontal);
+        TextPizza = findViewById(R.id.TextPizza);
+        TextSelecioneCard = findViewById(R.id.TextSelecioneCard);
+        TextNomeCardSpinnerSelected = findViewById(R.id.TextNomeCardSpinnerSelected);
+        listaFaltasButton = findViewById(R.id.ButtonListaFaltas);
+
         dbHelper = new DatabaseHelper(this);
         String[] agrupamentos = obterAgrupamentosDoBancoDeDados();
 
@@ -53,9 +77,21 @@ public class DesempenhoActivity extends AppCompatActivity {
         agrupamentosList.add("");  // Adicione um item vazio como o primeiro item
         agrupamentosList.addAll(Arrays.asList(agrupamentos));
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, agrupamentosList);
+        layoutInferiorBotoes barraInferior = new layoutInferiorBotoes(this, findViewById(R.id.includeDesempenhoInf), findViewById(R.id.AdicioneAlgoScreen));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_preto, agrupamentosList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        listaFaltasButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Iniciar a atividade DesempenhoActivity quando o botão desempenho for clicado
+                Intent intent = new Intent(DesempenhoActivity.this, ListaFaltas.class);
+                startActivity(intent);
+            }
+        });
+
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +100,7 @@ public class DesempenhoActivity extends AppCompatActivity {
             }
         });
 
+
         selectedAgrupamento = null;
         selectedGraph = null;
 
@@ -71,6 +108,39 @@ public class DesempenhoActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 selectedAgrupamento = (String) parentView.getItemAtPosition(position);
+                TextNomeCardSpinnerSelected.setText(selectedAgrupamento);
+
+                if (selectedAgrupamento != null && selectedAgrupamento != "") {
+                    graficoImageView.setEnabled(true);
+                    spinnerGrafico.setEnabled(true);
+                    graficoImageView.setAlpha(1f);
+                    spinnerGrafico.setAlpha(1f);
+                    TextSelecione.setAlpha(1f);
+                    fundoOpcaoSelecionadaGrafico.setAlpha(1f);
+                    TextSelecione.setAlpha(1f);
+                    TextBarrasVerticais.setAlpha(1f);
+                    TextPizza.setAlpha(1f);
+                    TextBarraHorizontal.setAlpha(1f);
+                    TextSelecioneCard.setAlpha(0f);
+                    TextNomeCardSpinnerSelected.setVisibility(View.VISIBLE);
+                } else {
+                    // Caso contrário, desabilite a ImageView e o Spinner do gráfico
+                    graficoImageView.setEnabled(false);
+                    spinnerGrafico.setEnabled(false);
+                    graficoImageView.setAlpha(0.1f);
+                    spinnerGrafico.setAlpha(0.1f);
+                    TextSelecione.setAlpha(0.1f);
+                    fundoOpcaoSelecionadaGrafico.setAlpha(0.1f);
+                    TextSelecione.setAlpha(0.0f);
+                    TextBarrasVerticais.setAlpha(0.0f);
+                    TextPizza.setAlpha(0.0f);
+                    TextBarraHorizontal.setAlpha(0.0f);
+                    TextSelecioneCard.setAlpha(1f);
+                    TextNomeCardSpinnerSelected.setVisibility(View.GONE);
+
+
+                }
+                View fundoOpcaoSelecionadaCard = findViewById(R.id.TextSelecione);
                 updateChartIfReady();
             }
 
@@ -81,7 +151,6 @@ public class DesempenhoActivity extends AppCompatActivity {
             }
         });
 
-        ImageView graficoImageView = findViewById(R.id.GraficoIconDesempenho);
         graficoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +161,7 @@ public class DesempenhoActivity extends AppCompatActivity {
 
 
         List<String> opcoesGraficos = new ArrayList<>(Arrays.asList("", "Gráfico de Barras Horizontal", "Gráfico de Barras Vertical", "Gráfico de Pizza"));
-        ArrayAdapter<String> graficoAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcoesGraficos);
+        ArrayAdapter<String> graficoAdapter = new ArrayAdapter<>(this, R.layout.spinner_preto, opcoesGraficos);
         graficoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGrafico.setAdapter(graficoAdapter);
 
@@ -139,23 +208,50 @@ public class DesempenhoActivity extends AppCompatActivity {
                 pieChart.setVisibility(View.GONE);
                 barChart.setVisibility(View.GONE);
                 horizontalBarChart.setVisibility(View.VISIBLE);
+                fundoOpcaoSelecionadaGrafico.setVisibility(View.VISIBLE);
+                TextBarraHorizontal.setVisibility(View.VISIBLE);
+                TextBarrasVerticais.setVisibility(View.GONE);
+                TextPizza.setVisibility(View.GONE);
+                TextSelecione.setVisibility(View.GONE);
+
                 exibirGraficoBarrasHorizontal(faltasList);
+
+
                 break;
             case "Gráfico de Barras Vertical":
                 pieChart.setVisibility(View.GONE);
                 barChart.setVisibility(View.VISIBLE);
                 horizontalBarChart.setVisibility(View.GONE);
+                fundoOpcaoSelecionadaGrafico.setVisibility(View.VISIBLE);
+                TextBarraHorizontal.setVisibility(View.GONE);
+                TextBarrasVerticais.setVisibility(View.VISIBLE);
+                TextPizza.setVisibility(View.GONE);
+                TextSelecione.setVisibility(View.GONE);
 
                 exibirGraficoBarrasVerticais(faltasList);
+
+
                 break;
             case "Gráfico de Pizza":
                 barChart.setVisibility(View.GONE);
                 pieChart.setVisibility(View.VISIBLE);
                 horizontalBarChart.setVisibility(View.GONE);
+                fundoOpcaoSelecionadaGrafico.setVisibility(View.VISIBLE);
+                TextBarraHorizontal.setVisibility(View.GONE);
+                TextBarrasVerticais.setVisibility(View.GONE);
+                TextPizza.setVisibility(View.VISIBLE);
+                TextSelecione.setVisibility(View.GONE);
 
                 exibirGraficoPizza(faltasList);
+
+
                 break;
             default:
+                fundoOpcaoSelecionadaGrafico.setVisibility(View.VISIBLE);
+                TextBarraHorizontal.setVisibility(View.GONE);
+                TextBarrasVerticais.setVisibility(View.GONE);
+                TextPizza.setVisibility(View.GONE);
+                TextSelecione.setVisibility(View.VISIBLE);
                 // Adicione lógica para outros tipos de gráficos conforme necessário
                 break;
         }

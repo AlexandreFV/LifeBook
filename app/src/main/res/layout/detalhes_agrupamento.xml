@@ -280,6 +280,15 @@
                 app:layout_constraintStart_toStartOf="@+id/fundoSuccessDetalhesCard"
                 app:layout_constraintTop_toTopOf="@+id/fundoSuccessDetalhesCard"></View>
 
+            <ImageView
+                android:id="@+id/btnMaisMateria"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                app:layout_constraintBottom_toBottomOf="@+id/view2"
+                app:layout_constraintEnd_toEndOf="@+id/view2"
+                app:layout_constraintTop_toTopOf="@+id/view2"
+                app:srcCompat="@drawable/mais" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
