@@ -70,7 +70,7 @@
             android:layout_height="300dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:background="#FFFFFF"
+            android:background="@drawable/rounded_square"
             android:elevation="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,7 @@
             app:layout_constraintVertical_bias="0.498" />
 
         <TextView
-            android:id="@+id/TextExcluirMateria"
+            android:id="@+id/TextDetalhesFalta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -101,7 +101,7 @@
             android:elevation="11dp"
             app:layout_constraintEnd_toEndOf="@+id/fundoDialog"
             app:layout_constraintStart_toStartOf="@+id/fundoDialog"
-            app:layout_constraintTop_toBottomOf="@+id/TextExcluirMateria" />
+            app:layout_constraintTop_toBottomOf="@+id/TextDetalhesFalta" />
 
     <View
         android:id="@+id/linhaMateria2"
@@ -113,7 +113,7 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonRemover"
         app:layout_constraintEnd_toEndOf="@+id/fundoDialog"
         app:layout_constraintStart_toStartOf="@+id/fundoDialog"
-        app:layout_constraintTop_toBottomOf="@+id/TextExcluirMateria"
+        app:layout_constraintTop_toBottomOf="@+id/TextDetalhesFalta"
         app:layout_constraintVertical_bias="1.0" />
 
         <View
@@ -131,9 +131,10 @@
             app:layout_constraintStart_toStartOf="@+id/fundoDialog" />
 
         <ImageView
-            android:id="@+id/buttonCancelar"
+            android:id="@+id/buttonCancelarCard"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="28dp"
             android:elevation="20dp"
             app:layout_constraintBottom_toTopOf="@+id/linhaMateria"

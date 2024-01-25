@@ -73,7 +73,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                 final Dialog dialog = new Dialog(DetalhesAgrupamento.this, android.R.style.Theme_Translucent_NoTitleBar);
                 dialog.setContentView(R.layout.dialog_add_materia);
 
-                ImageView buttonCancelar = dialog.findViewById(R.id.buttonCancelar);
+                ImageView buttonCancelar = dialog.findViewById(R.id.buttonCancelarCard);
 
                 buttonCancelar.setOnClickListener(new View.OnClickListener() {
                     @Override

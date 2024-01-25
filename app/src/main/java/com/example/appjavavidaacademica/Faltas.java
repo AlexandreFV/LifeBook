@@ -12,6 +12,8 @@ public class Faltas {
 
     private String nome_materia;
 
+    private String nomeAgrupamento;
+
 
     // Construtor
     public Faltas(String data, int id_materia, int quantidade, String motivo) {
@@ -27,13 +29,15 @@ public class Faltas {
         this.totalFaltasMateria = totalFaltasMateria;
     }
 
-    public Faltas(String data, int id_materia, int quantidade, String motivo,String nome_materia) {
+    public Faltas(String data, int id_materia, int quantidade, String motivo,String nome_materia, String nomeAgrupamento) {
         this.data = data;
         this.id_materia = id_materia;
         this.quantidade = quantidade;
         this.motivo = motivo;
         this.nome_materia = nome_materia;
+        this.nomeAgrupamento = nomeAgrupamento;
     }
+
 
     public int getIdMateriaFaltas() {
         return id_materia;
@@ -59,6 +63,12 @@ public class Faltas {
     public String getNomeMateriaFaltas() {
         return nome_materia;
     }
+
+    public String getNomeAgrupamento(){
+        return nomeAgrupamento;
+    }
+
+
 
 }
 

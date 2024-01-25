@@ -7,16 +7,11 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.text.Html;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -56,6 +51,7 @@ public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
         TextView corHexTextView = listItemView.findViewById(R.id.corHexTextView);
         View colorSquare = listItemView.findViewById(R.id.colorSquare);
         ImageView iconEscolhido = listItemView.findViewById(R.id.IconImageAdicionada);
+
 
         if (agrupamento != null) {
 
@@ -129,6 +125,7 @@ public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
             btnAcaoDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     // Exibir um AlertDialog de confirmação
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -184,14 +181,10 @@ public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
                         positiveButton.setTextColor(Color.BLACK);
                         negativeButton.setTextColor(Color.BLACK);
                     }
-
-
-
                 }
+
             });
-
         }
-
         return listItemView;
     }
 
@@ -231,4 +224,5 @@ public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
             Log.e("AgrupamentoAdapter", "Erro ao excluir agrupamento: " + e.getMessage());
         }
     }
+
 }

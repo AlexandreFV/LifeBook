@@ -19,7 +19,7 @@
             android:layout_height="450dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/modal_adicionar_falta"
+            android:background="@drawable/rounded_square"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,11 +46,23 @@
             app:layout_constraintStart_toStartOf="@+id/view5"
             app:layout_constraintTop_toBottomOf="@+id/btnCloseAdicionarFalta" />
 
+        <View
+            android:id="@+id/barraInferiorMaterias"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="#000000"
+            app:layout_constraintEnd_toEndOf="@+id/view5"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/view5"
+            app:layout_constraintTop_toBottomOf="@+id/editTextDescricao" />
+
         <TextView
             android:id="@+id/TextAdicionarFalta"
             android:layout_width="wrap_content"
             android:layout_height="27dp"
             android:text="Adicionar Falta"
+            android:textColor="#000000"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/BarraSuperiorMaterias"
             app:layout_constraintEnd_toEndOf="@+id/view5"
@@ -96,11 +108,12 @@
 
         <Spinner
             android:id="@+id/ButtonFaltas"
-            android:layout_width="88dp"
+            android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#FA0000"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/view5"
             app:layout_constraintStart_toStartOf="@+id/view5"
             app:layout_constraintTop_toBottomOf="@+id/TextQuantidadeAulas" />
 
@@ -108,18 +121,20 @@
             android:id="@+id/AdicionarFaltaInsert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:backgroundTint="#35C956"
             android:text="Adicionar Faltas"
             app:layout_constraintBottom_toBottomOf="@+id/view5"
             app:layout_constraintEnd_toEndOf="@+id/view5"
             app:layout_constraintStart_toStartOf="@+id/view5"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDescricao" />
+            app:layout_constraintTop_toBottomOf="@+id/barraInferiorMaterias"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="Motivo"
             android:textColor="#000000"
@@ -130,25 +145,31 @@
         <EditText
             android:id="@+id/editTextDescricao"
             android:layout_width="0dp"
-            android:layout_height="68dp"
+            android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:hint="Insira uma descrição (Opcional)"
             android:inputType="textMultiLine"
             android:lines="4"
+            android:maxLines="1"
+            android:textColor="#000000"
+            android:textColorHint="#000000"
             app:layout_constraintEnd_toEndOf="@+id/view5"
             app:layout_constraintStart_toStartOf="@+id/view5"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <TextView
             android:id="@+id/NomeDaMateriaFalta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:inputType="textMultiLine"
             android:lines="4"
+            android:textColor="#000000"
+            android:textColorHint="#000000"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/TextQuantidadeAulas"
             app:layout_constraintEnd_toEndOf="@+id/view5"
@@ -159,10 +180,13 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/InputDataFalta"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:maxLines="1"
+            android:textColor="#000000"
+            android:textColorHint="#000000"
             app:layout_constraintStart_toStartOf="@+id/view5"
             app:layout_constraintTop_toBottomOf="@+id/TextDataFalta" />
     </androidx.constraintlayout.widget.ConstraintLayout>

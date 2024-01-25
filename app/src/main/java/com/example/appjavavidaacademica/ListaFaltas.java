@@ -67,9 +67,9 @@ public class ListaFaltas extends AppCompatActivity {
             bancoDados = dbHelper.getReadableDatabase();
 
             // Colunas que você deseja obter
-            String[] colunas = {"data", "id_materia", "quantidade", "motivo", "id_faltas"};
+            String[] colunas = {"faltas.data", "faltas.id_materia", "faltas.quantidade", "faltas.motivo", "faltas.id_faltas", "materias.id_agrupamento"};
 
-            Cursor cursor = bancoDados.query("faltas", colunas, null, null, null, null, null);
+            Cursor cursor = bancoDados.query("faltas INNER JOIN materias ON faltas.id_materia = materias.id_materia", colunas, null, null, null, null, null);
 
             if (cursor != null && cursor.moveToFirst()) {
                 do {
@@ -80,13 +80,17 @@ public class ListaFaltas extends AppCompatActivity {
                     int quantidade = cursor.getInt(cursor.getColumnIndex("quantidade"));
                     String motivo = cursor.getString(cursor.getColumnIndex("motivo"));
                     String nomeMateria = obterNomeMateria(idMateria);
+                    int idAgrupamento = cursor.getInt(cursor.getColumnIndex("id_agrupamento"));
+
+                    String nomeAgrupamento = obterNomeAgrupamento(idAgrupamento);
+
 
                     // Criar objeto Falta e adicionar à lista
-                    Faltas falta = new Faltas(data, idMateria, quantidade, motivo,nomeMateria);
+                    Faltas falta = new Faltas(data, idMateria, quantidade, motivo, nomeMateria, nomeAgrupamento);
                     listaDeFaltas.add(falta);
 
                     // Adicionar um Log para imprimir os valores
-                    Log.d("TAG", "id_faltas: " + id_faltas + ", data: " + data + ", idMateria: " + idMateria + ", quantidade: " + quantidade + ", motivo: " + motivo);
+                    Log.d("TAG", "id_faltas: " + id_faltas + ", data: " + data + ", idMateria: " + idMateria + ", quantidade: " + quantidade + ", motivo: " + motivo + ", Card: " + nomeAgrupamento);
 
                 } while (cursor.moveToNext());
 
@@ -114,6 +118,7 @@ public class ListaFaltas extends AppCompatActivity {
 
             if (cursorMaterias != null && cursorMaterias.moveToFirst()) {
                 nomeMateria = cursorMaterias.getString(cursorMaterias.getColumnIndex("nome_materia"));
+
                 cursorMaterias.close();
             }
         } catch (Exception e) {
@@ -124,6 +129,27 @@ public class ListaFaltas extends AppCompatActivity {
         return nomeMateria;
     }
 
+    private String obterNomeAgrupamento(int idAgrupamento) {
+        String nomeAgrupamento = "";
+
+        try {
+            // Consulta à tabela agrupamento para obter o nome do agrupamento
+            String[] colunasAgrupamento = {"nome_agrupamento"};
+            Cursor cursorAgrupamento = bancoDados.query("agrupamento", colunasAgrupamento, "id_agrupamento = ?",
+                    new String[]{String.valueOf(idAgrupamento)}, null, null, null);
+
+            if (cursorAgrupamento != null && cursorAgrupamento.moveToFirst()) {
+                nomeAgrupamento = cursorAgrupamento.getString(cursorAgrupamento.getColumnIndex("nome_agrupamento"));
+
+                cursorAgrupamento.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("TAG", "Erro ao obter nome do agrupamento: " + e.getMessage());
+        }
+
+        return nomeAgrupamento;
+    }
 
 }
 

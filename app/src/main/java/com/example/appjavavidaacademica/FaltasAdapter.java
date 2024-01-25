@@ -1,5 +1,7 @@
 package com.example.appjavavidaacademica;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -40,9 +43,12 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         holder.textViewMotivoItem.setText(falta.getMotivo());
 
         LinearLayout layoutSobreposicao = holder.itemView.findViewById(R.id.layoutSobreposicao);
-        ImageView imageViewDelete = holder.itemView.findViewById(R.id.imageViewDelete);
         ImageView imageViewEdit = holder.itemView.findViewById(R.id.imageViewEdit);
         ImageView imageViewDetails = holder.itemView.findViewById(R.id.imageViewDetails);
+        ImageView imageViewDelete = holder.itemView.findViewById(R.id.imageViewDelete);
+
+
+
 
         if (position == posicaoDoItemClicado) {
             layoutSobreposicao.setVisibility(View.VISIBLE);
@@ -64,7 +70,35 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
                 notifyDataSetChanged();
             }
         });
-    }
+
+        holder.imageViewDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    // Obtém o objeto Faltas correspondente à posição
+                    Faltas falta = listaDeFaltas.get(position);
+                    // Exibe o AlertDialog de confirmação de exclusão
+                    showDeleteConfirmationDialog(holder.itemView.getContext(), position);
+                }
+            }
+        });
+
+        holder.imageViewDetails.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    // Obtém o objeto Faltas correspondente à posição
+                    Faltas falta = listaDeFaltas.get(position);
+                    // Exibe o AlertDialog de confirmação de exclusão
+                    showDetailsFalta(holder.itemView.getContext(), position);
+                }
+            }
+        });
+
+        }
+
 
     private void addGradientBackground(ImageView imageView) {
         GradientDrawable gradientDrawable = new GradientDrawable();
@@ -80,29 +114,58 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         imageView.setBackground(gradientDrawable);
     }
 
-
-
-
-
     @Override
     public int getItemCount() {
         return listaDeFaltas.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         // Declare as Views necessárias para os itens da tabela
         TextView textViewNomeItem;
         TextView textViewDataItem;
         TextView textViewQuantidadeItem;
         TextView textViewMotivoItem;
 
-        ViewHolder(View itemView) {
+        ImageView imageViewDelete;
+
+        ImageView imageViewDetails;
+
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // Inicialize as Views para os itens da tabela
             textViewNomeItem = itemView.findViewById(R.id.textViewNomeItem);
             textViewDataItem = itemView.findViewById(R.id.textViewDataItem);
             textViewQuantidadeItem = itemView.findViewById(R.id.textViewQuantidadeItem);
             textViewMotivoItem = itemView.findViewById(R.id.textViewMotivoItem);
+            imageViewDelete = itemView.findViewById(R.id.imageViewDelete);
+            imageViewDetails = itemView.findViewById(R.id.imageViewDetails);
+
+            imageViewDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        // Obtém o objeto Faltas correspondente à posição
+                        Faltas falta = listaDeFaltas.get(position);
+                        // Exibe o AlertDialog de confirmação de exclusão
+                        showDeleteConfirmationDialog(itemView.getContext(), position);
+                    }
+                }
+            });
+
+            imageViewDetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        // Obtém o objeto Faltas correspondente à posição
+                        Faltas falta = listaDeFaltas.get(position);
+                        // Exibe o AlertDialog de confirmação de exclusão
+                        showDetailsFalta(itemView.getContext(), position);
+                    }
+                }
+            });
         }
 
         void bind(Faltas falta) {
@@ -112,6 +175,127 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
             textViewQuantidadeItem.setText(String.valueOf(falta.getQuantidade()));
             textViewMotivoItem.setText(falta.getMotivo());
         }
-
     }
+    private void showDeleteConfirmationDialog(Context context, int position) {
+        // Inflar o layout do dialog personalizado
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_delete_falta, null);
+
+
+        // Configurar elementos dentro do layout customizado
+        TextView textExcluirFalta = dialogView.findViewById(R.id.TextDetalhesFalta);
+        TextView textDesejaFalta = dialogView.findViewById(R.id.TextDesejaCard);
+        TextView textNomeMateriaVariavel = dialogView.findViewById(R.id.TextNomeCardVariavel);
+        View buttonRemover = dialogView.findViewById(R.id.buttonRemover);
+        View buttonCancelar = dialogView.findViewById(R.id.buttonCancelarCard);
+        TextView textNomeMateria = dialogView.findViewById(R.id.textView2);
+        TextView TextDataFaltaApagar = dialogView.findViewById(R.id.TextDataFaltaApagar);
+        TextView TextDataFaltaVariavel = dialogView.findViewById(R.id.TextDataFaltaVariavel);
+        TextView TextQuantFaltasApagar = dialogView.findViewById(R.id.TextQuantFaltasApagar);
+        TextView TextQuantFaltasVariavel = dialogView.findViewById(R.id.TextQuantFaltasVariavel);
+        TextView TextMotivoFaltasApagar = dialogView.findViewById(R.id.TextMotivoFaltasApagar);
+        TextView TextMotivoFaltasVariavel = dialogView.findViewById(R.id.TextMotivoFaltasVariavel);
+
+        Faltas falta = listaDeFaltas.get(position);
+        String motivoFalta = falta.getMotivo();
+        String dataFalta = falta.getData();
+        String quantFalta = String.valueOf(falta.getQuantidade());
+        String nomeMateria = falta.getNomeMateriaFaltas();
+
+        TextMotivoFaltasVariavel.setText(motivoFalta);
+        TextQuantFaltasVariavel.setText(quantFalta);
+        TextDataFaltaVariavel.setText(dataFalta);
+        textNomeMateriaVariavel.setText(nomeMateria);
+
+
+
+        // Criar o Dialog personalizado
+        final Dialog customDialog = new Dialog(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen); // Define o estilo para ocupar a tela inteira
+        customDialog.setContentView(dialogView);
+
+        // Configurar ações para os botões
+        buttonRemover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Chama o método de exclusão (ou implemente a lógica desejada)
+                deleteItem(position);
+                customDialog.dismiss();
+            }
+        });
+
+        buttonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.dismiss();
+            }
+        });
+
+        // Exibir o Dialog personalizado
+        customDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
+        customDialog.show();
+    }
+
+
+    // Método para excluir o item da lista
+    private void deleteItem(int position) {
+        // Implemente a lógica de exclusão aqui
+        listaDeFaltas.remove(position);
+        notifyItemRemoved(position);
+    }
+
+
+    private void showDetailsFalta (Context context, int position) {
+        // Inflar o layout do dialog personalizado
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_details_falta, null);
+
+        // Configurar elementos dentro do layout customizado
+        TextView TextDetalhesFalta = dialogView.findViewById(R.id.TextDetalhesFalta);
+        TextView TextNomeCardFaltaVariavel = dialogView.findViewById(R.id.TextNomeCardFaltaVariavel);
+        TextView TextNomeCardFalta = dialogView.findViewById(R.id.TextNomeCardFalta);
+        TextView textNomeMateriaVariavel = dialogView.findViewById(R.id.TextNomeCardVariavel);
+        View buttonCancelar = dialogView.findViewById(R.id.buttonCancelarCard);
+        TextView textNomeMateria = dialogView.findViewById(R.id.textView2);
+        TextView TextDataFaltaApagar = dialogView.findViewById(R.id.TextDataFaltaApagar);
+        TextView TextDataFaltaVariavel = dialogView.findViewById(R.id.TextDataFaltaVariavel);
+        TextView TextQuantFaltasApagar = dialogView.findViewById(R.id.TextQuantFaltasApagar);
+        TextView TextQuantFaltasVariavel = dialogView.findViewById(R.id.TextQuantFaltasVariavel);
+        TextView TextMotivoFaltasApagar = dialogView.findViewById(R.id.TextMotivoFaltasApagar);
+        TextView TextMotivoFaltasVariavel = dialogView.findViewById(R.id.TextMotivoFaltasVariavel);
+
+        Faltas falta = listaDeFaltas.get(position);
+        String nomeCard = falta.getNomeAgrupamento();
+        String motivoFalta = falta.getMotivo();
+        String dataFalta = falta.getData();
+        String quantFalta = String.valueOf(falta.getQuantidade());
+        String nomeMateria = falta.getNomeMateriaFaltas();
+
+        TextMotivoFaltasVariavel.setText(motivoFalta);
+        TextQuantFaltasVariavel.setText(quantFalta);
+        TextDataFaltaVariavel.setText(dataFalta);
+        textNomeMateriaVariavel.setText(nomeMateria);
+        TextNomeCardFaltaVariavel.setText(nomeCard);
+
+
+        // Criar o Dialog personalizado
+        final Dialog customDialog = new Dialog(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen); // Define o estilo para ocupar a tela inteira
+        customDialog.setContentView(dialogView);
+
+
+        buttonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.dismiss();
+            }
+        });
+
+        // Exibir o Dialog personalizado
+        customDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
+        customDialog.show();
+    }
+
+
+
+
+
+
 }
+

@@ -1,9 +1,8 @@
 package com.example.appjavavidaacademica;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -169,7 +168,7 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
                         Materia materia = listaDeMaterias.get(position);
 
                         // Chamar a função showFullscreenDialog e passar o nome da matéria
-                        showDialogExcluirMateria(position,materia.getId(),materia.getNomeMateria());
+                        showDialogExcluirMateria(itemView.getContext(), position);
                     }
                 }
             });
@@ -188,7 +187,7 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
                         final Dialog dialog = new Dialog(fundoEdit.getContext(), android.R.style.Theme_Translucent_NoTitleBar);
                         dialog.setContentView(R.layout.dialog_edit_materia);
 
-                        ImageView buttonCancelar = dialog.findViewById(R.id.buttonCancelar);
+                        ImageView buttonCancelar = dialog.findViewById(R.id.buttonCancelarCard);
 
                         buttonCancelar.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -206,36 +205,45 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             });
         }
 
-        public void showDialogExcluirMateria(final int position,int idAgrupamento, String nomeMateria) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+        public void showDialogExcluirMateria(Context context, int position) {
+            View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_excluir_materia, null);
 
-            // Configurar o título e a mensagem
-            builder.setTitle("Excluir Matéria");
-            builder.setMessage("Tem certeza que deseja excluir esta matéria? " + nomeMateria);
+            TextView TextExcluirFalta = dialogView.findViewById(R.id.TextDetalhesFalta);
+            View buttonCancelar = dialogView.findViewById(R.id.buttonCancelarCard);
+            View fundoDialog = dialogView.findViewById(R.id.fundoDialog);
+            TextView TextDesejaFalta = dialogView.findViewById(R.id.TextDesejaCard);
+            TextView TextNomeMateriaVariavel = dialogView.findViewById(R.id.TextNomeCardVariavel);
+            View buttonRemover = dialogView.findViewById(R.id.buttonRemover);
 
-            // Configurar botão positivo
-            builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            Materia materia = listaDeMaterias.get(position);
+            String nomeMateria = materia.getNomeMateria();
+
+            TextNomeMateriaVariavel.setText(nomeMateria);
+
+            // Criar o Dialog personalizado
+            final Dialog customDialog = new Dialog(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen); // Define o estilo para ocupar a tela inteira
+            customDialog.setContentView(dialogView);
+
+            // Configurar ações para os botões
+            buttonRemover.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Chame a função para remover a matéria do banco de dados e do RecyclerView
-                    excluirFaltasPorIdMateria(idAgrupamento);
-                    excluirMateriaDoBanco(idAgrupamento,position);
-
+                public void onClick(View v) {
+                    // Chama o método de exclusão (ou implemente a lógica desejada)
+                    deleteItem(position);
+                    customDialog.dismiss();
                 }
             });
 
-            // Configurar botão negativo
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            buttonCancelar.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Fechar o AlertDialog
-                    dialog.dismiss();
+                public void onClick(View v) {
+                    customDialog.dismiss();
                 }
             });
 
-            // Exibir o AlertDialog
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+            // Exibir o Dialog personalizado
+            customDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
+            customDialog.show();
         }
 
 
@@ -381,6 +389,12 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
 
             // Atribua o ArrayAdapter ao Spinner
             spinner.setAdapter(adapter);
+        }
+
+        private void deleteItem(int position) {
+            // Implemente a lógica de exclusão aqui
+            listaDeMaterias.remove(position);
+            notifyItemRemoved(position);
         }
 
 

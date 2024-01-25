@@ -12,7 +12,8 @@
 
     <include
         android:id="@+id/includeMainSup"
-        layout="@layout/layout_superior" />
+        layout="@layout/layout_superior"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <include
