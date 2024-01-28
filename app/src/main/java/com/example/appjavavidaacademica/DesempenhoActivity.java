@@ -156,6 +156,8 @@ public class DesempenhoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 spinnerGrafico.performClick();
 
+
+
             }
         });
 
@@ -168,6 +170,7 @@ public class DesempenhoActivity extends AppCompatActivity {
         spinnerGrafico.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
                 selectedGraph = (String) parentView.getItemAtPosition(position);
                 updateChartIfReady();
 
@@ -255,6 +258,18 @@ public class DesempenhoActivity extends AppCompatActivity {
                 // Adicione lógica para outros tipos de gráficos conforme necessário
                 break;
         }
+
+        if(selectedGraph != ""){
+            // Tornar visíveis os itens desejados quando um gráfico for selecionado
+            View fundoGrafico = findViewById(R.id.fundoGrafico);
+            TextView TextQuantFaltasGrafico = findViewById(R.id.TextQuantFaltasGrafico);
+            TextView TextParabens = findViewById(R.id.TextParabens);
+
+            fundoGrafico.setVisibility(View.VISIBLE);
+            TextQuantFaltasGrafico.setVisibility(View.VISIBLE);
+            TextParabens.setVisibility(View.VISIBLE);
+        }
+
     }
 
     public void exibirGraficoBarrasHorizontal(List<Faltas> faltasList) {
@@ -430,6 +445,7 @@ public class DesempenhoActivity extends AppCompatActivity {
             List<Faltas> faltasList = dbHelper.obterFaltasPorAgrupamentoEMateria(selectedAgrupamento);
             exibirInformacoesFaltas(faltasList, selectedGraph);
         }
+
     }
 
 

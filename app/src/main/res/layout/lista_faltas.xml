@@ -86,6 +86,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fundoListaFaltasFaixa" />
 
+    <View
+        android:id="@+id/RemoveFiltro"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/fundo_button_removerfiltro11_faltas"
+        app:layout_constraintEnd_toStartOf="@+id/Filtrar"
+        app:layout_constraintTop_toBottomOf="@+id/fundoListaFaltasFaixa" />
+
     <TextView
         android:id="@+id/FiltrarText"
         android:layout_width="wrap_content"
@@ -97,6 +107,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/Filtrar"
         app:layout_constraintTop_toTopOf="@+id/Filtrar" />
+
+    <TextView
+        android:id="@+id/RemoverFiltroText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remover Filtro"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/RemoveFiltro"
+        app:layout_constraintEnd_toEndOf="@+id/RemoveFiltro"
+        app:layout_constraintStart_toStartOf="@+id/RemoveFiltro"
+        app:layout_constraintTop_toTopOf="@+id/RemoveFiltro" />
+
+    <TextView
+        android:id="@+id/TextParabensCriterio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:text="Parabens, voce não possui nenhuma falta nestes criterios!"
+        android:textColor="#000000"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/fundoParabens"
+        app:layout_constraintEnd_toEndOf="@+id/fundoParabens"
+        app:layout_constraintStart_toStartOf="@+id/fundoParabens"
+        app:layout_constraintTop_toBottomOf="@+id/Cabecalho" />
+
+    <View
+        android:id="@+id/fundoParabens"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/fundo_table_itens"
+        android:elevation="1dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Cabecalho" />
 
     <ScrollView
         android:layout_width="match_parent"

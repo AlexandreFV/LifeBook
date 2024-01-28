@@ -205,6 +205,8 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             });
         }
 
+
+
         public void showDialogExcluirMateria(Context context, int position) {
             View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_excluir_materia, null);
 
@@ -245,6 +247,9 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             customDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
             customDialog.show();
         }
+
+
+
 
 
         public void showFullscreenDialog(String nomeMateria,int quantidadeAulas) {
@@ -528,7 +533,11 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             }
         }
 
-
+    public void atualizarLista(List<Materia> novaLista) {
+        listaDeMaterias.clear();
+        listaDeMaterias.addAll(novaLista);
+        notifyDataSetChanged();
+    }
 
     }
 

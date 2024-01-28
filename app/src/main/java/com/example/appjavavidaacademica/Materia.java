@@ -44,5 +44,5 @@ public class Materia {
         return quantAulas;
     }
 
-
+    public String getDia_semana(){ return dia_semana; }
 }

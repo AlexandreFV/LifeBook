@@ -11,4 +11,8 @@
     <dimen name="margin_top">24dp</dimen>
     <dimen name="recycler_view_height">250dp</dimen>
 
+
+
+    <dimen name="alert_dialog_max_height">100dp</dimen>
+    <dimen name="radio_group_max_height">200dp</dimen>
 </resources>

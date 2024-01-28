@@ -43,6 +43,7 @@
             app:layout_constraintStart_toStartOf="@+id/includeMainSup"
             app:layout_constraintTop_toBottomOf="@+id/includeMainSup" />
 
+
         <TextView
         android:id="@+id/AdicioneAlgo"
         android:layout_width="wrap_content"

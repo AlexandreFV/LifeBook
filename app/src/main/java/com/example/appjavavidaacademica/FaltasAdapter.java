@@ -14,17 +14,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder> {
 
     private List<Faltas> listaDeFaltas;
+    private List<Faltas> listaDeFaltasFiltrada;
+    private List<Faltas> listaDeFaltasOriginal;  // Adicione esta linha
+
 
     private int posicaoDoItemClicado = RecyclerView.NO_POSITION;
 
 
     public FaltasAdapter(List<Faltas> listaDeFaltas) {
+
         this.listaDeFaltas = listaDeFaltas;
+        this.listaDeFaltasOriginal = new ArrayList<>(listaDeFaltas);  // Adicione esta linha
     }
 
     @Override
@@ -32,6 +38,8 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_table_faltas, parent, false);
         return new ViewHolder(view);
     }
+
+
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -46,8 +54,6 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         ImageView imageViewEdit = holder.itemView.findViewById(R.id.imageViewEdit);
         ImageView imageViewDetails = holder.itemView.findViewById(R.id.imageViewDetails);
         ImageView imageViewDelete = holder.itemView.findViewById(R.id.imageViewDelete);
-
-
 
 
         if (position == posicaoDoItemClicado) {
@@ -99,6 +105,11 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
 
         }
 
+    public void resetarListaOriginal() {
+        listaDeFaltas.clear();
+        listaDeFaltas.addAll(listaDeFaltasOriginal);
+        notifyDataSetChanged();
+    }
 
     private void addGradientBackground(ImageView imageView) {
         GradientDrawable gradientDrawable = new GradientDrawable();
@@ -117,6 +128,34 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return listaDeFaltas.size();
+    }
+
+    public void filtrarDados(String cardSelecionado, int quantidadeFaltas) {
+        List<Faltas> listaFiltrada = new ArrayList<>();
+
+        // Verificar se o nome do card foi selecionado
+        boolean filtrarPorCard = cardSelecionado != null && !cardSelecionado.isEmpty();
+
+        // Verificar se a quantidade de faltas foi selecionada
+        boolean filtrarPorQuantidade = quantidadeFaltas > 0;
+
+        // Usar a listaDeFaltasOriginal em vez de listaDeFaltas
+        List<Faltas> listaOriginal = new ArrayList<>(listaDeFaltasOriginal);
+
+        // Aplicar o filtro na lista original
+        for (Faltas falta : listaOriginal) {
+            boolean atendeFiltroCard = !filtrarPorCard || falta.getNomeAgrupamento().equals(cardSelecionado);
+            boolean atendeFiltroQuantidade = !filtrarPorQuantidade || falta.getQuantidade() == quantidadeFaltas;
+
+            if (atendeFiltroCard && atendeFiltroQuantidade) {
+                listaFiltrada.add(falta);
+            }
+        }
+
+        // Atualizar a lista exibida no RecyclerView
+        listaDeFaltas.clear();
+        listaDeFaltas.addAll(listaFiltrada);
+        notifyDataSetChanged();
     }
 
 
@@ -291,10 +330,6 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         customDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
         customDialog.show();
     }
-
-
-
-
 
 
 }

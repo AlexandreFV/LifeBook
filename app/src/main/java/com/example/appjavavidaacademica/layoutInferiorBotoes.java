@@ -68,7 +68,11 @@ public class layoutInferiorBotoes {
         notificacoes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Lógica para o botão notificações
+                if (!(context instanceof AdicionarTela)) {
+                    // Se não estiver na AdicionarTela, inicie a intent
+                    Intent intent = new Intent(context, NotificationActivity.class);
+                    context.startActivity(intent);
+                }
             }
         });
 

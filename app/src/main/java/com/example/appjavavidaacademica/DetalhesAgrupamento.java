@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,7 +40,9 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
+    private String filtroDiaSemana;
 
+    private Spinner spinnerFiltro;
 
 
     @Override
@@ -55,12 +58,37 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         int agrupamentoId = getIntent().getIntExtra("AGRUPO_ID", -1);
         Agrupamento agrupamentoSelecionado = obterAgrupamentoPorId(agrupamentoId);
 
+        spinnerFiltro = findViewById(R.id.spinnerFiltro);
+        String[] diasSemana = {"Todas", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"};
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, diasSemana);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFiltro.setAdapter(adapter2);
+        filtroDiaSemana = spinnerFiltro.getSelectedItem().toString();
+
+        spinnerFiltro.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Atualize o valor do filtro quando a seleção do spinner mudar
+                filtroDiaSemana = diasSemana[position];
+
+                // Atualize o RecyclerView com o novo valor do filtro
+                updateRecyclerView(agrupamentoId, filtroDiaSemana);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Não faça nada aqui
+            }
+        });
+
 
         recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
-        MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(agrupamentoId), this);
+        MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(agrupamentoId, filtroDiaSemana), this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter.setRecyclerView(recyclerView);
+        adapter.notifyDataSetChanged();
+
 
         layoutInferiorBotoes barraInferior = new layoutInferiorBotoes(this, findViewById(R.id.includeDetalhesInf), findViewById(R.id.AdicioneAlgoScreen));
 
@@ -139,7 +167,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
             textViewNome.setTextColor(corTextoInt);
             textViewCategoria.setTextColor(corTextoInt);
 
-            List<Materia> listaDeMaterias = obterMateriasPorAgrupamento(agrupamentoId);
+            List<Materia> listaDeMaterias = obterMateriasPorAgrupamento(agrupamentoId,filtroDiaSemana);
 
 
             // Agora você pode usar essas informações como necessário
@@ -191,7 +219,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
     }
 
 
-    public List<Materia> obterMateriasPorAgrupamento(long idAgrupamento) {
+    public List<Materia> obterMateriasPorAgrupamento(long idAgrupamento, String filtroDiaSemana) {
         List<Materia> materias = new ArrayList<>();
 
         try {
@@ -199,11 +227,16 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
             SQLiteDatabase bancoDados = dbHelper.getReadableDatabase();
 
             // Colunas que você deseja recuperar
-            String[] colunas = {"id_materia", "nome_materia", "dia_semana", "id_agrupamento","quantAulas"};
+            String[] colunas = {"id_materia", "nome_materia", "dia_semana", "id_agrupamento", "quantAulas"};
 
             // Condição para a cláusula WHERE
             String selecao = "id_agrupamento = ?";
             String[] argumentos = {String.valueOf(idAgrupamento)};
+
+            if (!TextUtils.isEmpty(filtroDiaSemana)) {
+                selecao += " AND dia_semana = ?";
+                argumentos = new String[]{String.valueOf(idAgrupamento), filtroDiaSemana};
+            }
 
             Cursor cursor = bancoDados.query("materias", colunas, selecao, argumentos, null, null, null);
 
@@ -393,6 +426,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         EditText editTextQuantAula = dialog.findViewById(R.id.textViewQuantAulas);
         Spinner spinnerDiaSemana = dialog.findViewById(R.id.spinnerDataMateria);
 
+        spinnerFiltro = findViewById(R.id.spinnerFiltro);
 
 
         if (!TextUtils.isEmpty(nomeMateria) && !TextUtils.isEmpty(quantAula)) {
@@ -416,12 +450,14 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                 Materia novaMateria = new Materia(nomeMateria, diaSemana, idAgrupamento, 0, quantAula);
 
                 recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
-                MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(idAgrupamento), this);
+                MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(idAgrupamento,"Todas"), this);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 adapter.setRecyclerView(recyclerView);
 
                 adapter.notifyDataSetChanged();
+
+                spinnerFiltro.setSelection(0);
 
 
 
@@ -437,5 +473,24 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         }
 
     }
+
+    private void updateRecyclerView(int agrupamentoId, String filtroDiaSemana) {
+        recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
+        MateriaAdapterAdicionado adapter;
+
+        if ("Todas".equals(filtroDiaSemana)) {
+            // Se "Todas" for selecionado, obtenha todas as matérias sem considerar o dia da semana
+            adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(agrupamentoId, null), this);
+        } else {
+            // Caso contrário, obtenha matérias considerando o dia da semana selecionado
+            adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(agrupamentoId, filtroDiaSemana), this);
+        }
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter.setRecyclerView(recyclerView);
+        adapter.notifyDataSetChanged();
+    }
+
 
 }

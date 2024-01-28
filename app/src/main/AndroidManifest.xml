@@ -16,6 +16,7 @@
         <activity android:name=".DetalhesAgrupamento" />
         <activity android:name=".DesempenhoActivity" />
         <activity android:name=".ListaFaltas" />
+        <activity android:name=".NotificationActivity" />
 
         <activity
             android:name=".MainActivity"
