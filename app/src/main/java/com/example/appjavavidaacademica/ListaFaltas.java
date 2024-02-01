@@ -2,6 +2,7 @@ package com.example.appjavavidaacademica;
 
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,10 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +33,11 @@ public class ListaFaltas extends AppCompatActivity {
     private RecyclerView recyclerView;
 
     private SQLiteDatabase bancoDados;
+    private RadioGroup radioGroupCard;  // Adicione esta variável de instância
+
+    private static String cardSelecionado;
+
+    private static String quantFaltasSelecionada;
 
     private DatabaseHelper dbHelper;
 
@@ -44,7 +49,15 @@ public class ListaFaltas extends AppCompatActivity {
 
     private View RemoveFiltro;
 
+    private View ViewCardFilter;
+
+    private View ViewQuantFilter;
+
     private TextView textRemoveFiltro;
+
+    private TextView textView10;
+
+    private TextView textView11;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +66,11 @@ public class ListaFaltas extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewFaltas);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        cardSelecionado = null;
+        quantFaltasSelecionada = null;
 
+        ViewCardFilter = findViewById(R.id.ViewCardFilter);
+        ViewQuantFilter = findViewById(R.id.ViewQuantFaltaFilter);
 
         // Obter dados da tabela de faltas
         List<Faltas> listaDeFaltas = obterFaltas(this);
@@ -80,8 +97,16 @@ public class ListaFaltas extends AppCompatActivity {
         Filtrar.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            /*
             List<String> listaDeAgrupamentos = obterListaDeAgrupamentosDoBanco(); // substitua por sua lógica
             mostrarDialogFiltrar(listaDeAgrupamentos, tableAdapter);
+             */
+
+            Log.d("TAG"," " + cardSelecionado);
+
+
+
+            exibirDialogPersonalizado(listaDeAgrupamentos,tableAdapter);
         }
         });
 
@@ -94,8 +119,13 @@ public class ListaFaltas extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 resetarLista(tableAdapter);
+                cardSelecionado = null;
+                quantFaltasSelecionada = null;
             }
         });
+
+
+
     }
 
     public List<Faltas> obterFaltas(Context context) {
@@ -198,7 +228,7 @@ public class ListaFaltas extends AppCompatActivity {
         View dialogView = inflater.inflate(R.layout.dialog_filtrar_lista_faltas, null);
         builder.setView(dialogView);
 
-        RadioGroup radioGroupCard = dialogView.findViewById(R.id.radioGroupCard);
+        RadioGroup radioGroupCard = dialogView.findViewById(R.id.radioGroupQuantF);
         RadioGroup radioGroupFaltas = dialogView.findViewById(R.id.radioGroupFaltas);
 
         // Adicione opções do Card dinamicamente
@@ -243,7 +273,7 @@ public class ListaFaltas extends AppCompatActivity {
                 if (selectedCardId != -1 || selectedFaltasId != -1) {
                     // Pelo menos um filtro foi selecionado
                     String cardSelecionado = "";
-                    int quantidadeFaltas = -1;
+                    String quantidadeFaltas = "";
 
                     if (selectedCardId != -1) {
                         RadioButton selectedCard = dialogView.findViewById(selectedCardId);
@@ -252,7 +282,7 @@ public class ListaFaltas extends AppCompatActivity {
 
                     if (selectedFaltasId != -1) {
                         RadioButton selectedFaltas = dialogView.findViewById(selectedFaltasId);
-                        quantidadeFaltas = Integer.parseInt(selectedFaltas.getText().toString().substring(1));
+                        quantidadeFaltas = selectedFaltas.getText().toString();
                     }
 
                     // Faça algo com os valores selecionados
@@ -355,7 +385,6 @@ public class ListaFaltas extends AppCompatActivity {
             // Recarregue a lista original ou faça a lógica necessária para restaurar o estado original
             tableAdapter.resetarListaOriginal();
 
-
             RemoveFiltro.setVisibility(View.GONE);
             textRemoveFiltro.setVisibility(View.GONE);
 
@@ -367,6 +396,222 @@ public class ListaFaltas extends AppCompatActivity {
 
         }
 
+
+    private void exibirDialogPersonalizado(List<String> listaDeAgrupamentos,FaltasAdapter tableAdapter) {
+        // Inflar o layout personalizado
+        View dialogView = getLayoutInflater().inflate(R.layout.layout_filtrar_faltas_v2, null);
+
+        // Criar um Dialog
+        final Dialog dialog = new Dialog(this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        dialog.setContentView(dialogView);
+
+        textView10 = dialog.findViewById(R.id.NomeCardFiltrar);
+        textView11 = dialog.findViewById(R.id.textView11);
+
+        if(cardSelecionado == null){
+            textView10.setText("Todos");
+        }
+        if (quantFaltasSelecionada == null){
+            textView11.setText("Todos");
+
+        }
+        // Configurar para ocupar toda a tela
+        dialog.getWindow().setLayout(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+        );
+
+        ImageView imageView9 = dialog.findViewById(R.id.imageView9);
+
+        View ViewCardFilter = dialogView.findViewById(R.id.ViewCardFilter);
+        View ViewQuantFilter = dialogView.findViewById(R.id.ViewQuantFaltaFilter);
+        imageView9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                tableAdapter.filtrarDados(cardSelecionado, quantFaltasSelecionada);
+                dialog.dismiss();
+
+                if (cardSelecionado != "Todos" && cardSelecionado != null || quantFaltasSelecionada != "Todos" && quantFaltasSelecionada != null){
+                    RemoveFiltro.setVisibility(View.VISIBLE);
+                    textRemoveFiltro.setVisibility(View.VISIBLE);
+
+                    if (tableAdapter.getItemCount() == 0) {
+                        TextView TextParabensCriterio = findViewById(R.id.TextParabensCriterio);
+                        View fundoParabens = findViewById(R.id.fundoParabens);
+
+                        TextParabensCriterio.setVisibility(View.VISIBLE);
+                        fundoParabens.setVisibility(View.VISIBLE);
+                    }else {
+
+                        TextView TextParabensCriterio = findViewById(R.id.TextParabensCriterio);
+                        View fundoParabens = findViewById(R.id.fundoParabens);
+
+                        TextParabensCriterio.setVisibility(View.GONE);
+                        fundoParabens.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
+        if(cardSelecionado != null){
+            textView10 = dialog.findViewById(R.id.NomeCardFiltrar);
+            textView10.setText(cardSelecionado);
+        }
+
+        if(quantFaltasSelecionada != null){
+            textView11 = dialog.findViewById(R.id.textView11);
+            textView11.setText(quantFaltasSelecionada);
+        }
+
+        if (ViewCardFilter != null) {
+            ViewCardFilter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFiltrarCard();
+                }
+            });
+        }
+
+        if (ViewQuantFilter != null) {
+            ViewQuantFilter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFiltrarQuantFaltas();
+                }
+            });
+        }
+
+        // Exibir o Dialog
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
+        dialog.show();
+
+    }
+
+    private void DialogFiltrarCard(){
+        // Criar o segundo Dialog
+        Dialog segundoDialog = new Dialog(ListaFaltas.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        segundoDialog.setContentView(getLayoutInflater().inflate(R.layout.dialog_card_filter_radio, null));
+
+        RadioGroup radioGroupCard = segundoDialog.findViewById(R.id.radioGroupQuantF);
+
+        RadioButton radioButtonManual = new RadioButton(getApplicationContext());
+        radioButtonManual.setText("Todos");
+        radioGroupCard.addView(radioButtonManual);
+
+
+        // Adicione opções do Card dinamicamente
+        for (String agrupamento : listaDeAgrupamentos) {
+            RadioButton radioButton = new RadioButton(getApplicationContext());
+            radioButton.setText(agrupamento);
+            radioGroupCard.addView(radioButton);
+        }
+
+        int limiteCard = 4; // Altere conforme necessário
+        if (radioGroupCard.getChildCount() > limiteCard) {
+            ScrollView scrollViewCard = segundoDialog.findViewById(R.id.scrollViewCard);
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) scrollViewCard.getLayoutParams();
+            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.radio_group_max_height);
+            scrollViewCard.setLayoutParams(layoutParams);
+        }
+
+        ImageView btnCloseFiltCard = segundoDialog.findViewById(R.id.imageView10);
+        btnCloseFiltCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int selectedCardId = radioGroupCard.getCheckedRadioButtonId();
+                if (selectedCardId != -1) {
+                    RadioButton selectedCard = segundoDialog.findViewById(selectedCardId);
+                    cardSelecionado = selectedCard.getText().toString();
+                    textView10.setText(cardSelecionado);
+
+                }
+
+                segundoDialog.dismiss();
+            }
+        });
+
+        // Configurar para ocupar toda a tela
+        segundoDialog.getWindow().setLayout(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+        );
+
+        // Exibir o segundo Dialog
+        segundoDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        segundoDialog.show();
+
+                    /*
+                    // Fechar o primeiro Dialog se necessário
+                    dialog.dismiss();
+                     */
+    }
+
+    private void DialogFiltrarQuantFaltas(){
+        // Criar o segundo Dialog
+        Dialog segundoDialog = new Dialog(ListaFaltas.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        segundoDialog.setContentView(getLayoutInflater().inflate(R.layout.dialog_quantfaltas_filter_radio, null));
+
+        RadioGroup radioGroupQuantF = segundoDialog.findViewById(R.id.radioGroupQuantF);
+
+        RadioButton radioButtonManual1 = new RadioButton(getApplicationContext());
+        radioButtonManual1.setText("Todos");
+        radioGroupQuantF.addView(radioButtonManual1);
+
+
+        // Adicione opções de Quantidade de Faltas dinamicamente com base na quantidade máxima
+        int quantidadeMaximaFaltas = obterQuantidadeMaximaFaltas(); // Implemente essa função
+        for (int i = 1; i <= quantidadeMaximaFaltas; i++) {
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setText("+" + i);
+            radioGroupQuantF.addView(radioButton);
+        }
+
+
+
+        int limiteQuantF = 4; // Altere conforme necessário
+        if (radioGroupQuantF.getChildCount() > limiteQuantF) {
+            ScrollView scrollViewCard = segundoDialog.findViewById(R.id.scrollViewCard);
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) scrollViewCard.getLayoutParams();
+            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.radio_group_max_height);
+            scrollViewCard.setLayoutParams(layoutParams);
+        }
+
+
+
+        ImageView btnCloseFiltCard = segundoDialog.findViewById(R.id.imageView10);
+        btnCloseFiltCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int selectedFaltasId = radioGroupQuantF.getCheckedRadioButtonId();
+                if (selectedFaltasId != -1) {
+                    RadioButton selectQuantF = segundoDialog.findViewById(selectedFaltasId);
+                    quantFaltasSelecionada = selectQuantF.getText().toString();
+                    textView11.setText(quantFaltasSelecionada);
+                }
+
+
+                segundoDialog.dismiss();
+            }
+        });
+
+        // Configurar para ocupar toda a tela
+        segundoDialog.getWindow().setLayout(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+        );
+
+        // Exibir o segundo Dialog
+        segundoDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        segundoDialog.show();
+
+                    /*
+                    // Fechar o primeiro Dialog se necessário
+                    dialog.dismiss();
+                     */
+    }
 
 
 }

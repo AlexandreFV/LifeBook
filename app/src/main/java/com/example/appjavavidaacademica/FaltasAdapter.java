@@ -130,14 +130,14 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         return listaDeFaltas.size();
     }
 
-    public void filtrarDados(String cardSelecionado, int quantidadeFaltas) {
+    public void filtrarDados(String cardSelecionado, String quantidadeFaltas) {
         List<Faltas> listaFiltrada = new ArrayList<>();
 
         // Verificar se o nome do card foi selecionado
-        boolean filtrarPorCard = cardSelecionado != null && !cardSelecionado.isEmpty();
+        boolean filtrarPorCard = cardSelecionado != null && !"Todos".equals(cardSelecionado) && !cardSelecionado.isEmpty();
 
         // Verificar se a quantidade de faltas foi selecionada
-        boolean filtrarPorQuantidade = quantidadeFaltas > 0;
+        boolean filtrarPorQuantidade = quantidadeFaltas != null && !"Todos".equals(quantidadeFaltas) && !quantidadeFaltas.isEmpty();
 
         // Usar a listaDeFaltasOriginal em vez de listaDeFaltas
         List<Faltas> listaOriginal = new ArrayList<>(listaDeFaltasOriginal);
@@ -145,7 +145,7 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         // Aplicar o filtro na lista original
         for (Faltas falta : listaOriginal) {
             boolean atendeFiltroCard = !filtrarPorCard || falta.getNomeAgrupamento().equals(cardSelecionado);
-            boolean atendeFiltroQuantidade = !filtrarPorQuantidade || falta.getQuantidade() == quantidadeFaltas;
+            boolean atendeFiltroQuantidade = !filtrarPorQuantidade || falta.getQuantidade() == Integer.parseInt(quantidadeFaltas);
 
             if (atendeFiltroCard && atendeFiltroQuantidade) {
                 listaFiltrada.add(falta);
@@ -156,7 +156,9 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         listaDeFaltas.clear();
         listaDeFaltas.addAll(listaFiltrada);
         notifyDataSetChanged();
+
     }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -244,8 +246,6 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         TextQuantFaltasVariavel.setText(quantFalta);
         TextDataFaltaVariavel.setText(dataFalta);
         textNomeMateriaVariavel.setText(nomeMateria);
-
-
 
         // Criar o Dialog personalizado
         final Dialog customDialog = new Dialog(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen); // Define o estilo para ocupar a tela inteira

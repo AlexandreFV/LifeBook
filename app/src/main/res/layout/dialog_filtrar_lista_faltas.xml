@@ -22,7 +22,7 @@
                 android:text="Card" />
 
             <RadioGroup
-                android:id="@+id/radioGroupCard"
+                android:id="@+id/radioGroupQuantF"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
