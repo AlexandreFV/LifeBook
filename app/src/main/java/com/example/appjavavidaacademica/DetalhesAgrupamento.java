@@ -13,21 +13,27 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DetalhesAgrupamento  extends AppCompatActivity {
 
@@ -44,43 +50,39 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
 
     private Spinner spinnerFiltro;
 
+    private View filtroView;
+
+    private int agrupamentoId;
+
+    private static String diaSemanaSelecionado;
+
+    private static String materiaNomeSelecionada;
+
+    private static String quantAulasSelecionada;
+
+
+    private TextView NomeCardFiltrar;
+
+    private TextView materiaNomeFiltrar;
+
+    private TextView materiaQuantAulaFiltrar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detalhes_agrupamento);
 
+        diaSemanaSelecionado = null;
+        materiaNomeSelecionada = null;
+        quantAulasSelecionada = null;
 
         dbHelper = new DatabaseHelper(this);
 
         ImageView btnClose = findViewById(R.id.ImageClose);
 
-        int agrupamentoId = getIntent().getIntExtra("AGRUPO_ID", -1);
+        agrupamentoId = getIntent().getIntExtra("AGRUPO_ID", -1);
         Agrupamento agrupamentoSelecionado = obterAgrupamentoPorId(agrupamentoId);
-
-        spinnerFiltro = findViewById(R.id.spinnerFiltro);
-        String[] diasSemana = {"Todas", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"};
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, diasSemana);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFiltro.setAdapter(adapter2);
-        filtroDiaSemana = spinnerFiltro.getSelectedItem().toString();
-
-        spinnerFiltro.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Atualize o valor do filtro quando a seleção do spinner mudar
-                filtroDiaSemana = diasSemana[position];
-
-                // Atualize o RecyclerView com o novo valor do filtro
-                updateRecyclerView(agrupamentoId, filtroDiaSemana);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Não faça nada aqui
-            }
-        });
-
 
         recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
         MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(agrupamentoId, filtroDiaSemana), this);
@@ -88,6 +90,16 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter.setRecyclerView(recyclerView);
         adapter.notifyDataSetChanged();
+
+        filtroView = findViewById(R.id.filtrar);
+
+        filtroView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            DialogFiltrarMateria(adapter);
+            }
+        });
+
 
 
         layoutInferiorBotoes barraInferior = new layoutInferiorBotoes(this, findViewById(R.id.includeDetalhesInf), findViewById(R.id.AdicioneAlgoScreen));
@@ -112,7 +124,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                 });
 
                 dialog.show();
-                exibirDialogoAdicaoMateriaDetalhes(dialog,agrupamentoId);
+                exibirDialogoAdicaoMateriaDetalhes(dialog,agrupamentoId,adapter);
 
             }
         });
@@ -386,7 +398,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
     }
 
 
-    private void exibirDialogoAdicaoMateriaDetalhes(final Dialog dialog, int idAgrupamento) {
+    private void exibirDialogoAdicaoMateriaDetalhes(final Dialog dialog, int idAgrupamento,MateriaAdapterAdicionado adapter) {
 
 
         // Obter referências para os EditTexts e Spinner no layout do diálogo
@@ -411,7 +423,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                 String quantAula = editTextQuantAula.getText().toString();
                 String diaSemana = spinnerDiaSemana.getSelectedItem().toString();
 
-                salvarMateriaDetalhes(dialog, nomeMateria, quantAula,  diaSemana, idAgrupamento);
+                salvarMateriaDetalhes(dialog, nomeMateria, quantAula,  diaSemana, idAgrupamento, adapter);
 
 
             }
@@ -419,18 +431,14 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
     }
 
 
-    private void salvarMateriaDetalhes(Dialog dialog,String nomeMateria,String quantAula, String diaSemana, int idAgrupamento) {
+    private void salvarMateriaDetalhes(Dialog dialog, String nomeMateria, String quantAula, String diaSemana, int idAgrupamento, MateriaAdapterAdicionado adapter) {
 
         // Lógica para salvar a matéria
         EditText editTextNomeMateria = dialog.findViewById(R.id.textViewNomeMateria);
         EditText editTextQuantAula = dialog.findViewById(R.id.textViewQuantAulas);
         Spinner spinnerDiaSemana = dialog.findViewById(R.id.spinnerDataMateria);
 
-        spinnerFiltro = findViewById(R.id.spinnerFiltro);
-
-
         if (!TextUtils.isEmpty(nomeMateria) && !TextUtils.isEmpty(quantAula)) {
-            // Criar uma nova instância de Materia com os valores inseridos
             try {
                 DatabaseHelper dbHelper = new DatabaseHelper(this);
                 SQLiteDatabase bancoDados = dbHelper.getWritableDatabase();
@@ -441,38 +449,33 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                 valuesMateria.put("id_agrupamento", idAgrupamento);
                 valuesMateria.put("quantAulas", quantAula);
 
-                Log.d("TAG", "NomeMateriaInsert: " + nomeMateria + " DataSemanaInsert: " + diaSemana + " QuantAula: " + quantAula);
-
                 bancoDados.insert("materias", null, valuesMateria);
 
                 bancoDados.close();
 
+                // Criar uma nova instância de Materia com os valores inseridos
                 Materia novaMateria = new Materia(nomeMateria, diaSemana, idAgrupamento, 0, quantAula);
 
-                recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
-                MateriaAdapterAdicionado adapter = new MateriaAdapterAdicionado(obterMateriasPorAgrupamento(idAgrupamento,"Todas"), this);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                adapter.setRecyclerView(recyclerView);
 
-                adapter.notifyDataSetChanged();
+                // Adicionar a nova matéria à lista existente
+                listaDeMaterias.add(novaMateria);
 
-                spinnerFiltro.setSelection(0);
+                // Notificar o adapter sobre a mudança nos dados
+                adapter.setMaterias(listaDeMaterias);
 
 
+                // Fechar o diálogo
+                dialog.dismiss();
 
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("TAG", "Erro ao inserir dados na tabela materias: " + e.getMessage());
             }
-            dialog.dismiss();
-
         } else {
             Toast.makeText(getApplicationContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
-
         }
-
     }
+
 
     private void updateRecyclerView(int agrupamentoId, String filtroDiaSemana) {
         recyclerView = findViewById(R.id.recyclerViewMateriasAdicionadas);
@@ -492,5 +495,510 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    private void DialogFiltrarMateria(MateriaAdapterAdicionado adapter){
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_filtrar_materias_detalhes_card, null);
+
+        final Dialog dialog = new Dialog(this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        dialog.setContentView(dialogView);
+
+        // Configurar para ocupar toda a tela
+        dialog.getWindow().setLayout(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+        );
+
+        NomeCardFiltrar = dialogView.findViewById(R.id.NomeCardFiltrar);
+        materiaNomeFiltrar = dialogView.findViewById(R.id.textView12);
+        materiaQuantAulaFiltrar = dialogView.findViewById(R.id.textView11);
+
+        if(diaSemanaSelecionado == null){
+            NomeCardFiltrar.setText("Todos");
+        }
+
+        if(diaSemanaSelecionado != null){
+            NomeCardFiltrar = dialog.findViewById(R.id.NomeCardFiltrar);
+            NomeCardFiltrar.setText(diaSemanaSelecionado);
+        }
+
+        if(materiaNomeSelecionada == null){
+            materiaNomeFiltrar.setText("Todos");
+        }
+
+        if(materiaNomeSelecionada != null){
+            materiaNomeFiltrar = dialog.findViewById(R.id.textView12);
+            materiaNomeFiltrar.setText(materiaNomeSelecionada);
+        }
+
+        if(quantAulasSelecionada == null){
+            materiaQuantAulaFiltrar.setText("Todos");
+        }
+
+        if(quantAulasSelecionada != null){
+            materiaQuantAulaFiltrar = dialog.findViewById(R.id.textView11);
+            materiaQuantAulaFiltrar.setText(String.valueOf(quantAulasSelecionada));
+        }
+
+
+        View ViewCardFilter = dialogView.findViewById(R.id.ViewCardFilter);
+        View ViewMateriaFilter = dialogView.findViewById(R.id.ViewMateriaFilter);
+        View ViewQuantFaltaFilter = dialogView.findViewById(R.id.ViewQuantFaltaFilter);
+
+        if (ViewCardFilter != null) {
+            ViewCardFilter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFiltrarDiaS();
+                }
+            });
+        }
+
+        if (ViewMateriaFilter != null) {
+            ViewMateriaFilter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFiltrarMateriaN();
+                }
+            });
+        }
+
+        if (ViewQuantFaltaFilter != null) {
+            ViewQuantFaltaFilter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFiltrarQuantAulas();
+                }
+            });
+        }
+
+
+        // Exibir o Dialog
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
+        dialog.show();
+
+
+        ImageView imageView9 = dialog.findViewById(R.id.imageView9);
+
+        imageView9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.filtrarDados(diaSemanaSelecionado, materiaNomeSelecionada,quantAulasSelecionada);
+
+                dialog.dismiss();
+
+                if (diaSemanaSelecionado != "Todos" && diaSemanaSelecionado != null || materiaNomeSelecionada != "Todos" && materiaNomeSelecionada != null || quantAulasSelecionada != "Todos" && quantAulasSelecionada != null){
+                    /*
+                    RemoveFiltro.setVisibility(View.VISIBLE);
+                    textRemoveFiltro.setVisibility(View.VISIBLE);
+*/
+                    if (adapter.getItemCount() == 0) {
+                        TextView TextParabensCriterio = findViewById(R.id.textView3);
+
+                        TextParabensCriterio.setVisibility(View.VISIBLE);
+                    }else {
+
+                        TextView TextParabensCriterio = findViewById(R.id.textView3);
+
+                        TextParabensCriterio.setVisibility(View.GONE);
+                    }
+                }
+
+            }
+        });
+
+    }
+
+
+    private void DialogFiltrarDiaS(){
+        // Criar o segundo Dialog
+        Dialog segundoDialog = new Dialog(DetalhesAgrupamento.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        segundoDialog.setContentView(getLayoutInflater().inflate(R.layout.dialog_filtrar_diasemana_detalhes, null));
+
+        RadioGroup radioGroupCard = segundoDialog.findViewById(R.id.radioGroupDiaS);
+
+        List<String> listaDeDiasDaSemana = obterListaDeDiasDaSemanaDoBanco(agrupamentoId);
+        // Adicione opções do Card dinamicamente
+        if (!listaDeDiasDaSemana.isEmpty()) {
+            for (String dia : listaDeDiasDaSemana) {
+                RadioButton radioButton = new RadioButton(getApplicationContext());
+                radioButton.setText(dia);
+                radioGroupCard.addView(radioButton);
+                // Definir a visibilidade do texto informativo como GONE
+                /*
+                textView14 = segundoDialog.findViewById(R.id.TextNPF);
+                textView14.setVisibility(View.GONE);
+
+                 */
+            }
+        } else {
+            // Se a lista estiver vazia, tornar o RadioGroup visível e exibir um texto informativo
+            radioGroupCard.setVisibility(View.VISIBLE);
+            /*
+            textView14 = segundoDialog.findViewById(R.id.TextFiltrarDiaS);
+            textView14.setVisibility(View.VISIBLE);
+
+             */
+        }
+
+        int limiteCard = 4; // Altere conforme necessário
+        if (radioGroupCard.getChildCount() > limiteCard) {
+            ScrollView scrollViewCard = segundoDialog.findViewById(R.id.scrollViewCard);
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) scrollViewCard.getLayoutParams();
+            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.radio_group_max_height);
+            scrollViewCard.setLayoutParams(layoutParams);
+        }
+
+        ImageView btnCloseFiltCard = segundoDialog.findViewById(R.id.imageView10);
+        btnCloseFiltCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int selectedCardId = radioGroupCard.getCheckedRadioButtonId();
+                if (selectedCardId != -1) {
+                    RadioButton selectedCard = segundoDialog.findViewById(selectedCardId);
+
+                    diaSemanaSelecionado = selectedCard.getText().toString();
+                    NomeCardFiltrar.setText(diaSemanaSelecionado);
+
+                    String materiaSelecionada = "Todos";
+
+
+                }
+
+
+                segundoDialog.dismiss();
+            }
+        });
+
+        // Configurar para ocupar toda a tela
+        segundoDialog.getWindow().setLayout(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+        );
+
+        // Exibir o segundo Dialog
+        segundoDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        segundoDialog.show();
+
+                    /*
+                    // Fechar o primeiro Dialog se necessário
+                    dialog.dismiss();
+                     */
+    }
+
+
+
+    private List<String> obterListaDeDiasDaSemanaDoBanco(int IdAgrupamento) {
+        List<String> listaDeDiasSemana = new ArrayList<>();
+        listaDeDiasSemana.add("Todos");
+
+        try {
+            // Abrir o banco de dados em modo somente leitura
+            bancoDados = dbHelper.getReadableDatabase();
+
+            // Consulta SQL com cláusula WHERE para filtrar por IdAgrupamento
+            String sqlQuery = "SELECT DISTINCT dia_semana FROM materias WHERE id_agrupamento = ?";
+
+            // Argumentos da consulta SQL (o ID do agrupamento)
+            String[] args = {String.valueOf(IdAgrupamento)};
+
+            // Executar a consulta SQL com argumentos
+            Cursor cursor = bancoDados.rawQuery(sqlQuery, args);
+
+            // Criar um conjunto para manter o controle dos dias já encontrados
+            Set<String> diasEncontrados = new HashSet<>();
+
+            // Iterar sobre os resultados do cursor
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String dia = cursor.getString(cursor.getColumnIndex("dia_semana"));
+                    diasEncontrados.add(dia);
+                } while (cursor.moveToNext());
+            }
+
+            // Fechar o cursor
+            if (cursor != null) {
+                cursor.close();
+            }
+
+            // Array com os dias da semana na ordem desejada
+            String[] diasDaSemana = {"Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"};
+
+            // Adicionar os dias encontrados à lista, na ordem desejada
+            for (String dia : diasDaSemana) {
+                if (diasEncontrados.contains(dia)) {
+                    listaDeDiasSemana.add(dia);
+                }
+            }
+
+            // Adicionar "Todos" se nenhum dia for encontrado
+            if (listaDeDiasSemana.isEmpty()) {
+                listaDeDiasSemana.add("Todos");
+            }
+
+        } catch (Exception e) {
+            // Log de erro em caso de exceção
+            Log.e("Erro", "Erro ao obter lista de dias da semana: " + e.getMessage());
+        } finally {
+            // Fechar o banco de dados
+            if (bancoDados != null) {
+                bancoDados.close();
+            }
+        }
+
+        return listaDeDiasSemana;
+    }
+
+
+
+    private void DialogFiltrarMateriaN(){
+        // Criar o segundo Dialog
+        Dialog segundoDialog = new Dialog(DetalhesAgrupamento.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        segundoDialog.setContentView(getLayoutInflater().inflate(R.layout.dialog_filtrar_materia_detalhes, null));
+
+        RadioGroup radioGroupCard = segundoDialog.findViewById(R.id.radioGroupMateriaN);
+
+        List<String> listaDeMaterias = obterListaDeMateriasDoBanco(agrupamentoId);
+        // Adicione opções do Card dinamicamente
+        if (!listaDeMaterias.isEmpty()) {
+            for (String materia : listaDeMaterias) {
+                RadioButton radioButton = new RadioButton(getApplicationContext());
+                radioButton.setText(materia);
+                radioGroupCard.addView(radioButton);
+                // Definir a visibilidade do texto informativo como GONE
+                /*
+                textView14 = segundoDialog.findViewById(R.id.TextNPF);
+                textView14.setVisibility(View.GONE);
+
+                 */
+            }
+        } else {
+            // Se a lista estiver vazia, tornar o RadioGroup visível e exibir um texto informativo
+            radioGroupCard.setVisibility(View.VISIBLE);
+            /*
+            textView14 = segundoDialog.findViewById(R.id.TextFiltrarDiaS);
+            textView14.setVisibility(View.VISIBLE);
+
+             */
+        }
+
+        int limiteCard = 4; // Altere conforme necessário
+        if (radioGroupCard.getChildCount() > limiteCard) {
+            ScrollView scrollViewCard = segundoDialog.findViewById(R.id.scrollViewCard);
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) scrollViewCard.getLayoutParams();
+            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.radio_group_max_height);
+            scrollViewCard.setLayoutParams(layoutParams);
+        }
+
+        ImageView btnCloseFiltCard = segundoDialog.findViewById(R.id.imageView10);
+        btnCloseFiltCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int selectedCardId = radioGroupCard.getCheckedRadioButtonId();
+                if (selectedCardId != -1) {
+                    RadioButton selectedCard = segundoDialog.findViewById(selectedCardId);
+
+                    materiaNomeSelecionada = selectedCard.getText().toString();
+                    materiaNomeFiltrar.setText(String.valueOf(materiaNomeSelecionada));
+
+                    String materiaSelecionada = "Todos";
+
+
+                }
+
+
+                segundoDialog.dismiss();
+            }
+        });
+
+        // Configurar para ocupar toda a tela
+        segundoDialog.getWindow().setLayout(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+        );
+
+        // Exibir o segundo Dialog
+        segundoDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        segundoDialog.show();
+
+                    /*
+                    // Fechar o primeiro Dialog se necessário
+                    dialog.dismiss();
+                     */
+    }
+
+
+    private List<String> obterListaDeMateriasDoBanco(int agrupamentoId) {
+        List<String> listaDeMaterias = new ArrayList<>();
+        listaDeMaterias.add("Todos");
+
+        try {
+            bancoDados = dbHelper.getReadableDatabase();
+            String sqlQuery = "SELECT nome_materia FROM materias WHERE id_agrupamento = ?";
+            String[] args = {String.valueOf(agrupamentoId)};
+            Cursor cursor = bancoDados.rawQuery(sqlQuery, args);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    String materia = cursor.getString(cursor.getColumnIndex("nome_materia"));
+                    listaDeMaterias.add(materia);
+                } while (cursor.moveToNext());
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+
+            // Adicionar "Todos" se nenhum dia for encontrado
+            if (listaDeMaterias.isEmpty()) {
+                listaDeMaterias.add("Todos");
+            }
+
+        } catch (Exception e) {
+            Log.e("Erro", "Erro ao obter lista de matérias: " + e.getMessage());
+        } finally {
+            if (bancoDados != null) {
+                bancoDados.close();
+            }
+        }
+
+        return listaDeMaterias;
+    }
+
+
+    private void DialogFiltrarQuantAulas(){
+        // Criar o segundo Dialog
+        Dialog segundoDialog = new Dialog(DetalhesAgrupamento.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        segundoDialog.setContentView(getLayoutInflater().inflate(R.layout.dialog_filtrar_quantdias_layout, null));
+
+        RadioGroup radioGroupCard = segundoDialog.findViewById(R.id.radioGroupMateriaN);
+
+        // Adicionar a opção "Todos" ao RadioGroup
+        RadioButton radioButtonTodos = new RadioButton(getApplicationContext());
+        radioButtonTodos.setText("Todos");
+        radioGroupCard.addView(radioButtonTodos);
+
+        List<Integer> valoresQuantAulas = obterValoresQuantAulasDoAgrupamento(agrupamentoId);
+        Collections.sort(valoresQuantAulas);
+
+
+
+        // Adicione opções do Card dinamicamente
+        if (!valoresQuantAulas.isEmpty()) {
+            // Adicionar botões de rádio para cada valor de quantAulas ao RadioGroup
+            for (int valorQuantAulas : valoresQuantAulas) {
+                RadioButton radioButton = new RadioButton(getApplicationContext());
+
+                radioButton.setText(String.valueOf(valorQuantAulas));
+                radioGroupCard.addView(radioButton);
+            }
+
+    } else {
+            // Se a lista estiver vazia, tornar o RadioGroup visível e exibir um texto informativo
+            radioGroupCard.setVisibility(View.VISIBLE);
+            /*
+            textView14 = segundoDialog.findViewById(R.id.TextFiltrarDiaS);
+            textView14.setVisibility(View.VISIBLE);
+
+             */
+        }
+
+        int limiteCard = 4; // Altere conforme necessário
+        if (radioGroupCard.getChildCount() > limiteCard) {
+            ScrollView scrollViewCard = segundoDialog.findViewById(R.id.scrollViewCard);
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) scrollViewCard.getLayoutParams();
+            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.radio_group_max_height);
+            scrollViewCard.setLayoutParams(layoutParams);
+        }
+
+        ImageView btnCloseFiltCard = segundoDialog.findViewById(R.id.imageView10);
+        btnCloseFiltCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int selectedCardId = radioGroupCard.getCheckedRadioButtonId();
+                if (selectedCardId != -1) {
+                    RadioButton selectedCard = segundoDialog.findViewById(selectedCardId);
+
+                    quantAulasSelecionada = selectedCard.getText().toString();
+                    materiaQuantAulaFiltrar.setText(quantAulasSelecionada);
+
+                    String materiaSelecionada = "Todos";
+
+                }
+
+
+                segundoDialog.dismiss();
+            }
+        });
+
+        // Configurar para ocupar toda a tela
+        segundoDialog.getWindow().setLayout(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+        );
+
+        // Exibir o segundo Dialog
+        segundoDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        segundoDialog.show();
+
+                    /*
+                    // Fechar o primeiro Dialog se necessário
+                    dialog.dismiss();
+                     */
+    }
+
+
+    private List<Integer> obterValoresQuantAulasDoAgrupamento(int agrupamentoId) {
+        List<Integer> valoresQuantAulas = new ArrayList<>();
+
+        try {
+            bancoDados = dbHelper.getReadableDatabase();
+
+            // Consulta SQL para obter todos os valores de quantAulas para o agrupamento atual
+            String sqlQuery = "SELECT quantAulas FROM materias WHERE id_agrupamento = ?";
+            String[] args = {String.valueOf(agrupamentoId)};
+            Cursor cursor = bancoDados.rawQuery(sqlQuery, args);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                int quantAulasIndex = cursor.getColumnIndex("quantAulas");
+
+                if (quantAulasIndex >= 0) {
+                    do {
+                        int valorQuantAulas = cursor.getInt(quantAulasIndex);
+                        if (!valoresQuantAulas.contains(valorQuantAulas)) {
+                            valoresQuantAulas.add(valorQuantAulas);
+                        }
+                    } while (cursor.moveToNext());
+                }
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e("Erro", "Erro ao obter valores de quantAulas do agrupamento: " + e.getMessage());
+        } finally {
+            if (bancoDados != null) {
+                bancoDados.close();
+            }
+        }
+
+        return valoresQuantAulas;
+    }
+
+    public void resetarLista(FaltasAdapter tableAdapter) {
+        // Recarregue a lista original ou faça a lógica necessária para restaurar o estado original
+        tableAdapter.resetarListaOriginal();
+
+        /*
+        RemoveFiltro.setVisibility(View.GONE);
+        textRemoveFiltro.setVisibility(View.GONE);
+*/
+        TextView TextParabensCriterio = findViewById(R.id.textView3);
+
+        TextParabensCriterio.setVisibility(View.GONE);
+
+    }
 
 }

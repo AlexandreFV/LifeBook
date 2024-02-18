@@ -15,7 +15,7 @@
 
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/TextFiltrarDiaS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -32,7 +32,7 @@
             android:background="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+            app:layout_constraintTop_toBottomOf="@+id/TextFiltrarDiaS" />
 
         <ScrollView
             android:id="@+id/scrollViewCard"
@@ -47,12 +47,24 @@
             app:layout_constraintVertical_bias="0.0">
 
             <RadioGroup
-                android:id="@+id/radioGroupQuantF"
+                android:id="@+id/radioGroupDiaS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <!-- Adicione opções do Card dinamicamente aqui -->
+
+                <TextView
+                    android:id="@+id/TextNPF"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Você não possui Cards!"
+                    android:textSize="24sp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </RadioGroup>
         </ScrollView>

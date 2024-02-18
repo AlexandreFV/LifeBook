@@ -130,7 +130,8 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         return listaDeFaltas.size();
     }
 
-    public void filtrarDados(String cardSelecionado, String quantidadeFaltas) {
+
+    public void filtrarDados(String cardSelecionado, String quantidadeFaltas, String nomeMateria) {
         List<Faltas> listaFiltrada = new ArrayList<>();
 
         // Verificar se o nome do card foi selecionado
@@ -139,6 +140,9 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         // Verificar se a quantidade de faltas foi selecionada
         boolean filtrarPorQuantidade = quantidadeFaltas != null && !"Todos".equals(quantidadeFaltas) && !quantidadeFaltas.isEmpty();
 
+        // Verificar se o nome da matéria foi selecionado
+        boolean filtrarPorNomeMateria = nomeMateria != null && !"Todos".equals(nomeMateria) && !nomeMateria.isEmpty();
+
         // Usar a listaDeFaltasOriginal em vez de listaDeFaltas
         List<Faltas> listaOriginal = new ArrayList<>(listaDeFaltasOriginal);
 
@@ -146,12 +150,13 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         for (Faltas falta : listaOriginal) {
             boolean atendeFiltroCard = !filtrarPorCard || falta.getNomeAgrupamento().equals(cardSelecionado);
             boolean atendeFiltroQuantidade = !filtrarPorQuantidade || falta.getQuantidade() == Integer.parseInt(quantidadeFaltas);
+            boolean atendeFiltroNomeMateria = !filtrarPorNomeMateria || falta.getNomeMateriaFaltas().equals(nomeMateria);
 
-            if (atendeFiltroCard && atendeFiltroQuantidade) {
+            // Adicione a condição para verificar se atende ao filtro de nome da matéria
+            if (atendeFiltroCard && atendeFiltroQuantidade && atendeFiltroNomeMateria) {
                 listaFiltrada.add(falta);
             }
         }
-
         // Atualizar a lista exibida no RecyclerView
         listaDeFaltas.clear();
         listaDeFaltas.addAll(listaFiltrada);

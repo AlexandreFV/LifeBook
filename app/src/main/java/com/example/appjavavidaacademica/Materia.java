@@ -45,4 +45,11 @@ public class Materia {
     }
 
     public String getDia_semana(){ return dia_semana; }
+
+    public void setDia_semana(String dia_semana){ this.dia_semana = dia_semana; }
+
+    public void setQuantAulas(String quantAulas){ this.quantAulas = quantAulas; }
+
+    public void setNomeMateria(String nome_materia){ this.nome_materia = nome_materia; }
+
 }

@@ -39,6 +39,8 @@ public class ListaFaltas extends AppCompatActivity {
 
     private static String quantFaltasSelecionada;
 
+    private static String materiaSelecionada;
+
     private DatabaseHelper dbHelper;
 
     private ImageView btnClose;
@@ -53,11 +55,21 @@ public class ListaFaltas extends AppCompatActivity {
 
     private View ViewQuantFilter;
 
+    private View ViewMaterias;
+
+
     private TextView textRemoveFiltro;
 
     private TextView textView10;
 
     private TextView textView11;
+
+    private TextView textView12;
+
+    private TextView textView14;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +80,11 @@ public class ListaFaltas extends AppCompatActivity {
 
         cardSelecionado = null;
         quantFaltasSelecionada = null;
+        materiaSelecionada = null;
 
         ViewCardFilter = findViewById(R.id.ViewCardFilter);
         ViewQuantFilter = findViewById(R.id.ViewQuantFaltaFilter);
+        ViewMaterias = findViewById(R.id.ViewMateriaFilter);
 
         // Obter dados da tabela de faltas
         List<Faltas> listaDeFaltas = obterFaltas(this);
@@ -221,6 +235,7 @@ public class ListaFaltas extends AppCompatActivity {
         return nomeAgrupamento;
     }
 
+
     public void mostrarDialogFiltrar(List<String> listaDeAgrupamentos, FaltasAdapter tableAdapter) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -228,7 +243,7 @@ public class ListaFaltas extends AppCompatActivity {
         View dialogView = inflater.inflate(R.layout.dialog_filtrar_lista_faltas, null);
         builder.setView(dialogView);
 
-        RadioGroup radioGroupCard = dialogView.findViewById(R.id.radioGroupQuantF);
+        RadioGroup radioGroupCard = dialogView.findViewById(R.id.radioGroupDiaS);
         RadioGroup radioGroupFaltas = dialogView.findViewById(R.id.radioGroupFaltas);
 
         // Adicione opções do Card dinamicamente
@@ -289,7 +304,7 @@ public class ListaFaltas extends AppCompatActivity {
                     Log.d("TAG", "Card Selecionado: " + cardSelecionado);
 
                     // Aplique o filtro com base nos valores selecionados
-                    tableAdapter.filtrarDados(cardSelecionado, quantidadeFaltas);
+                    tableAdapter.filtrarDados(cardSelecionado, quantidadeFaltas,materiaSelecionada);
                     RemoveFiltro.setVisibility(View.VISIBLE);
                     textRemoveFiltro.setVisibility(View.VISIBLE);
 
@@ -380,8 +395,45 @@ public class ListaFaltas extends AppCompatActivity {
         return quantidadeMaxima;
     }
 
+    private List<String> obterNomesDasMateriasDoBanco() {
+        List<String> nomesDasMaterias = new ArrayList<>();
 
-        public void resetarLista(FaltasAdapter tableAdapter) {
+        try {
+            dbHelper = new DatabaseHelper(this);
+            bancoDados = dbHelper.getReadableDatabase();
+
+            // Consulta à tabela de matérias para obter os nomes
+            String[] colunasMaterias = {"nome_materia"};
+
+            // Adicionando condição para verificar cardSelecionado
+            String selecaoCard = (cardSelecionado == null || cardSelecionado.equals("Todos")) ? null : "id_agrupamento = (SELECT id_agrupamento FROM agrupamento WHERE nome_agrupamento = '" + cardSelecionado + "')";
+
+            Cursor cursorMaterias = bancoDados.query("materias", colunasMaterias, selecaoCard,
+                    null, null, null, null);
+
+            if (cursorMaterias != null && cursorMaterias.moveToFirst()) {
+                do {
+                    String nomeMateria = cursorMaterias.getString(cursorMaterias.getColumnIndex("nome_materia"));
+                    nomesDasMaterias.add(nomeMateria);
+                } while (cursorMaterias.moveToNext());
+
+                cursorMaterias.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("TAG", "Erro ao obter nomes das matérias: " + e.getMessage());
+        } finally {
+            // Certifique-se de fechar o banco de dados
+            if (bancoDados != null && bancoDados.isOpen()) {
+                bancoDados.close();
+            }
+        }
+
+        return nomesDasMaterias;
+    }
+
+
+    public void resetarLista(FaltasAdapter tableAdapter) {
             // Recarregue a lista original ou faça a lógica necessária para restaurar o estado original
             tableAdapter.resetarListaOriginal();
 
@@ -407,14 +459,20 @@ public class ListaFaltas extends AppCompatActivity {
 
         textView10 = dialog.findViewById(R.id.NomeCardFiltrar);
         textView11 = dialog.findViewById(R.id.textView11);
+        textView12 = dialog.findViewById(R.id.textView12);
 
         if(cardSelecionado == null){
             textView10.setText("Todos");
         }
+
         if (quantFaltasSelecionada == null){
             textView11.setText("Todos");
-
         }
+
+        if (materiaSelecionada == null){
+            textView12.setText("Todos");
+        }
+
         // Configurar para ocupar toda a tela
         dialog.getWindow().setLayout(
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT,
@@ -425,14 +483,16 @@ public class ListaFaltas extends AppCompatActivity {
 
         View ViewCardFilter = dialogView.findViewById(R.id.ViewCardFilter);
         View ViewQuantFilter = dialogView.findViewById(R.id.ViewQuantFaltaFilter);
+        View ViewMaterias = dialogView.findViewById(R.id.ViewMateriaFilter);
+
         imageView9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                tableAdapter.filtrarDados(cardSelecionado, quantFaltasSelecionada);
+                tableAdapter.filtrarDados(cardSelecionado, quantFaltasSelecionada,materiaSelecionada);
                 dialog.dismiss();
 
-                if (cardSelecionado != "Todos" && cardSelecionado != null || quantFaltasSelecionada != "Todos" && quantFaltasSelecionada != null){
+                if (cardSelecionado != "Todos" && cardSelecionado != null || quantFaltasSelecionada != "Todos" && quantFaltasSelecionada != null || materiaSelecionada != "Todos" && materiaSelecionada != null){
                     RemoveFiltro.setVisibility(View.VISIBLE);
                     textRemoveFiltro.setVisibility(View.VISIBLE);
 
@@ -464,6 +524,12 @@ public class ListaFaltas extends AppCompatActivity {
             textView11.setText(quantFaltasSelecionada);
         }
 
+        if(materiaSelecionada != null){
+            textView12 = dialog.findViewById(R.id.textView12);
+            textView12.setText(materiaSelecionada);
+        }
+
+
         if (ViewCardFilter != null) {
             ViewCardFilter.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -482,6 +548,15 @@ public class ListaFaltas extends AppCompatActivity {
             });
         }
 
+        if (ViewMaterias != null) {
+            ViewMaterias.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFiltrarMaterias();
+                }
+            });
+        }
+
         // Exibir o Dialog
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
         dialog.show();
@@ -493,18 +568,27 @@ public class ListaFaltas extends AppCompatActivity {
         Dialog segundoDialog = new Dialog(ListaFaltas.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
         segundoDialog.setContentView(getLayoutInflater().inflate(R.layout.dialog_card_filter_radio, null));
 
-        RadioGroup radioGroupCard = segundoDialog.findViewById(R.id.radioGroupQuantF);
+        RadioGroup radioGroupCard = segundoDialog.findViewById(R.id.radioGroupDiaS);
 
         RadioButton radioButtonManual = new RadioButton(getApplicationContext());
         radioButtonManual.setText("Todos");
         radioGroupCard.addView(radioButtonManual);
 
-
+        List<String>listaDeAgrupamentos = obterListaDeAgrupamentosDoBanco();
         // Adicione opções do Card dinamicamente
-        for (String agrupamento : listaDeAgrupamentos) {
-            RadioButton radioButton = new RadioButton(getApplicationContext());
-            radioButton.setText(agrupamento);
-            radioGroupCard.addView(radioButton);
+        if (!listaDeAgrupamentos.isEmpty()) {
+            for (String agrupamento : listaDeAgrupamentos) {
+                RadioButton radioButton = new RadioButton(getApplicationContext());
+                radioButton.setText(agrupamento);
+                radioGroupCard.addView(radioButton);
+                textView14 = segundoDialog.findViewById(R.id.TextNPF);
+                textView14.setVisibility(View.GONE);
+            }
+        } else{
+            radioGroupCard.setVisibility(View.VISIBLE);
+            textView14 = segundoDialog.findViewById(R.id.TextFiltrarDiaS);
+            textView14.setVisibility(View.VISIBLE);
+
         }
 
         int limiteCard = 4; // Altere conforme necessário
@@ -526,7 +610,10 @@ public class ListaFaltas extends AppCompatActivity {
                     cardSelecionado = selectedCard.getText().toString();
                     textView10.setText(cardSelecionado);
 
+                    materiaSelecionada = "Todos";
+                    textView12.setText("Todos");
                 }
+
 
                 segundoDialog.dismiss();
             }
@@ -553,7 +640,7 @@ public class ListaFaltas extends AppCompatActivity {
         Dialog segundoDialog = new Dialog(ListaFaltas.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
         segundoDialog.setContentView(getLayoutInflater().inflate(R.layout.dialog_quantfaltas_filter_radio, null));
 
-        RadioGroup radioGroupQuantF = segundoDialog.findViewById(R.id.radioGroupQuantF);
+        RadioGroup radioGroupQuantF = segundoDialog.findViewById(R.id.radioGroupDiaS);
 
         RadioButton radioButtonManual1 = new RadioButton(getApplicationContext());
         radioButtonManual1.setText("Todos");
@@ -562,13 +649,18 @@ public class ListaFaltas extends AppCompatActivity {
 
         // Adicione opções de Quantidade de Faltas dinamicamente com base na quantidade máxima
         int quantidadeMaximaFaltas = obterQuantidadeMaximaFaltas(); // Implemente essa função
-        for (int i = 1; i <= quantidadeMaximaFaltas; i++) {
+        if (quantidadeMaximaFaltas > 0) {
+            for (int i = 1; i <= quantidadeMaximaFaltas; i++) {
             RadioButton radioButton = new RadioButton(this);
             radioButton.setText("+" + i);
             radioGroupQuantF.addView(radioButton);
         }
-
-
+    } else {
+        // Se não houver opções, desabilitar o RadioGroup e exibir o TextView
+        radioGroupQuantF.setVisibility(View.VISIBLE);
+        textView14 = segundoDialog.findViewById(R.id.textView10);
+        textView14.setVisibility(View.VISIBLE);
+    }
 
         int limiteQuantF = 4; // Altere conforme necessário
         if (radioGroupQuantF.getChildCount() > limiteQuantF) {
@@ -590,6 +682,75 @@ public class ListaFaltas extends AppCompatActivity {
                     RadioButton selectQuantF = segundoDialog.findViewById(selectedFaltasId);
                     quantFaltasSelecionada = selectQuantF.getText().toString();
                     textView11.setText(quantFaltasSelecionada);
+                }
+
+
+                segundoDialog.dismiss();
+            }
+        });
+
+        // Configurar para ocupar toda a tela
+        segundoDialog.getWindow().setLayout(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT
+        );
+
+        // Exibir o segundo Dialog
+        segundoDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        segundoDialog.show();
+
+                    /*
+                    // Fechar o primeiro Dialog se necessário
+                    dialog.dismiss();
+                     */
+    }
+
+
+    private void DialogFiltrarMaterias(){
+        // Criar o segundo Dialog
+        Dialog segundoDialog = new Dialog(ListaFaltas.this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        segundoDialog.setContentView(getLayoutInflater().inflate(R.layout.dialog_materias_filter_radio, null));
+
+        RadioGroup radioGroupMaterias = segundoDialog.findViewById(R.id.radioGroupDiaS);
+
+        RadioButton radioButtonManual1 = new RadioButton(getApplicationContext());
+        radioButtonManual1.setText("Todos");
+        radioGroupMaterias.addView(radioButtonManual1);
+
+        List<String> nomesDasMaterias = obterNomesDasMateriasDoBanco();
+        if (!nomesDasMaterias.isEmpty()) {
+            // Adicionar botões dinamicamente
+            for (String nomeMateria : nomesDasMaterias) {
+                RadioButton radioButton = new RadioButton(getApplicationContext());
+                radioButton.setText(nomeMateria);
+                radioGroupMaterias.addView(radioButton);
+            }
+        } else {
+            // Se não houver opções, desabilitar o RadioGroup e exibir o TextView
+            radioGroupMaterias.setVisibility(View.VISIBLE);
+            textView14 = segundoDialog.findViewById(R.id.textView15);
+            textView14.setVisibility(View.VISIBLE);
+        }
+
+        int limiteQuantMaterias = 4; // Altere conforme necessário
+        if (radioGroupMaterias.getChildCount() > limiteQuantMaterias) {
+            ScrollView scrollViewCard = segundoDialog.findViewById(R.id.scrollViewCard);
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) scrollViewCard.getLayoutParams();
+            layoutParams.height = getResources().getDimensionPixelSize(R.dimen.radio_group_max_height);
+            scrollViewCard.setLayoutParams(layoutParams);
+        }
+
+
+        ImageView btnCloseFiltCard = segundoDialog.findViewById(R.id.imageView10);
+        btnCloseFiltCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int selectedFaltasId = radioGroupMaterias.getCheckedRadioButtonId();
+                if (selectedFaltasId != -1) {
+                    RadioButton selectQuantF = segundoDialog.findViewById(selectedFaltasId);
+                    materiaSelecionada = selectQuantF.getText().toString();
+                    textView12.setText(materiaSelecionada);
                 }
 
 

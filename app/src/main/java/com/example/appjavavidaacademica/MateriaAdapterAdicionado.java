@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,12 +35,20 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
 
     private DetalhesAgrupamento detalhesAgrupamento; // Adicione esta linha
 
+    private List<Materia> listaDeMateriasOriginal;  // Adicione esta linha
 
 
     public MateriaAdapterAdicionado(List<Materia> listaDeMaterias, DetalhesAgrupamento detalhesAgrupamento) {
         this.listaDeMaterias = listaDeMaterias;
         this.detalhesAgrupamento = detalhesAgrupamento; // Adicione esta linha
+        this.listaDeMateriasOriginal = new ArrayList<>(listaDeMaterias);  // Adicione esta linha
 
+
+    }
+
+    public void setMaterias(List<Materia> materias) {
+        this.listaDeMaterias.addAll(materias);
+        notifyDataSetChanged();
     }
 
     public void setRecyclerView(RecyclerView recyclerView) {
@@ -66,10 +75,47 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             String quantAulasTexto = materia.getQuantAulas() + " aula" + (materia.getQuantAulas().equals("1") ? "" : "s") + " por dia";
             holder.quantAulaTextView.setText(quantAulasTexto);
             holder.quantAulaTextView.setVisibility(View.GONE);
+            holder.pontosIcon.setVisibility(View.GONE);
+
         }
 
 
+
     }
+
+    public void filtrarDados(String diaSemanaSelecionado, String materiaNomeSelecionada, String quantAulasSelecionada) {
+        List<Materia> listaFiltrada = new ArrayList<>();
+
+        // Verificar se o nome do card foi selecionado
+        boolean filtrarPorDiaSem = diaSemanaSelecionado != null && !"Todos".equals(diaSemanaSelecionado) && !diaSemanaSelecionado.isEmpty();
+
+        // Verificar se a quantidade de faltas foi selecionada
+        boolean filtrarPorNomeMat = materiaNomeSelecionada != null && !"Todos".equals(materiaNomeSelecionada) && !materiaNomeSelecionada.isEmpty();
+
+        // Verificar se o nome da matéria foi selecionado
+        boolean filtrarPorQuantAulas = quantAulasSelecionada != null && !"Todos".equals(quantAulasSelecionada) && !quantAulasSelecionada.isEmpty();
+
+        // Usar a listaDeFaltasOriginal em vez de listaDeFaltas
+        List<Materia> listaOriginal = new ArrayList<>(listaDeMateriasOriginal);
+
+        // Aplicar o filtro na lista original
+        for (Materia materia : listaOriginal) {
+            boolean atendeFiltroDiaSem = !filtrarPorDiaSem || materia.getDia_semana().equals(diaSemanaSelecionado);
+            boolean atendeFiltroNomeMat = !filtrarPorNomeMat || materia.getNomeMateria().equals(materiaNomeSelecionada);
+            boolean atendeFiltroQuantAulas = !filtrarPorQuantAulas || materia.getQuantAulas().equals(quantAulasSelecionada);
+
+            // Adicione a condição para verificar se atende ao filtro de nome da matéria
+            if (atendeFiltroDiaSem && atendeFiltroNomeMat && atendeFiltroQuantAulas) {
+                listaFiltrada.add(materia);
+            }
+        }
+        // Atualizar a lista exibida no RecyclerView
+        listaDeMaterias.clear();
+        listaDeMaterias.addAll(listaFiltrada);
+        notifyDataSetChanged();
+
+    }
+
 
     @Override
     public int getItemCount() {
@@ -118,6 +164,19 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
                     toggleVisibility(diaSemanaTextView);
                     toggleVisibility(quantAulaTextView);
                     toggleVisibility(pontosIcon);
+
+
+                    if (fundoEdit.getVisibility() == View.VISIBLE) {
+                        toggleVisibility(fundoEdit); // Substitua "icon1" pelo ID do primeiro ícone
+                        toggleVisibility(fundoBtnDelete); // Substitua "icon2" pelo ID do segundo ícone
+                        toggleVisibility(ButtonFalteiMateria); // Substitua "icon3" pelo ID do terceiro ícone
+
+                        toggleVisibility(lixeriaIconFundoDelete); // Substitua "icon3" pelo ID do terceiro ícone
+                        toggleVisibility(EditarMateria); // Substitua "icon3" pelo ID do terceiro ícone
+                        toggleVisibility(btnFalteiMateriaAdicionada); // Substitua "icon3" pelo ID do terceiro ícone
+                        toggleVisibility(pontosIcon);
+
+                    }
 
                 }
             });
@@ -515,6 +574,7 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             try {
                 DatabaseHelper dbHelper = new DatabaseHelper(detalhesAgrupamento.getApplicationContext()); // Substitua mContext pelo contexto adequado
                 SQLiteDatabase bancoDados = dbHelper.getWritableDatabase();
+                int position = encontrarPosicaoDaMateria(idMateria);
 
                 // Atualizar o registro na tabela 'materias'
                 ContentValues values = new ContentValues();
@@ -523,6 +583,35 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
                 values.put("quantAulas", novaQuantAula);
 
                 bancoDados.update("materias", values, "id_materia=?", new String[]{String.valueOf(idMateria)});
+
+                if (position != RecyclerView.NO_POSITION) {
+                    // Atualize os dados da matéria na lista
+                    Materia materia = listaDeMaterias.get(position);
+                    materia.setNomeMateria(novoNomeMateria);
+                    materia.setDia_semana(novoDiaSemana);
+                    materia.setQuantAulas(String.valueOf(novaQuantAula)); // Convertendo para String aqui
+
+                    // Notifique o adapter sobre a alteração na posição específica
+                    notifyItemChanged(position);
+
+                    // Chame a função toggleVisibility para os componentes desejados
+                    MateriaViewHolderAdicionado holder = (MateriaViewHolderAdicionado) recyclerView.findViewHolderForAdapterPosition(position);
+
+                    toggleVisibility(holder.diaSemanaTextView);
+                    toggleVisibility(holder.quantAulaTextView);
+                    toggleVisibility(holder.pontosIcon);
+                    toggleVisibility(holder.pontosIcon);
+
+                    toggleVisibility(holder.fundoEdit); // Substitua "icon1" pelo ID do primeiro ícone
+                    toggleVisibility(holder.fundoBtnDelete); // Substitua "icon2" pelo ID do segundo ícone
+                    toggleVisibility(holder.ButtonFalteiMateria); // Substitua "icon3" pelo ID do terceiro ícone
+
+                    toggleVisibility(holder.lixeriaIconFundoDelete); // Substitua "icon3" pelo ID do terceiro ícone
+                    toggleVisibility(holder.EditarMateria); // Substitua "icon3" pelo ID do terceiro ícone
+                    toggleVisibility(holder.btnFalteiMateriaAdicionada); // Substitua "icon3" pelo ID do terceiro ícone
+
+
+                }
 
                 bancoDados.close();
 
@@ -539,7 +628,18 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
         notifyDataSetChanged();
     }
 
+
+    private int encontrarPosicaoDaMateria(int idMateria) {
+        // Percorra a lista de matérias para encontrar a posição da matéria com o ID especificado
+        for (int i = 0; i < listaDeMaterias.size(); i++) {
+            if (listaDeMaterias.get(i).getId() == idMateria) {
+                return i; // Retorne a posição se encontrar a matéria com o ID especificado
+            }
+        }
+        return RecyclerView.NO_POSITION; // Retorne RecyclerView.NO_POSITION se a matéria não for encontrada
     }
+
+}
 
 
 
