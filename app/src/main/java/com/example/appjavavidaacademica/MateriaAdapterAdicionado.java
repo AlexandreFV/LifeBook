@@ -264,8 +264,6 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             });
         }
 
-
-
         public void showDialogExcluirMateria(Context context, int position) {
             View dialogView = LayoutInflater.from(context).inflate(R.layout.layout_excluir_materia, null);
 
@@ -637,6 +635,12 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             }
         }
         return RecyclerView.NO_POSITION; // Retorne RecyclerView.NO_POSITION se a matéria não for encontrada
+    }
+
+    public void resetarListaOriginal() {
+        listaDeMaterias.clear();
+        listaDeMaterias.addAll(listaDeMateriasOriginal);
+        notifyDataSetChanged();
     }
 
 }

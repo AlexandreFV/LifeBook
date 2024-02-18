@@ -17,6 +17,7 @@
         <activity android:name=".DesempenhoActivity" />
         <activity android:name=".ListaFaltas" />
         <activity android:name=".NotificationActivity" />
+        <activity android:name=".LembretesTela" />
 
         <activity
             android:name=".MainActivity"

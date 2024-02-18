@@ -49,7 +49,11 @@ public class layoutInferiorBotoes {
         lembretes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Lógica para o botão lembretes
+                if (!(context instanceof LembretesTela)) {
+                    // Se não estiver na DesempenhoActivity, inicie a intent
+                    Intent intent = new Intent(context, LembretesTela.class);
+                    context.startActivity(intent);
+                }
             }
         });
 

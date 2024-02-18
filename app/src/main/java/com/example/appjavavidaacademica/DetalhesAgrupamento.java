@@ -28,6 +28,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,6 +69,9 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
 
     private TextView materiaQuantAulaFiltrar;
 
+    private View removeFiltro;
+
+    private TextView removerFiltroText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +105,8 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
             }
         });
 
+         removeFiltro = findViewById(R.id.removeFiltro);
+         removerFiltroText = findViewById(R.id.removerFiltroText);
 
 
         layoutInferiorBotoes barraInferior = new layoutInferiorBotoes(this, findViewById(R.id.includeDetalhesInf), findViewById(R.id.AdicioneAlgoScreen));
@@ -138,6 +145,16 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                 // Iniciar a MainActivity
                 Intent intent = new Intent(DetalhesAgrupamento.this, MainActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        removeFiltro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resetarLista(adapter);
+                diaSemanaSelecionado = null;
+                materiaNomeSelecionada = null;
+                quantAulasSelecionada = null;
             }
         });
 
@@ -586,10 +603,10 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
                 dialog.dismiss();
 
                 if (diaSemanaSelecionado != "Todos" && diaSemanaSelecionado != null || materiaNomeSelecionada != "Todos" && materiaNomeSelecionada != null || quantAulasSelecionada != "Todos" && quantAulasSelecionada != null){
-                    /*
-                    RemoveFiltro.setVisibility(View.VISIBLE);
-                    textRemoveFiltro.setVisibility(View.VISIBLE);
-*/
+
+                    removeFiltro.setVisibility(View.VISIBLE);
+                    removerFiltroText.setVisibility(View.VISIBLE);
+
                     if (adapter.getItemCount() == 0) {
                         TextView TextParabensCriterio = findViewById(R.id.textView3);
 
@@ -987,14 +1004,13 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         return valoresQuantAulas;
     }
 
-    public void resetarLista(FaltasAdapter tableAdapter) {
+    public void resetarLista(MateriaAdapterAdicionado tableAdapter) {
         // Recarregue a lista original ou faça a lógica necessária para restaurar o estado original
         tableAdapter.resetarListaOriginal();
 
-        /*
-        RemoveFiltro.setVisibility(View.GONE);
-        textRemoveFiltro.setVisibility(View.GONE);
-*/
+        removeFiltro.setVisibility(View.GONE);
+        removerFiltroText.setVisibility(View.GONE);
+
         TextView TextParabensCriterio = findViewById(R.id.textView3);
 
         TextParabensCriterio.setVisibility(View.GONE);
