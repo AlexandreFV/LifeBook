@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F4F4F4">
+
+
+    <View
+        android:id="@+id/dividerLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CategoriaLembreteAdicionado"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/NomeMateriaAdicionadoLembrete"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></TextView>
+
+
+    <TextView
+        android:id="@+id/CategoriaLembreteAdicionado"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="gone"
+
+        app:layout_constraintEnd_toStartOf="@+id/pontosIcon"
+        app:layout_constraintTop_toBottomOf="@+id/NomeMateriaAdicionadoLembrete">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/DescrAdicionadoLembrete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/NomeMateriaAdicionadoLembrete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NomeMateriaAdicionadoLembrete">
+
+    </TextView>
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="45dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/down_arrow" />
+
+    <ImageView
+        android:id="@+id/pontosIcon"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5"
+        app:srcCompat="@drawable/elipse" />
+
+    <View
+        android:id="@+id/ButtonFalteiMateria"
+        android:layout_width="65dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_faltei_materia_edit"
+
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/pontosIcon"
+        app:layout_constraintTop_toBottomOf="@+id/NomeMateriaAdicionadoLembrete" />
+
+    <View
+        android:id="@+id/fundoBtnDelete"
+        android:layout_width="35dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button"
+
+        android:backgroundTint="#FFFFFF"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/dividerLine"
+        app:layout_constraintEnd_toStartOf="@+id/fundoEdit"
+        app:layout_constraintTop_toBottomOf="@+id/NomeMateriaAdicionadoLembrete"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/fundoEdit"
+        android:layout_width="35dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button"
+        android:backgroundTint="#FFFFFF"
+        android:visibility="gone"
+
+        app:layout_constraintBottom_toTopOf="@+id/dividerLine"
+        app:layout_constraintEnd_toStartOf="@+id/ButtonFalteiMateria"
+        app:layout_constraintTop_toBottomOf="@+id/NomeMateriaAdicionadoLembrete"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/lixeriaIconFundoDelete"
+        android:layout_width="30dp"
+        android:layout_height="25dp"
+        android:visibility="gone"
+
+        app:layout_constraintBottom_toBottomOf="@+id/fundoBtnDelete"
+        app:layout_constraintEnd_toEndOf="@+id/fundoBtnDelete"
+        app:layout_constraintStart_toStartOf="@+id/fundoBtnDelete"
+        app:layout_constraintTop_toTopOf="@+id/fundoBtnDelete"
+        app:srcCompat="@drawable/lixeira" />
+
+    <ImageView
+        android:id="@+id/EditarMateria"
+        android:layout_width="30dp"
+        android:layout_height="25dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/fundoEdit"
+        app:layout_constraintEnd_toEndOf="@+id/fundoEdit"
+        app:layout_constraintStart_toStartOf="@+id/fundoEdit"
+        app:layout_constraintTop_toTopOf="@+id/fundoEdit"
+        app:srcCompat="@drawable/editartexto" />
+
+    <TextView
+        android:id="@+id/btnFalteiMateriaAdicionada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Faltei"
+        android:textColor="#FFFFFF"
+        android:visibility="gone"
+
+        app:layout_constraintBottom_toBottomOf="@+id/ButtonFalteiMateria"
+        app:layout_constraintEnd_toEndOf="@+id/ButtonFalteiMateria"
+        app:layout_constraintStart_toStartOf="@+id/ButtonFalteiMateria"
+        app:layout_constraintTop_toTopOf="@+id/ButtonFalteiMateria" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

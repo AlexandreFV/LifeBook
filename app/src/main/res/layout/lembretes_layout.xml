@@ -12,6 +12,46 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <View
+        android:id="@+id/fundoLembreteFaixa2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:alpha="0.8"
+        android:background="#FFFFFF"
+        android:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/includeDesempenhoSup" />
+
+    <TextView
+        android:id="@+id/textLembrete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="1.0"
+        android:text="Lembretes"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/fundoLembreteFaixa2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/includeDesempenhoSup"
+        app:layout_constraintVertical_bias="0.579" />
+
+    <ImageView
+        android:id="@+id/imageCloseLembrete2"
+        android:layout_width="35dp"
+        android:layout_height="33dp"
+        android:alpha="1.0"
+        android:background="@drawable/close"
+        android:elevation="10dp"
+        android:onClick="btnClose"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/fundoLembreteFaixa2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/fundoLembreteFaixa2"
+        app:layout_constraintTop_toBottomOf="@+id/includeDesempenhoSup" />
+
     <include
         android:id="@+id/includeDesempenhoInf"
         layout="@layout/layout_inferior"
@@ -29,19 +69,111 @@
         layout="@layout/adicionar_categoria_materia"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="68dp"
         android:visibility="invisible"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
-    <TextView
-        android:id="@+id/dataAtualTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="34sp"
+
+    <ScrollView
+        android:id="@+id/Teste"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/includeDesempenhoInf"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/includeDesempenhoSup" />
+        app:layout_constraintTop_toBottomOf="@+id/fundoLembreteFaixa2"
+        tools:layout_editor_absoluteX="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#DCDCDC"
+            android:visibility="visible">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/LembreteRecycler"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view11" />
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="0dp"
+                android:layout_height="400dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view10">
+
+            </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Calendario Academico"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view10"
+                android:layout_width="0dp"
+                android:layout_height="5dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="#48D1CC"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <View
+                android:id="@+id/view11"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/fundomateria"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/fundomateria_baixo_radius"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/LembreteRecycler" />
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:layout_constraintBottom_toBottomOf="@+id/view11"
+                app:layout_constraintEnd_toEndOf="@+id/view11"
+                app:layout_constraintTop_toTopOf="@+id/view11"
+                app:srcCompat="@drawable/mais" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

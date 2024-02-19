@@ -76,7 +76,6 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             holder.quantAulaTextView.setText(quantAulasTexto);
             holder.quantAulaTextView.setVisibility(View.GONE);
             holder.pontosIcon.setVisibility(View.GONE);
-
         }
 
 
@@ -272,7 +271,7 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             View fundoDialog = dialogView.findViewById(R.id.fundoDialog);
             TextView TextDesejaFalta = dialogView.findViewById(R.id.TextDesejaCard);
             TextView TextNomeMateriaVariavel = dialogView.findViewById(R.id.TextNomeCardVariavel);
-            View buttonRemover = dialogView.findViewById(R.id.buttonRemover);
+            View buttonRemover = dialogView.findViewById(R.id.buttonAdicionar);
 
             Materia materia = listaDeMaterias.get(position);
             String nomeMateria = materia.getNomeMateria();
@@ -391,7 +390,7 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
             spinnerDiaSemana.setSelection(listaDeDiasSemana.indexOf(materia.getDataMateria()));
 
 
-            View buttonSalvarMateria = dialog3.findViewById(R.id.buttonRemover);
+            View buttonSalvarMateria = dialog3.findViewById(R.id.buttonAdicionar);
             buttonSalvarMateria.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

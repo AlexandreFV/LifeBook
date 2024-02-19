@@ -66,6 +66,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + " , CONSTRAINT pk_faltas UNIQUE (id_faltas)"
                     + " , CONSTRAINT fk_faltas_materia FOREIGN KEY (id_materia) REFERENCES materias (id_materia));");
 
+            db.execSQL("CREATE TABLE IF NOT EXISTS lembretes("
+                    + " id_lembretes INTEGER PRIMARY KEY AUTOINCREMENT"
+                    + " , data DATE "
+                    + " , descr VARCHAR "
+                    + " , categoria VARCHAR "
+                    + " , nomeMateria VARCHAR "
+                    + " , notif BOOL "
+                    + " , CONSTRAINT pk_lembretes UNIQUE (id_lembretes))");
+
+
 
             Log.i("TAG", "Tabelas criadas com sucesso");
         } catch (Exception e) {

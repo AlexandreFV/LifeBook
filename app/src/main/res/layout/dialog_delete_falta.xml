@@ -59,14 +59,14 @@
                 android:layout_marginBottom="8dp"
                 android:background="#000000"
                 android:elevation="11dp"
-                app:layout_constraintBottom_toTopOf="@+id/buttonRemover"
+                app:layout_constraintBottom_toTopOf="@+id/buttonAdicionar"
                 app:layout_constraintEnd_toEndOf="@+id/fundoDialog"
                 app:layout_constraintStart_toStartOf="@+id/fundoDialog"
                 app:layout_constraintTop_toBottomOf="@+id/TextDetalhesFalta"
                 app:layout_constraintVertical_bias="1.0" />
 
             <View
-                android:id="@+id/buttonRemover"
+                android:id="@+id/buttonAdicionar"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:layout_marginBottom="16dp"
@@ -99,10 +99,10 @@
                 android:elevation="11dp"
                 android:text="Apagar"
                 android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="@+id/buttonRemover"
-                app:layout_constraintEnd_toEndOf="@+id/buttonRemover"
-                app:layout_constraintStart_toStartOf="@+id/buttonRemover"
-                app:layout_constraintTop_toTopOf="@+id/buttonRemover" />
+                app:layout_constraintBottom_toBottomOf="@+id/buttonAdicionar"
+                app:layout_constraintEnd_toEndOf="@+id/buttonAdicionar"
+                app:layout_constraintStart_toStartOf="@+id/buttonAdicionar"
+                app:layout_constraintTop_toTopOf="@+id/buttonAdicionar" />
 
             <TextView
                 android:id="@+id/TextDesejaCard"

@@ -28,8 +28,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -430,7 +428,7 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
         spinnerDiaSemana.setAdapter(spinnerAdapter);
 
 
-        View buttonSalvarMateria = dialog.findViewById(R.id.buttonRemover);
+        View buttonSalvarMateria = dialog.findViewById(R.id.buttonAdicionar);
 
         buttonSalvarMateria.setOnClickListener(new View.OnClickListener() {
             @Override

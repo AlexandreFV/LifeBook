@@ -1195,7 +1195,7 @@ public class AdicionarTela extends AppCompatActivity {
         }
 
 
-        View buttonSalvarMateria = dialog.findViewById(R.id.buttonRemover);
+        View buttonSalvarMateria = dialog.findViewById(R.id.buttonAdicionar);
 
         buttonSalvarMateria.setOnClickListener(new View.OnClickListener() {
             @Override

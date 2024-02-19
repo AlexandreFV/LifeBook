@@ -231,7 +231,7 @@ public class FaltasAdapter extends RecyclerView.Adapter<FaltasAdapter.ViewHolder
         TextView textExcluirFalta = dialogView.findViewById(R.id.TextDetalhesFalta);
         TextView textDesejaFalta = dialogView.findViewById(R.id.TextDesejaCard);
         TextView textNomeMateriaVariavel = dialogView.findViewById(R.id.TextNomeCardVariavel);
-        View buttonRemover = dialogView.findViewById(R.id.buttonRemover);
+        View buttonRemover = dialogView.findViewById(R.id.buttonAdicionar);
         View buttonCancelar = dialogView.findViewById(R.id.buttonCancelarCard);
         TextView textNomeMateria = dialogView.findViewById(R.id.textView2);
         TextView TextDataFaltaApagar = dialogView.findViewById(R.id.TextDataFaltaApagar);
