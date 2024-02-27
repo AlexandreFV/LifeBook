@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,11 +28,13 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
-import org.threeten.bp.LocalDate;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 public class LembretesTela extends AppCompatActivity {
     private MaterialCalendarView calendarView;
@@ -54,6 +57,8 @@ public class LembretesTela extends AppCompatActivity {
 
     private String dataAtual;
 
+    private List<String> listaMateria;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lembretes_layout);
@@ -69,6 +74,9 @@ public class LembretesTela extends AppCompatActivity {
         calendarView.setSelectionColor(Color.BLUE);
         calendarView.setHeaderTextAppearance(R.style.MyHeaderTextAppearance);
         calendarView.setWeekDayTextAppearance(R.style.MyHeaderTextAppearance);
+
+        // Criar uma lista para armazenar os nomes das matérias
+        listaMateria = new ArrayList<>();
 
         ImageView imageView11 = findViewById(R.id.imageView11);
 
@@ -162,84 +170,121 @@ public class LembretesTela extends AppCompatActivity {
     }
 
     private void DialogAddLembrete(){
-
-        // Inflar o layout personalizado
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_lembrete, null);
-
-        // Criar um Dialog
-        final Dialog dialog = new Dialog(this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
-        dialog.setContentView(dialogView);
-
-        checkBoxNotif = dialogView.findViewById(R.id.checkBoxNotif);
-        textViewInput = dialog.findViewById(R.id.textViewNomeMateria);
-        spinnerMateria = dialog.findViewById(R.id.SpinnerMateria);
-        spinnerCategoria = dialog.findViewById(R.id.spinnerLembreteCategoria);
-        List<String> Categorias = Arrays.asList("Avaliação","Trabalho","TCC","Reunião");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Categorias);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategoria.setAdapter(adapter);
-
-        // Configurar para ocupar toda a tela
-        dialog.getWindow().setLayout(
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT
-        );
-
-        // Exibir o Dialog
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
-        dialog.show();
+        View dialogView;
         preencherSpinnerMateria();
 
-        ImageView buttonCancelarCard = dialogView.findViewById(R.id.buttonCancelarCard);
-        buttonCancelarCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        if (listaMateria.isEmpty()) {
+            dialogView = getLayoutInflater().inflate(R.layout.layout_npossui_lembrete, null);
 
-        View buttonAdicionar = dialogView.findViewById(R.id.buttonAdicionar);
-        buttonAdicionar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            // Criar um Dialog
+            final Dialog dialog = new Dialog(this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+            dialog.setContentView(dialogView);
 
-                String nomeMateria = (String) spinnerMateria.getSelectedItem();
-                String Categoria = (String) spinnerCategoria.getSelectedItem();
-                String Descricao = textViewInput.getText().toString();
-                String Data = calendarView.getSelectedDate().toString(); // Obtém a data selecionada no MaterialCalendarView
-                Boolean notif = checkBoxNotif.isChecked();
+            TextView TextLembreteExcluir = dialogView.findViewById(R.id.TextLembreteExcluir);
+            View fundoDialog = dialog.findViewById(R.id.fundoDialog);
+            TextView TextDesejaCard = dialog.findViewById(R.id.TextDesejaCard);
+            View linhaMateria = dialog.findViewById(R.id.linhaMateria);
 
-                AdicionarLembrete(nomeMateria,Categoria,Descricao,Data,notif);
-                dialog.dismiss();
-            }
-        });
+
+            // Configurar para ocupar toda a tela
+            dialog.getWindow().setLayout(
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            );
+
+            // Exibir o Dialog
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
+            dialog.show();
+
+            ImageView buttonCancelarCard = dialogView.findViewById(R.id.buttonCancelarCard);
+            buttonCancelarCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        } else if (!listaMateria.isEmpty()) {
+
+            dialogView = getLayoutInflater().inflate(R.layout.dialog_add_lembrete, null);
+
+            // Criar um Dialog
+            final Dialog dialog = new Dialog(this, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+            dialog.setContentView(dialogView);
+
+            checkBoxNotif = dialogView.findViewById(R.id.checkBoxNotif);
+            textViewInput = dialog.findViewById(R.id.textViewNomeMateria);
+            spinnerMateria = dialog.findViewById(R.id.SpinnerMateria);
+            spinnerCategoria = dialog.findViewById(R.id.spinnerLembreteCategoria);
+            List<String> Categorias = Arrays.asList("Avaliação","Trabalho","TCC","Reunião");
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Categorias);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerCategoria.setAdapter(adapter);
+            preencherSpinnerMateria();
+
+            // Configurar para ocupar toda a tela
+            dialog.getWindow().setLayout(
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT
+            );
+
+            // Exibir o Dialog
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); // Define o fundo transparente
+            dialog.show();
+
+            ImageView buttonCancelarCard = dialogView.findViewById(R.id.buttonCancelarCard);
+            buttonCancelarCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            View buttonAdicionar = dialogView.findViewById(R.id.buttonAdicionar);
+            buttonAdicionar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String nomeMateria = (String) spinnerMateria.getSelectedItem();
+                    String Categoria = (String) spinnerCategoria.getSelectedItem();
+                    String Descricao = textViewInput.getText().toString();
+                    String Data = calendarView.getSelectedDate().toString(); // Obtém a data selecionada no MaterialCalendarView
+                    Boolean notif = checkBoxNotif.isChecked();
+
+
+
+                    AdicionarLembrete(nomeMateria,Categoria,Descricao,Data,notif);
+                    dialog.dismiss();
+                }
+            });
+
+        }
+
     }
 
-    private void preencherSpinnerMateria() {
+    private List<String> preencherSpinnerMateria() {
         try {
             dbHelper = new DatabaseHelper(getApplicationContext());
             bancoDados = dbHelper.getReadableDatabase();
+
+            listaMateria = new ArrayList<>();
 
             // Consulta à tabela materias para obter os nomes das matérias
             String[] colunasMaterias = {"nome_materia"};
             Cursor cursorMaterias = bancoDados.query("materias", colunasMaterias, null, null, null, null, null);
 
-            // Criar uma lista para armazenar os nomes das matérias
-            List<String> nomesMaterias = new ArrayList<>();
-
             // Adicionar os nomes das matérias à lista
             if (cursorMaterias != null && cursorMaterias.moveToFirst()) {
                 do {
                     String nomeMateria = cursorMaterias.getString(cursorMaterias.getColumnIndex("nome_materia"));
-                    nomesMaterias.add(nomeMateria);
+                    listaMateria.add(nomeMateria);
                 } while (cursorMaterias.moveToNext());
 
                 cursorMaterias.close();
             }
 
             // Criar um ArrayAdapter para o Spinner
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nomesMaterias);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listaMateria);
 
             // Definir o layout do dropdown do Spinner
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -248,7 +293,7 @@ public class LembretesTela extends AppCompatActivity {
             spinnerMateria.setAdapter(adapter);
 
             // Exibir os nomes das matérias no Log
-            for (String nomeMateria : nomesMaterias) {
+            for (String nomeMateria : listaMateria) {
                 Log.d("NomesMaterias", nomeMateria);
             }
 
@@ -257,8 +302,9 @@ public class LembretesTela extends AppCompatActivity {
             Log.e("TAG", "Erro ao obter nome da matéria: " + e.getMessage());
         }
 
-
+        return listaMateria;
     }
+
 
     private void AdicionarLembrete(String nomeMateria, String categoria, String descricao, String data, Boolean notif) {
         int idLembrete = -1; // Valor padrão caso a inserção falhe
@@ -267,11 +313,27 @@ public class LembretesTela extends AppCompatActivity {
             dbHelper = new DatabaseHelper(getApplicationContext());
             bancoDados = dbHelper.getReadableDatabase();
 
+            String dataCalendarDay = data;
+
+
+            // Extrair ano, mês e dia da data CalendarDay
+            String[] parts = data.split("-");
+            int ano = Integer.parseInt(parts[0].substring(parts[0].length() - 4)); // Extrair os últimos 4 caracteres (ano)
+            int mes = Integer.parseInt(parts[1]);
+            int dia = Integer.parseInt(parts[2].substring(0, parts[2].length() - 1)); // Remover o último caractere '}'
+
+            // Formate a data para o formato desejado
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            Date date12 = new GregorianCalendar(ano, mes - 1, dia).getTime(); // Mês - 1 porque o mês começa em 0
+            String dataFormatada = sdf.format(date12);
+
+
             ContentValues values = new ContentValues();
             values.put("nomeMateria", nomeMateria);
             values.put("categoria", categoria);
             values.put("descr", descricao);
-            values.put("data", data);
+            values.put("data", dataFormatada);
+            values.put("dataCalendarDay", dataCalendarDay);
             values.put("notif", notif);
 
             idLembrete = (int) bancoDados.insert("lembretes", null, values);
@@ -279,7 +341,7 @@ public class LembretesTela extends AppCompatActivity {
 
             if (idLembrete != -1) {
                 // Se o lembrete foi adicionado com sucesso, atualize o RecyclerView
-                lembreteAdapter.adicionarLembrete(new Lembrete(idLembrete,data,descricao, nomeMateria, notif,categoria));
+                lembreteAdapter.adicionarLembrete(new Lembrete(idLembrete,data,descricao, nomeMateria, notif,categoria,dataCalendarDay));
                 lembreteAdapter.notifyDataSetChanged();
             }
 
@@ -308,7 +370,9 @@ public class LembretesTela extends AppCompatActivity {
                     String notif = cursorLembretes.getString(cursorLembretes.getColumnIndex("notif"));
 
                     Log.d("Lembretes", "Nome da matéria: " + nomeMateria + ", Categoria: " + categoria + ", Descrição: " + descricao + ", Data: " + data + ", Noti: " + notif);
+
                 } while (cursorLembretes.moveToNext());
+
 
                 cursorLembretes.close();
             }
@@ -324,15 +388,16 @@ public class LembretesTela extends AppCompatActivity {
         try {
             dbHelper = new DatabaseHelper(this);
             bancoDados = dbHelper.getReadableDatabase();
-            Cursor cursor = bancoDados.rawQuery("SELECT * FROM lembretes WHERE data = ?", new String[]{data});
+            Cursor cursor = bancoDados.rawQuery("SELECT * FROM lembretes WHERE dataCalendarDay = ?", new String[]{data});
             if (cursor.moveToFirst()) {
                 do {
                     int id = cursor.getInt(cursor.getColumnIndex("id_lembretes"));
                     String nomeMateria = cursor.getString(cursor.getColumnIndex("nomeMateria"));
                     String categoria = cursor.getString(cursor.getColumnIndex("categoria"));
                     String descricao = cursor.getString(cursor.getColumnIndex("descr"));
-                    String dataLembrete = cursor.getString(cursor.getColumnIndex("data"));
-                    lembretes.add(new Lembrete(id,dataLembrete,descricao, nomeMateria,categoria));
+                    String data2 = cursor.getString(cursor.getColumnIndex("data"));
+                    String dataCalendarDay = cursor.getString(cursor.getColumnIndex("dataCalendarDay"));
+                    lembretes.add(new Lembrete(id,data2,descricao, nomeMateria,categoria,dataCalendarDay));
                 } while (cursor.moveToNext());
             }
             cursor.close();
@@ -350,10 +415,10 @@ public class LembretesTela extends AppCompatActivity {
         try {
             dbHelper = new DatabaseHelper(this);
             bancoDados = dbHelper.getReadableDatabase();
-            Cursor cursor = bancoDados.rawQuery("SELECT data FROM lembretes", null);
+            Cursor cursor = bancoDados.rawQuery("SELECT dataCalendarDay FROM lembretes", null);
             if (cursor.moveToFirst()) {
                 do {
-                    String dataLembrete = cursor.getString(cursor.getColumnIndex("data"));
+                    String dataLembrete = cursor.getString(cursor.getColumnIndex("dataCalendarDay"));
                     datas.add(dataLembrete);
                 } while (cursor.moveToNext());
             }
@@ -364,6 +429,13 @@ public class LembretesTela extends AppCompatActivity {
             Log.e("TAG", "Erro ao obter datas dos lembretes: " + e.getMessage());
         }
         return datas;
+    }
+
+
+    public void removerTodosDecoradores() {
+
+        calendarView.removeDecorators();
+
     }
 
 

@@ -69,6 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE IF NOT EXISTS lembretes("
                     + " id_lembretes INTEGER PRIMARY KEY AUTOINCREMENT"
                     + " , data DATE "
+                    + " , dataCalendarDay DATE "
                     + " , descr VARCHAR "
                     + " , categoria VARCHAR "
                     + " , nomeMateria VARCHAR "
