@@ -22,15 +22,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
-import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
-import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -102,72 +101,43 @@ public class LembretesTela extends AppCompatActivity {
             lembreteAdapter1.adicionarLembrete(lembrete);
         }
 
+        // Atribuir um novo adaptador à variável lembreteAdapter
+        lembreteAdapter = new LembreteAdapter(this);
+        recyclerView.setAdapter(lembreteAdapter);
+
+        List<Lembrete> todosLembretes = obterTodosLembretes();
+
+        List<DayViewDecorator> decorators = new ArrayList<>();
+
+        for (Lembrete lembrete : todosLembretes) {
+            decorators.add(new CustomDayDecorator(Collections.singletonList(lembrete)));
+        }
+        calendarView.addDecorators(decorators);
+
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 // Atualizar a variável dataAtual com a nova data selecionada
                 dataAtual = date.toString();
 
-                // Obter os lembretes correspondentes a essa data
+                // Atualizar o RecyclerView com os lembretes correspondentes a essa data
                 List<Lembrete> lembretes = obterLembretesPorData(dataAtual);
+                lembreteAdapter.setLembretes(lembretes);
+                lembreteAdapter.notifyDataSetChanged();
 
-                // Atualizar a lista de lembretes no RecyclerView
-                lembreteAdapter1.setLembretes(lembretes);
-                lembreteAdapter1.notifyDataSetChanged();
-
-
-
-                // Obter todas as datas dos lembretes
-                List<String> lembretes1 = obterDatasLembretes();
-
-                // Criar um decorador personalizado para adicionar um ponto vermelho nos dias com lembretes
-                DayViewDecorator decorator = new DayViewDecorator() {
-                    @Override
-                    public boolean shouldDecorate(CalendarDay day) {
-                        // Verificar se a data do dia corresponde a uma data de lembrete
-                        return lembretes1.contains(day.toString());
-                    }
-
-                    @Override
-                    public void decorate(DayViewFacade view) {
-                        // Adicionar um ponto vermelho ao dia
-                        view.addSpan(new DotSpan(5, Color.RED));
-                    }
-                };
-
-                // Adicionar o decorador ao MaterialCalendarView
-                calendarView.addDecorator(decorator);
+                // Atualizar os decoradores do calendário
+                List<DayViewDecorator> decorators = new ArrayList<>();
+                decorators.add(new CustomDayDecorator(lembretes));
+                calendarView.addDecorators(decorators);
 
 
 
             }
+
         });
 
-
-        // Obter todas as datas dos lembretes
-        List<String> lembretes1 = obterDatasLembretes();
-
-        // Criar um decorador personalizado para adicionar um ponto vermelho nos dias com lembretes
-        DayViewDecorator decorator = new DayViewDecorator() {
-            @Override
-            public boolean shouldDecorate(CalendarDay day) {
-                // Verificar se a data do dia corresponde a uma data de lembrete
-                return lembretes1.contains(day.toString());
-            }
-
-            @Override
-            public void decorate(DayViewFacade view) {
-                // Adicionar um ponto vermelho ao dia
-                view.addSpan(new DotSpan(5, Color.RED));
-            }
-        };
-
-        // Adicionar o decorador ao MaterialCalendarView
-        calendarView.addDecorator(decorator);
-
-
-
     }
+
 
     private void DialogAddLembrete(){
         View dialogView;
@@ -437,6 +407,35 @@ public class LembretesTela extends AppCompatActivity {
         calendarView.removeDecorators();
 
     }
+
+    private List<Lembrete> obterTodosLembretes() {
+        List<Lembrete> lembretes = new ArrayList<>();
+
+        try {
+            dbHelper = new DatabaseHelper(this);
+            bancoDados = dbHelper.getReadableDatabase();
+            Cursor cursor = bancoDados.rawQuery("SELECT * FROM lembretes", null);
+            if (cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndex("id_lembretes"));
+                    String nomeMateria = cursor.getString(cursor.getColumnIndex("nomeMateria"));
+                    String categoria = cursor.getString(cursor.getColumnIndex("categoria"));
+                    String descricao = cursor.getString(cursor.getColumnIndex("descr"));
+                    String data = cursor.getString(cursor.getColumnIndex("data"));
+                    String dataCalendarDay = cursor.getString(cursor.getColumnIndex("dataCalendarDay"));
+                    boolean notif = cursor.getInt(cursor.getColumnIndex("notif")) == 1;
+                    lembretes.add(new Lembrete(id, data, descricao, nomeMateria, categoria, dataCalendarDay));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            bancoDados.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("TAG", "Erro ao obter todos os lembretes: " + e.getMessage());
+        }
+        return lembretes;
+    }
+
 
 
 }

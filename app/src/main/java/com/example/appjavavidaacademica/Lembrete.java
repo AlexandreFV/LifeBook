@@ -1,5 +1,8 @@
 package com.example.appjavavidaacademica;
 
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
+
 public class Lembrete {
 
     private String data;
@@ -57,6 +60,13 @@ public class Lembrete {
 
     public String getData() {
         return data;
+    }
+
+    public LocalDate getDataCalendarDayAsLocalDate() {
+        // Formate a data no formato esperado (por exemplo, "yyyy-MM-dd")
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // Converta a String para LocalDate usando o formato especificado
+        return LocalDate.parse(dataCalendarDay, formatter);
     }
 
 
