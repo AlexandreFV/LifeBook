@@ -1,4 +1,4 @@
-Aplicativo para Gerenciamento da Vida Acadêmica
+Aplicativo mobile para Gerenciamento da Vida Acadêmica
 
 O aplicativo foi desenvolvido com o objetivo de facilitar a gestão da vida acadêmica dos estudantes, proporcionando uma experiência mais organizada e eficiente. Suas principais funcionalidades incluem:
 
@@ -13,3 +13,4 @@ Lembretes para Provas, Trabalhos e Defesas de TCC: Os usuários podem criar lemb
 Notificações Específicas: Os usuários têm a opção de configurar notificações específicas, como alertas ao atingir um determinado número de faltas em uma matéria específica. Essas notificações permitem que os alunos monitorem sua frequência e tomem medidas preventivas, se necessário.
 
 O aplicativo visa proporcionar aos estudantes uma ferramenta completa e intuitiva para gerenciar todos os aspectos de sua vida acadêmica, desde o acompanhamento da frequência até o gerenciamento de prazos e compromissos importantes.
+
