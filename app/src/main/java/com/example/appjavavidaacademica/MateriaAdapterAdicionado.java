@@ -275,7 +275,7 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
 
             Materia materia = listaDeMaterias.get(position);
             String nomeMateria = materia.getNomeMateria();
-
+            int IdMateria = materia.getId();
             TextNomeMateriaVariavel.setText(nomeMateria);
 
             // Criar o Dialog personalizado
@@ -287,7 +287,7 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
                 @Override
                 public void onClick(View v) {
                     // Chama o método de exclusão (ou implemente a lógica desejada)
-                    deleteItem(position);
+                    excluirMateriaDoBanco(IdMateria, position);
                     customDialog.dismiss();
                 }
             });
@@ -531,6 +531,7 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
         }
 
     private void excluirMateriaDoBanco(int idMateria, int position) {
+
         try {
             DatabaseHelper dbHelper = new DatabaseHelper(detalhesAgrupamento.getApplicationContext()); // Substitua mContext pelo contexto adequado
             SQLiteDatabase bancoDados = dbHelper.getWritableDatabase();
@@ -545,7 +546,6 @@ public class MateriaAdapterAdicionado extends RecyclerView.Adapter<MateriaAdapte
 
             // Notificar o adaptador sobre a alteração nos dados
             notifyItemRemoved(position);
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("TAG", "Erro ao excluir dados na tabela materias: " + e.getMessage());

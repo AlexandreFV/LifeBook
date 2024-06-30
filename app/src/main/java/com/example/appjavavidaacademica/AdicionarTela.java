@@ -1,10 +1,13 @@
 package com.example.appjavavidaacademica;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -277,7 +280,7 @@ public class AdicionarTela extends AppCompatActivity {
                 barraUm.setAlpha(0.6f);
 
                 // Configurar a cor e a opacidade para a view4
-                barraDois.setBackgroundColor(Color.parseColor("#120272"));
+                barraDois.setBackgroundColor(Color.parseColor("#E67E22"));
                 barraDois.setAlpha(1.0f);
 
 
@@ -315,7 +318,7 @@ public class AdicionarTela extends AppCompatActivity {
                 barraDois.setAlpha(0.6f);
 
                 // Configurar a cor e a opacidade para a view4
-                barraUm.setBackgroundColor(Color.parseColor("#120272"));
+                barraUm.setBackgroundColor(Color.parseColor("#E67E22"));
                 barraUm.setAlpha(1.0f);
 
 
@@ -833,8 +836,29 @@ public class AdicionarTela extends AppCompatActivity {
     private void updateColorPreview() {
         String corFundoHex = defaultHexColors[selectedFundoColorIndex];
         GradientDrawable gradientDrawable = (GradientDrawable) colorPreview.getBackground();
-        gradientDrawable.setColor(Color.parseColor(corFundoHex));
+
+        // Extrair a cor atual do GradientDrawable
+        ColorStateList colorStateList = gradientDrawable.getColor();
+        int corAtual = colorStateList.getDefaultColor();
+
+        // Criar uma transição de cor
+        int novaCor = Color.parseColor(corFundoHex);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), corAtual, novaCor);
+        colorAnimation.setDuration(1000); // Duração da animação em milissegundos
+
+        // Adicionar um listener para animar a mudança de cor
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                gradientDrawable.setColor((int) animator.getAnimatedValue());
+            }
+        });
+
+        // Iniciar a animação
+        colorAnimation.start();
     }
+
+
 
 
     private int inserirAgrupamento(String nomeAgrupamento, String categoria, String corFundoHex, String corBotoesHex, String corTextoHex, int iconEscolhido) {

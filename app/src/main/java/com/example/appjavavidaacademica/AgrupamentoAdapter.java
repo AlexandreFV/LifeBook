@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -20,7 +21,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
 
@@ -51,7 +54,8 @@ public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
         TextView corHexTextView = listItemView.findViewById(R.id.corHexTextView);
         View colorSquare = listItemView.findViewById(R.id.colorSquare);
         ImageView iconEscolhido = listItemView.findViewById(R.id.IconImageAdicionada);
-
+        TextView Materia1 = listItemView.findViewById(R.id.Materia1Text);
+        TextView Materia2 = listItemView.findViewById(R.id.Materia2Text);
 
         if (agrupamento != null) {
 
@@ -88,13 +92,36 @@ public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
             View btnAcaoDetails = listItemView.findViewById(R.id.btnDetails);
             View btnAcaoDelete = listItemView.findViewById(R.id.btnDelete);
 
-
             btnAcaoEdit.setBackground(btnDrawable);
             btnAcaoDelete.setBackground(btnDrawable);
             btnAcaoDetails.setBackground(btnDrawable);
 
-
             final int agrupamentoId = agrupamento.getId();
+
+            Map<String, Integer> QuantMaterias = obterMateriasPorAgrupamento(agrupamentoId);
+
+            if (!QuantMaterias.isEmpty()) {
+                // Exibe a primeira matéria, se existir
+                String primeiraMateria = QuantMaterias.keySet().iterator().next(); // Obtém o primeiro nome de matéria
+                Materia1.setText(primeiraMateria);
+                Materia1.setTextColor(corTextInt);
+                Materia1.setVisibility(View.VISIBLE);
+
+                // Verifica se há mais de uma matéria para exibir a segunda, se existir
+                if (QuantMaterias.size() > 1) {
+                    // Itera novamente para obter o segundo nome de matéria
+                    String segundaMateria = QuantMaterias.keySet().toArray(new String[0])[1];
+                    Materia2.setText(segundaMateria);
+                    Materia2.setTextColor(corTextInt);
+                    Materia2.setVisibility(View.VISIBLE);
+                } else {
+                    Materia2.setVisibility(View.GONE);
+                }
+            } else {
+                // Caso não haja matérias associadas ao agrupamento
+                Materia1.setVisibility(View.GONE);
+                Materia2.setVisibility(View.GONE);
+            }
 
             btnAcaoEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -223,6 +250,27 @@ public class AgrupamentoAdapter extends ArrayAdapter<Agrupamento> {
             e.printStackTrace();
             Log.e("AgrupamentoAdapter", "Erro ao excluir agrupamento: " + e.getMessage());
         }
+    }
+
+    private Map<String, Integer> obterMateriasPorAgrupamento(int agrupamentoId) {
+        Map<String, Integer> materiasMap = new HashMap<>();
+        try{
+            SQLiteDatabase bancoDados = dbHelper.getReadableDatabase();
+            String queryBusca = "SELECT nome_materia, COUNT(*) AS quantidade FROM materias WHERE id_agrupamento = ? GROUP BY nome_materia";
+            String[] parametros = {String.valueOf(agrupamentoId)};
+
+            Cursor cursor = bancoDados.rawQuery(queryBusca, parametros);
+
+            while (cursor.moveToNext()) {
+                String nomeMateria = cursor.getString(cursor.getColumnIndex("nome_materia"));
+                int quantidade = cursor.getInt(cursor.getColumnIndex("quantidade"));
+                materiasMap.put(nomeMateria, quantidade);
+            }
+            cursor.close();
+        }catch (Exception error){
+            error.printStackTrace();
+        }
+        return materiasMap;
     }
 
 }

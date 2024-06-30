@@ -10,6 +10,8 @@
         import android.util.Log;
         import android.view.View;
         import android.view.animation.TranslateAnimation;
+        import android.widget.Button;
+        import android.widget.ImageView;
         import android.widget.ListView;
         import android.widget.TextView;
 
@@ -39,6 +41,9 @@
 
                 View QuadradoAdicioneAlgo = findViewById(R.id.Fundo_Adicione_Algo);
                 TextView AdicioneAlgoText = findViewById(R.id.AdicioneAlgo);
+                TextView TorneFacilText = findViewById(R.id.TorneVidaText);
+                Button AddMateria = findViewById(R.id.AddMateButtInicial);
+                ImageView IconFeliz = findViewById(R.id.IconFeliz);
                 adicioneAlgoScreen = findViewById(R.id.AdicioneAlgoScreen);
                 layoutInferiorBotoes barraInferior = new layoutInferiorBotoes(this, findViewById(R.id.includeMainInf), findViewById(R.id.AdicioneAlgoScreen));
 
@@ -52,6 +57,9 @@
                     listarAgrupamento();
                     QuadradoAdicioneAlgo.setVisibility(View.INVISIBLE);
                     AdicioneAlgoText.setVisibility(View.INVISIBLE);
+                    TorneFacilText.setVisibility(View.INVISIBLE);
+                    AddMateria.setVisibility(View.INVISIBLE);
+                    IconFeliz.setVisibility(View.INVISIBLE);
                 }
 
             }
@@ -153,6 +161,15 @@
                     TextView AdicioneAlgoText = findViewById(R.id.AdicioneAlgo);
                     QuadradoAdicioneAlgo.setVisibility(View.VISIBLE);
                     AdicioneAlgoText.setVisibility(View.VISIBLE);
+
+                    TextView TorneFacilText = findViewById(R.id.TorneVidaText);
+                    Button AddMateria = findViewById(R.id.AddMateButtInicial);
+                    TorneFacilText.setVisibility(View.VISIBLE);
+                    AddMateria.setVisibility(View.VISIBLE);
+
+                    ImageView IconFeliz = findViewById(R.id.IconFeliz);
+                    IconFeliz.setVisibility(View.VISIBLE);
+
                 }
 
             }

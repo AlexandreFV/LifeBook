@@ -12,12 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppJavaVidaAcademica"
         tools:targetApi="31">
-        <activity android:name=".AdicionarTela" />
-        <activity android:name=".DetalhesAgrupamento" />
-        <activity android:name=".DesempenhoActivity" />
-        <activity android:name=".ListaFaltas" />
-        <activity android:name=".NotificationActivity" />
-        <activity android:name=".LembretesTela" />
+        <activity android:name=".AdicionarTela" android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".DetalhesAgrupamento" android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".DesempenhoActivity" android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".ListaFaltas" android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".NotificationActivity" android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".LembretesTela" android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".MainActivity"
