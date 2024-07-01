@@ -101,17 +101,6 @@ public class layoutInferiorBotoes {
         });
     }
 
-    private void showAdicioneAlgoScreenWithAnimation() {
-        // Torna apenas a tela de adição visível
-        adicioneAlgoScreen.setVisibility(View.VISIBLE);
-        adicioneAlgoScreen.setTranslationY(adicioneAlgoScreen.getHeight());
 
-        adicioneAlgoScreen.animate()
-                .translationY(0)
-                .setDuration(300)
-                .start();
-        add.setVisibility(View.GONE);
-
-    }
 
 }

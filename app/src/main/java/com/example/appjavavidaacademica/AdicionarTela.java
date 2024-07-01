@@ -101,11 +101,10 @@ public class AdicionarTela extends AppCompatActivity {
 
 
     private List<String> listaDeCategorias = Arrays.asList(
-            "Ensino Fundamental",
-            "Ensino Médio",
-            "Ensino Médio + Técnico",
-            "Ensino Técnico",
-            "Ensino Superior",
+            "Ens. Fundamental",
+            "Ens. Médio",
+            "Ens. Técnico",
+            "Ensi. Superior",
             "Pós-Graduação"
     );
 

@@ -186,9 +186,9 @@ public class DetalhesAgrupamento  extends AppCompatActivity {
             TextView textViewCorHex = findViewById(R.id.TextCorHex);
             ImageView IconView = findViewById(R.id.IconImageAdicionada);
 
-            textViewNome.setText("Nome: " + nomeAgrupamento);
-            textViewCategoria.setText("Categoria: " + categoria);
-            textViewCorHex.setText("Cor Hex: " + corFundoHex);
+            textViewNome.setText(nomeAgrupamento);
+            textViewCategoria.setText(categoria);
+            textViewCorHex.setText(corFundoHex);
             IconView.setImageResource(iconEscolhido);
 
             textViewNome.setTextColor(corTextoInt);

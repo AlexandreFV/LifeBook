@@ -2,6 +2,7 @@ package com.example.appjavavidaacademica;
 
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -134,6 +135,17 @@ public class LembretesTela extends AppCompatActivity {
 
             }
 
+        });
+
+        ImageView imageViewClose = findViewById(R.id.imageCloseLembrete2);
+        imageViewClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LembretesTela.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
         });
 
     }

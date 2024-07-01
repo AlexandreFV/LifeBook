@@ -2,6 +2,7 @@
 
         import static com.example.appjavavidaacademica.AdicionarTela.salvamentoOcorreu;
 
+        import android.content.Intent;
         import android.content.pm.ActivityInfo;
         import android.database.Cursor;
         import android.database.sqlite.SQLiteDatabase;
@@ -39,28 +40,14 @@
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 LayoutMain = findViewById(R.id.LayoutMain);
 
-                View QuadradoAdicioneAlgo = findViewById(R.id.Fundo_Adicione_Algo);
-                TextView AdicioneAlgoText = findViewById(R.id.AdicioneAlgo);
-                TextView TorneFacilText = findViewById(R.id.TorneVidaText);
-                Button AddMateria = findViewById(R.id.AddMateButtInicial);
-                ImageView IconFeliz = findViewById(R.id.IconFeliz);
-                adicioneAlgoScreen = findViewById(R.id.AdicioneAlgoScreen);
                 layoutInferiorBotoes barraInferior = new layoutInferiorBotoes(this, findViewById(R.id.includeMainInf), findViewById(R.id.AdicioneAlgoScreen));
+
+                adicioneAlgoScreen = findViewById(R.id.AdicioneAlgoScreen);
 
                 if (salvamentoOcorreu == true){
                     exibirMensagemComAnimacao();
                 }
-
-                if (existemRegistrosAgrupamento())
-                {
-                    // Se houver registros, listar e exibir o ListView
-                    listarAgrupamento();
-                    QuadradoAdicioneAlgo.setVisibility(View.INVISIBLE);
-                    AdicioneAlgoText.setVisibility(View.INVISIBLE);
-                    TorneFacilText.setVisibility(View.INVISIBLE);
-                    AddMateria.setVisibility(View.INVISIBLE);
-                    IconFeliz.setVisibility(View.INVISIBLE);
-                }
+                atualizarListaAgrupamento();
 
             }
 
@@ -170,6 +157,29 @@
                     ImageView IconFeliz = findViewById(R.id.IconFeliz);
                     IconFeliz.setVisibility(View.VISIBLE);
 
+                    AddMateria.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Verificar se já estamos na atividade AdicionarTela
+                                // Se não estiver na AdicionarTela, inicie a intent
+                                Intent intent = new Intent(MainActivity.this, AdicionarTela.class);
+                                MainActivity.this.startActivity(intent);
+                        }
+                    });
+
+                } else if (existemRegistrosAgrupamento())
+                {
+                    // Se houver registros, listar e exibir o ListView
+                    View QuadradoAdicioneAlgo = findViewById(R.id.Fundo_Adicione_Algo);
+                    TextView AdicioneAlgoText = findViewById(R.id.AdicioneAlgo);
+                    TextView TorneFacilText = findViewById(R.id.TorneVidaText);
+                    Button AddMateria = findViewById(R.id.AddMateButtInicial);
+                    ImageView IconFeliz = findViewById(R.id.IconFeliz);
+                    QuadradoAdicioneAlgo.setVisibility(View.INVISIBLE);
+                    AdicioneAlgoText.setVisibility(View.INVISIBLE);
+                    TorneFacilText.setVisibility(View.INVISIBLE);
+                    AddMateria.setVisibility(View.INVISIBLE);
+                    IconFeliz.setVisibility(View.INVISIBLE);
                 }
 
             }
